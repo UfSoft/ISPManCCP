@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--
+ vim: sw=4 ts=4 fenc=utf-8
+ $Id$
+-->
+<head>
+    <title><% h._('Customer Control Pannel') %> <& SELF:title &></title>
+<!--
+This site was coded by Pedro Algarvio
+using valid CSS and XHTML.
+
+I encourage you to look at the code and see how it
+works, that's the best way to learn. Feel free to
+use the CSS but please don't duplicate the design.
+-->
+
+        <!-- Meta Tags -->
+        <meta http-equiv="PRAGMA" content="NO-CACHE">
+        <meta http-equiv="CACHE-CONTROL" content="NO-CACHE">
+        <!-- CSS Imports -->
+        <% h.stylesheet_link_tag('/style/main.css') %>
+        <!-- Favorite Icons -->
+        <!-- TODO <link rel="icon" href="/img/green/icon-16.png" type="image/png" /> -->
+        <script language="javascript">
+        <!--
+            var myimages=new Array()
+            function preloadimages(){
+                for (i=0;i<preloadimages.arguments.length;i++){
+                    myimages[i]=new Image()
+                    myimages[i].src=preloadimages.arguments[i]
+                }
+            }
+            preloadimages("/images/logo.jpg","");
+        //--></script>
+</head>
+<body onload="preloadimages()" >
+<div id="fakebody">
+    <a name="top"></a>
+<noscript>
+    <div style="border-bottom: 1px solid #808080">
+        <div style="border-bottom: 1px solid #404040">
+            <table width="100%" border="0" cellpadding="0" bgcolor="#FFFFE1">
+                <tr>
+                    <td valign="middle"><img src="/images/warning.gif" alt="Warning" /></td>
+                    <td>&nbsp;</td>
+                    <td><span style=
+                        "padding: 0px; margin: 0px; font-family: Tahoma, sans-serif; font-size: 11px">
+                        <% h._('Warning, your browser does not support JavaScript and is not ' +
+                        'capable of displaying the latest web pages such as this one.') %>
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</noscript>
+<!-- Logo -->
+<div id="header">
+    <!-- Main Navigation -->
+    <div id="mainnav">
+        <& /mainnav.myt, toggle=m.scomp('SELF:nav') &> 
+    </div>
+</div>
+<div style="clear:both;"></div>
+
+<!-- Context Navigation -->
+<div id="nav">
+    <& /ctxnav.myt, ctxtoggle=m.scomp('SELF:ctxnav') &>
+</div>
+
+<!-- Main Content -->
+
+<div id="contents">
+% m.call_next()
+</div>
+
+    <div id="footer">
+        <% h._('Customer Control Pannel') %> | <a href="#top" accesskey="9" title=
+            "<% h._('Return to the top of the navigation links') %>"><% h._('Top') %></a>&nbsp;
+    </div>
+
+</div>  <!-- End Fakebody -->
+</body>
+</html>
+
+<%method title>
+</%method>
+<%method nav>
+</%method>
+<%method ctxnav>
+</%method>

@@ -1,0 +1,133 @@
+/*
+ * vim: sw=4 ts=4 fenc=utf-8
+ * ============================================================================
+ * $Id: main.css 2 2006-08-26 17:51:50Z s0undt3ch $
+ * ============================================================================
+ *             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/public/style/main.css $
+ * $LastChangedDate: 2006-08-26 18:51:50 +0100 (Sat, 26 Aug 2006) $
+ *             $Rev: 2 $
+ *   $LastChangedBy: s0undt3ch $
+ * ============================================================================
+ * Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
+ *
+ * Please view LICENSE for additional licensing information.
+ * ============================================================================
+*/
+
+
+* { font-family: verdana, arial, helvetica, sans-serif; font-size: 12pt; }
+
+html, body { height: 100%; }
+html { overflow: -moz-scrollbars-vertical !important; }
+
+body {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+/*    background-color: #3363a3; */
+    background-color: #b8d8f1;
+    font-family: Geneva,Arial,Helvetica,sans-serif;
+}
+
+a {
+    font-family: Geneva,Arial,Helvetica,sans-serif;
+    color: #333366;
+    text-decoration: none;
+}
+
+fieldset {
+    border:1px solid #3363a3;
+    padding: 15px;
+    color: black;
+    margin: 0 10px 0 10px;
+    text-align: left;
+}
+
+legend { font-weight: bold; padding-left: 5px; padding-right: 5px; color: black; }
+
+#fakebody {
+    min-height: 100%;
+}
+
+#header {
+/*    padding: 15px 15px 15px 450px; */
+    padding-left: 450px;
+    background-image: url(/images/logo.jpg);
+    background-position: top left;
+    background-repeat: no-repeat;
+    background-color: #003885;
+    height: 130px;
+    color: white;
+    text-align: right;
+/*    vertical-align: baseline;
+    line-height: 12px; */
+/*    display: table-cell; */
+    position: relative;
+}
+
+
+#mainnav { bottom:0; right:10px; position: absolute; }
+#nav { padding: 4px; margin-right: 25px; font-size:9pt; top:0px ; text-align: right; color: white; }
+    /*border: 1px solid white;  text-align: right; font-size:9pt; top:0px ; position: relative;} */
+
+
+
+
+#contents {
+    min-height:350px;
+    height:auto !important;
+    height:233px;
+    padding: 5px 5px 5px 5px;
+    position: relative;
+}
+
+#menu, #menu u { margin: 0; padding: 0; font-family: verdana, arial, helvetica, sans-serif; font-size: 10pt; }
+#menu ul { margin: 0; padding: 0; list-style-type: none; }
+#menu li {
+    display: block;
+    float: left;
+    margin: 0 0 0 5px;
+    padding: 0;
+    border: 1px solid #3363a3;
+}
+#menu li:hover, #menu :link:hover { background-color: #3363a3; }
+#menu li.active { 
+    border-bottom: 1px solid #b8d8f1;
+    font-weight: bold;
+    background-color: #b8d8f1;
+}
+
+#menu a { 
+    float: left;
+    display: block;
+    padding: 4px 15px 4px 15px;
+    margin: 0;
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+#menu a.active { color: #3363a3; }
+
+
+/* Login Box */
+#login fieldset {
+    width: 320px;
+    text-align: center;
+}
+
+/* Footer */
+#footer {
+    text-align: right;
+    border-top:2px solid #3363a3;
+    bottom: 0;
+    right: 0;
+    background-color: #003885;
+    color: white;
+    position: absolute;
+    padding: 5px;
+    font-size:8pt;
+    width:100%;
+}
+#footer a { color: lightgrey; font-size:8pt; }
+#footer a:visited { color: grey; font-size:8pt; }
+

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: app_globals.py 2 2006-08-26 17:51:50Z s0undt3ch $
+# $Id: app_globals.py 3 2006-08-27 08:08:11Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/app_globals.py $
-# $LastChangedDate: 2006-08-26 18:51:50 +0100 (Sat, 26 Aug 2006) $
-#             $Rev: 2 $
+# $LastChangedDate: 2006-08-27 09:08:11 +0100 (Sun, 27 Aug 2006) $
+#             $Rev: 3 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -39,7 +39,14 @@ class Globals(object):
 
         """
         import os
-        import perl
+        import sys
+        try:
+            import perl
+        except ImportError:
+            print "You need the pyperl module installed."
+            print "You can get it from:"
+            print "   http://www.felix-schwarz.name/files/opensource/pyperl/"
+            sys.exit(1)
 
         # Get Perl's @INC reference
         inc = perl.get_ref("@INC")
@@ -60,7 +67,14 @@ class Globals(object):
 
         # Setup an LDAP connection, which will only be used for
         # initial authentication purposes
-        import ldap
+        try:
+            import ldap
+        except ImportError:
+            print "You must have python-ldap module instaled."
+            print "You can get it from:"
+            print "   http://python-ldap.sourceforge.net/"
+            sys.exit(1)
+
         ldap_host = self.ispman.getConf('ldapHost')
         ldap_version = self.ispman.getConf('ldapVersion')
         self.ldap = ldap.initialize("ldap://%s:389" % ldap_host)

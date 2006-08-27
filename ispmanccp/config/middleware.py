@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: middleware.py 2 2006-08-26 17:51:50Z s0undt3ch $
+# $Id: middleware.py 3 2006-08-27 08:08:11Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/config/middleware.py $
-# $LastChangedDate: 2006-08-26 18:51:50 +0100 (Sat, 26 Aug 2006) $
-#             $Rev: 2 $
+# $LastChangedDate: 2006-08-27 09:08:11 +0100 (Sun, 27 Aug 2006) $
+#             $Rev: 3 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -75,7 +75,7 @@ def make_app(global_conf, **app_conf):
             g.ldap.simple_bind_s(who=domaindn, cred=password)
             return True
         except Exception, e:
-            print "Failed LDAP bind: %s" % e
+            print "Failed LDAP bind for domain %s: %s." % (domain, e[0]['desc'])
             return False
 
     from paste.auth.basic import AuthBasicHandler

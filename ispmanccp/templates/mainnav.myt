@@ -1,11 +1,11 @@
 <!--
  vim: sw=4 ts=4 fenc=utf-8
- $Id$
+ $Id: mainnav.myt 4 2006-08-28 14:00:08Z s0undt3ch $
 -->
 <div id="menu">
 %   if 'REMOTE_USER' in request.environ:
     <ul>
-%      for link, url, key in c.menu:
+%      for link, url, key in c.menus['mainmenu']:
 %           if toggle.strip() == link:
         <li class="active">
 %               if key is not None:
@@ -37,29 +37,6 @@
 
     </ul>
 </div>
-
-<%init>
-    def create_i18n_menu():
-        keys_list = {}
-        menu = []
-        for name, url in c.menu:
-            for n in range(len(name)):
-                if name[n].upper() not in [x.upper() for x in keys_list.values()]:
-                    keys_list[url] = name[n]
-                    break
-                else:
-                    n += 1
-            else:
-                keys_list[url] = None
-            menu.append((name, url, keys_list[url]))
-        return menu
-
-    cache = m.get_cache()
-    if not cache.has_key('i18n_menu'):
-        cache.set_value('i18n_menu', create_i18n_menu(), expiretime=60)
-    c.menu = cache.get_value('i18n_menu', type='memory',
-                            createfunc=create_i18n_menu, expiretime=60)
-</%init>
 
 <%args>
 toggle

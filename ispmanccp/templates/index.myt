@@ -1,6 +1,6 @@
 <!--
  vim: sw=4 ts=4 fenc=utf-8
- $Id$
+ $Id: index.myt 4 2006-08-28 14:00:08Z s0undt3ch $
 -->
 <h1><Center><% c.dominfo['cn'] + ' ' + h._('domain') %><center></h1>
 <fieldset id="dominfo">

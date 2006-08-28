@@ -1,11 +1,11 @@
 /*
  * vim: sw=4 ts=4 fenc=utf-8
  * ============================================================================
- * $Id: main.css 2 2006-08-26 17:51:50Z s0undt3ch $
+ * $Id: main.css 4 2006-08-28 14:00:08Z s0undt3ch $
  * ============================================================================
  *             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/public/style/main.css $
- * $LastChangedDate: 2006-08-26 18:51:50 +0100 (Sat, 26 Aug 2006) $
- *             $Rev: 2 $
+ * $LastChangedDate: 2006-08-28 15:00:08 +0100 (Mon, 28 Aug 2006) $
+ *             $Rev: 4 $
  *   $LastChangedBy: s0undt3ch $
  * ============================================================================
  * Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -73,7 +73,7 @@ legend { font-weight: bold; padding-left: 5px; padding-right: 5px; color: black;
 
 
 #contents {
-    min-height:350px;
+    min-height:550px;
     height:auto !important;
     height:233px;
     padding: 5px 5px 5px 5px;
@@ -108,6 +108,52 @@ legend { font-weight: bold; padding-left: 5px; padding-right: 5px; color: black;
 }
 #menu a.active { color: #3363a3; }
 
+#ctxnav {
+	margin: 2px;
+	padding: 2px;
+	font-family: verdana, arial, helvetica, sans-serif; font-size: 10px;
+	text-align: right;
+	color: grey;
+}
+#ctxnav a, #ctxnav u {
+	color: darkred;
+/*	text-decoration: none; */
+	font-size: 10px;
+	letter-spacing: 1px;
+	padding: 0 2px 0 2px;
+}
+#ctxnav a:hover { background-color: grey; }
+#ctxnav a.active { background-color: lightgrey; font-weight: bold; }
+
+#ctxnav ul { margin: 0; padding: 0; list-style-type: none; }
+#ctxnav li {
+	display: block;
+	float: left;
+	margin: 0 0 0 5px;
+	padding: 0;
+}
+
+
+#UsersListChars { width: 100%; text-align: center; margin: 0px 5px 10px 5px; }
+#UsersListChars a {
+	padding: 5px 10px 5px 10px;
+	font-size: 13px;
+	width: 12px;
+	height: 12px;
+	text-decoration: none;
+	background-color: #3363a3;
+	color: white;
+	font-weight: bold;
+	border: 1px outset lightgrey;
+	line-height: 30px;
+	margin-top: 15px;
+}
+#UsersListChars :link:hover, #UsersListChars a:hover { color: red; }
+#UsersList { position: relative; }
+
+#errors { border 1px dashed red; }
+
+#spinner { float: right; position: absolute; right: 5px; top: 5px; z-index: 333; }
 
 /* Login Box */
 #login fieldset {
@@ -125,6 +171,7 @@ legend { font-weight: bold; padding-left: 5px; padding-right: 5px; color: black;
     color: white;
     position: absolute;
     padding: 5px;
+	padding-right: 15px;
     font-size:8pt;
     width:100%;
 }

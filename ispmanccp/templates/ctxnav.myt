@@ -1,18 +1,19 @@
 <!--
  vim: sw=4 ts=4 fenc=utf-8
- $Id$
+ $Id: ctxnav.myt 4 2006-08-28 14:00:08Z s0undt3ch $
 -->
-%   if c.ctxnav:
-    <ul id="ctxnav">
-%       if toggle.strip() == link:
-%           for link, url, key in c.ctxnav:
-        <li class="active"><% h.link_to(link, url, class_='active', accesskey=key) %></li>
-%       else:
-            <li><% h.link_to(link, url, accesskey=key) %></li>
-%           # endfor
+%   if  c.controller in c.menus:
+|
+%		for link, url, key in c.menus[c.controller]:
+%			if ctxtoggle.strip() == link:
+	<% h.link_to(link.replace(key, h.content_tag('u', key)), url, class_='active', accesskey=key) %>
+|
+%       	else:
+	<% h.link_to(link.replace(key, h.content_tag('u', key)), url, accesskey=key) %>
+|
+%			# endif
 
-    </ul>
-%       #endif
+%       #endfor
 
 %   #endif
 

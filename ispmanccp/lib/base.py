@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: base.py 2 2006-08-26 17:51:50Z s0undt3ch $
+# $Id: base.py 4 2006-08-28 14:00:08Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/base.py $
-# $LastChangedDate: 2006-08-26 18:51:50 +0100 (Sat, 26 Aug 2006) $
-#             $Rev: 2 $
+# $LastChangedDate: 2006-08-28 15:00:08 +0100 (Mon, 28 Aug 2006) $
+#             $Rev: 4 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -26,11 +26,39 @@ class BaseController(WSGIController):
         # is under environ['pylons.routes_dict'] should you want to check
         # the action or route vars here
 
+        ccache = cache.get_cache('navigation')
+
+        c.menus = ccache.get_value('i18n_menus',
+                                  createfunc=self.create_i18n_menus,
+                                  type='memory', expiretime=3600)
+
+        c.controller = request.environ['pylons.routes_dict']['controller']
+        return WSGIController.__call__(self, environ, start_response)
+
+    def create_i18n_menus(self):
+        menulist = {}
         # App's Main Menu
-	menu = [
+        menulist['mainmenu'] = [
             (h._('Home'), h.url_for(controller='index', action='index')),
             (h._('Mail'), h.url_for(controller='mail', action='index')),
         ]
-        c.menu = menu
-
-        return WSGIController.__call__(self, environ, start_response)
+        # Mail context menu
+        menulist['mail'] = [
+            (h._('Accounts Index'), h.url_for(controller='mail', action='index')),
+            (h._('New Account'), h.url_for(controller='mail', action='new')),
+        ]
+        keys = {}
+        menus = {}
+        for key, val in menulist.items():
+            menus[key] = []
+            for name, url in val:
+                for n in range(len(name)):
+                    if name[n].upper() not in [x.upper() for x in keys.values()]:
+                        keys[name] = name[n]
+                        break
+                    else:
+                        n += 1
+                else:
+                    keys[name] = None
+                menus[key].append((name, url, keys[name]))
+        return menus

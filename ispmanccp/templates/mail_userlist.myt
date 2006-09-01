@@ -1,30 +1,30 @@
 <!--
  vim: sw=4 ts=4 fenc=utf-8
- $Id: mail_userlist.myt 4 2006-08-28 14:00:08Z s0undt3ch $
+ $Id: mail_userlist.myt 5 2006-09-01 19:30:14Z s0undt3ch $
 -->
-<div id="UsersList">
-%	if c.users:
-%		for user in c.users.keys():
-	<fieldset id="short_user_details">
-	<legend><% c.users[user]['mailLocalAddress'] %></legend>
-%			for k, v in c.users[user].items():
-%				if k == 'mailAlias':
-%					for vv in v:
-		<b><% k %>:</b> <% vv %><BR />
-%				# endfor
-%				elif k == "ispmanCreateTimestamp":
-		<b><% k %>:</b><% h.date_from_tstamp(v) %><BR />
-%				elif k == "mailQuota":
-		<b><% k %>:</b><% int(v)/1024 %> Mb<BR />
-%				else:
-		<b><% k %>:</b><% v %><BR />
-%				# endif				
-%			# endfor
+%   if c.users:
+%       for user in c.users:
+    <fieldset id="short_user_details">
+    <legend><% user['mailLocalAddress'] %></legend>
+        <b>User ID:</b> <% user['ispmanUserId'] %><BR />
+        <b>First Name:</b> <% user['givenName'] %><BR />
+        <b>Last Name:</b> <% user['sn'] %><BR />
+        <b>Created on:</b> <% h.date_from_tstamp(user['ispmanCreateTimestamp']) %><BR />
+        <b>Email Quota:</b> <% int(user['mailQuota'])/1024 %><BR />
+        <b>Email Address:</b> <% user['mailLocalAddress'] %><BR />
+%           if 'mailAlias' in user:
+        <b>Email Alias:</b><BR />
+%               for alias in user['mailAlias']:
+        &nbsp;&nbsp;&nbsp;&nbsp;<% alias %><BR />
+%               # endfor
+
+%           # endif
+
     </fieldset>
-%		# endfor
-%	else:
-	<div id="errors">
-		<h2><% c.error %></h2>
-	</div>
-%	# endif
-</div>
+%       # endfor
+
+%   else:
+    <div id="errors">
+        <h2><% c.error %></h2>
+    </div>
+%   # endif

@@ -1,11 +1,11 @@
 /*
  * vim: sw=4 ts=4 fenc=utf-8
  * ============================================================================
- * $Id: main.css 4 2006-08-28 14:00:08Z s0undt3ch $
+ * $Id: main.css 5 2006-09-01 19:30:14Z s0undt3ch $
  * ============================================================================
  *             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/public/style/main.css $
- * $LastChangedDate: 2006-08-28 15:00:08 +0100 (Mon, 28 Aug 2006) $
- *             $Rev: 4 $
+ * $LastChangedDate: 2006-09-01 20:30:14 +0100 (Fri, 01 Sep 2006) $
+ *             $Rev: 5 $
  *   $LastChangedBy: s0undt3ch $
  * ============================================================================
  * Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -24,7 +24,7 @@ body {
     margin: 0 0 0 0;
     padding: 0 0 0 0;
 /*    background-color: #3363a3; */
-    background-color: #b8d8f1;
+/*    background-color: #b8d8f1; */
     font-family: Geneva,Arial,Helvetica,sans-serif;
 }
 
@@ -91,9 +91,11 @@ legend { font-weight: bold; padding-left: 5px; padding-right: 5px; color: black;
 }
 #menu li:hover, #menu :link:hover { background-color: #3363a3; }
 #menu li.active { 
-    border-bottom: 1px solid #b8d8f1;
+/*    border-bottom: 1px solid #b8d8f1; */
+    border-bottom: 1px solid white;
     font-weight: bold;
-    background-color: #b8d8f1;
+/*    background-color: #b8d8f1; */
+    background-color: white;
 }
 
 #menu a { 
@@ -134,24 +136,22 @@ legend { font-weight: bold; padding-left: 5px; padding-right: 5px; color: black;
 }
 
 
-#UsersListChars { width: 100%; text-align: center; margin: 0px 5px 10px 5px; }
-#UsersListChars a {
-	padding: 5px 10px 5px 10px;
-	font-size: 13px;
-	width: 12px;
-	height: 12px;
-	text-decoration: none;
-	background-color: #3363a3;
-	color: white;
-	font-weight: bold;
-	border: 1px outset lightgrey;
-	line-height: 30px;
-	margin-top: 15px;
+#UsersListNav { width: 100%; text-align: center; margin: 0px 5px 10px 5px; }
+#UsersListNav input[type="radio"] {
+    visibility: hidden;
+    width: 0px;
+    height: 0px;
+    padding: 0px;
+    margin: 0px;
 }
-#UsersListChars :link:hover, #UsersListChars a:hover { color: red; }
+#UsersListNav input[type="radio"] + label { cursor: pointer; font-weight: bold; }
+#UsersListNav input[type="radio"] + label:hover { color: orange; }
+#UsersListNav label { padding: 0px; margin: 0px; height: 16px; font-size: 11px; }
+#UsersListNav input[type="radio"]:checked + label { color: red; }
+#UsersListNav select, #UsersListNav option { font-size: 11px; }
 #UsersList { position: relative; }
 
-#errors { border 1px dashed red; }
+/* #errors { border: 1px dashed red; } */
 
 #spinner { float: right; position: absolute; right: 5px; top: 5px; z-index: 333; }
 

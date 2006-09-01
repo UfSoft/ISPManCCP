@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <!--
  vim: sw=4 ts=4 fenc=utf-8
- $Id: autohandler 4 2006-08-28 14:00:08Z s0undt3ch $
+ $Id: autohandler 5 2006-09-01 19:30:14Z s0undt3ch $
 -->
 <head>
     <title><% h._('Customer Control Pannel') %> <& SELF:title &></title>
@@ -22,32 +22,10 @@ use the CSS but please don't duplicate the design.
         <!-- CSS Imports -->
         <% h.stylesheet_link_tag('/style/main.css') %>
         <!-- Favorite Icons -->
-		<!-- TODO <link rel="icon" href="/img/green/icon-16.png" type="image/png" /> -->
-		<!-- Include JavaScript Lib(s) -->
-		<% h.javascript_include_tag('/javascripts/effects.js', builtins=True) %>
-        <script language="javascript">
-        <!--
-            var myimages=new Array()
-            function preloadimages(){
-                for (i=0;i<preloadimages.arguments.length;i++){
-                    myimages[i]=new Image()
-                    myimages[i].src=preloadimages.arguments[i]
-                }
-            }
-			preloadimages("/images/logo.jpg","");
-
-			function fetch_mail_users(letter) {
-				new Ajax.Updater('UsersList',
-						'/mail/userlist/' + letter,
-						{
-							asynchronous:true,
-							evalScripts:true,
-							onLoaded:function(request){$('spinner').innerHTML = '';},
-							onLoading:function(request){$('spinner').innerHTML = '<img src="/images/loading.gif">';}
-						});
-				return false;
-			}
-        //--></script>
+        <!-- TODO <link rel="icon" href="/img/green/icon-16.png" type="image/png" /> -->
+        <!-- Include JavaScript Lib(s) -->
+        <% h.javascript_include_tag('/javascripts/effects.js', builtins=True) %>
+        <% h.javascript_include_tag('/js/ispmanccp.js') %>
 </head>
 <body onload="preloadimages()" >
 <div id="fakebody">
@@ -62,8 +40,8 @@ use the CSS but please don't duplicate the design.
                     <td><span style=
                         "padding: 0px; margin: 0px; font-family: Tahoma, sans-serif; font-size: 13px">
                         <% h._('Warning, your browser does not support JavaScript and is not ' +
-						'capable of displaying the latest web pages such as those found on this ' +
-						'site. Some of the functionality will be disabled.') %>
+                        'capable of displaying the latest web pages such as those found on this ' +
+                        'site. Some of the functionality will be disabled.') %>
                         </span>
                     </td>
                 </tr>
@@ -73,7 +51,7 @@ use the CSS but please don't duplicate the design.
 </noscript>
 <!-- Logo -->
 <div id="header">
-	<div id="spinner"></div>
+    <div id="spinner"></div>
     <!-- Main Navigation -->
     <div id="mainnav">
         <& /mainnav.myt, toggle=m.scomp('SELF:nav') &> 
@@ -92,10 +70,10 @@ use the CSS but please don't duplicate the design.
 % m.call_next()
 </div>
 
-    <div id="footer">
+<!--    <div id="footer">
         <% h._('Customer Control Pannel') %> | <a href="#top" accesskey="9" title=
             "<% h._('Return to the top of the navigation links') %>"><% h._('Top') %></a>&nbsp;&nbsp;&nbsp;
-    </div>
+    </div> -->
 </div>  <!-- End Fakebody -->
 </body>
 </html>

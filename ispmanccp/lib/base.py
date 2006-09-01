@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: base.py 4 2006-08-28 14:00:08Z s0undt3ch $
+# $Id: base.py 5 2006-09-01 19:30:14Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/base.py $
-# $LastChangedDate: 2006-08-28 15:00:08 +0100 (Mon, 28 Aug 2006) $
-#             $Rev: 4 $
+# $LastChangedDate: 2006-09-01 20:30:14 +0100 (Fri, 01 Sep 2006) $
+#             $Rev: 5 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -19,6 +19,8 @@ from pylons.decorators import jsonify, rest, validate
 from pylons.templating import render, render_response
 from pylons.helpers import abort, redirect_to, etag_cache
 import ispmanccp.models as model
+from ispmanccp.lib.ispman_helpers import *
+from ispmanccp.lib.forms import Form
 
 class BaseController(WSGIController):
     def __call__(self, environ, start_response):
@@ -33,6 +35,8 @@ class BaseController(WSGIController):
                                   type='memory', expiretime=3600)
 
         c.controller = request.environ['pylons.routes_dict']['controller']
+
+        c.form = Form()
         return WSGIController.__call__(self, environ, start_response)
 
     def create_i18n_menus(self):

@@ -1,0 +1,65 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      py:strip="">
+      
+    <div id="user_details_master" py:choose="">
+      <div id="user_details" py:when="len(c.users) > 0">
+        <form name="user_details" id="user_details" method="POST"
+          action="/mail/edit" py:for="user in c.users">
+        <table id="user_details">
+          <tbody>
+            <tr><th colspan="2">${ user['mailLocalAddress'] }</th></tr>
+            <tr>
+                <td class="name">User ID:</td>
+                <td class="value">${ user['ispmanUserId'] }</td>
+            </tr>
+            <tr>
+                <td class="name">First Name:</td>
+                <td class="value">${ user['givenName'] }</td>
+            </tr>
+            <tr>
+                <td class="name">Last Name:</td>
+                <td class="value">${ user['givenName'] }</td>
+            </tr>
+            <tr>
+                <td class="name">Created on:</td>
+                <td class="value">${ h.date_from_tstamp(user['ispmanCreateTimestamp']) }</td>
+            </tr>
+            <tr>
+                <td class="name">Email Quota:</td>
+                <td class="value">${ h.convert_size(user['mailQuota']) }</td>
+            </tr>
+            <tr py:if="'mailAlias' in user" py:with="aliases = user['mailAlias']">
+              <td class="name">Email Alias:</td>
+              <td class="value"><py:for each="alias in list(user['mailAlias'])">
+                ${alias}<br/>
+                </py:for>
+              </td>
+            </tr>
+            <tr>
+              <td class="button_row" colspan="2">
+                <input class="buttons" name="Edit" value="Edit" type="submit"
+                  title="${ h._('Edit User Entry')}" />
+                <input class="buttons" onClick="location.href='#top'" type="button"
+                  name="Top" value="Top"
+                title="${ h._('Return to the top of the navigation links') }" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        </form>
+      </div>
+      <div id="errors" py:otherwise="">
+        <h2>${ c.error }</h2>
+      </div>
+    </div>
+
+</html>
+<!--!
+$Id: userlist.html 6 2006-10-20 10:41:43Z s0undt3ch $
+vim: sw=2 ts=2 fenc=utf-8 ft=kid et
+-->
+

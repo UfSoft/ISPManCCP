@@ -1,11 +1,11 @@
 /*
  * vim: sw=4 ts=4 fenc=utf-8
  * ============================================================================
- * $Id: main.css 5 2006-09-01 19:30:14Z s0undt3ch $
+ * $Id: main.css 6 2006-10-20 10:41:43Z s0undt3ch $
  * ============================================================================
  *             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/public/style/main.css $
- * $LastChangedDate: 2006-09-01 20:30:14 +0100 (Fri, 01 Sep 2006) $
- *             $Rev: 5 $
+ * $LastChangedDate: 2006-10-20 11:41:43 +0100 (Fri, 20 Oct 2006) $
+ *             $Rev: 6 $
  *   $LastChangedBy: s0undt3ch $
  * ============================================================================
  * Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -80,17 +80,17 @@ legend { font-weight: bold; padding-left: 5px; padding-right: 5px; color: black;
     position: relative;
 }
 
-#menu, #menu u { margin: 0; padding: 0; font-family: verdana, arial, helvetica, sans-serif; font-size: 10pt; }
-#menu ul { margin: 0; padding: 0; list-style-type: none; }
-#menu li {
+#mainnav, #mainnav u { margin: 0; padding: 0; font-family: verdana, arial, helvetica, sans-serif; font-size: 10pt; }
+#mainnav ul { margin: 0; padding: 0; list-style-type: none; }
+#mainnav li {
     display: block;
     float: left;
     margin: 0 0 0 5px;
     padding: 0;
     border: 1px solid #3363a3;
 }
-#menu li:hover, #menu :link:hover { background-color: #3363a3; }
-#menu li.active { 
+#mainnav li:hover, #mainnav :link:hover { background-color: #3363a3; }
+#mainnav li.active { 
 /*    border-bottom: 1px solid #b8d8f1; */
     border-bottom: 1px solid white;
     font-weight: bold;
@@ -98,7 +98,7 @@ legend { font-weight: bold; padding-left: 5px; padding-right: 5px; color: black;
     background-color: white;
 }
 
-#menu a { 
+#mainnav a { 
     float: left;
     display: block;
     padding: 4px 15px 4px 15px;
@@ -108,11 +108,11 @@ legend { font-weight: bold; padding-left: 5px; padding-right: 5px; color: black;
     font-size: 13px;
     letter-spacing: 1px;
 }
-#menu a.active { color: #3363a3; }
+#mainnav a.active { color: #3363a3; }
 
 #ctxnav {
-	margin: 2px;
-	padding: 2px;
+	margin: 0px;
+	padding-right: 5px;
 	font-family: verdana, arial, helvetica, sans-serif; font-size: 10px;
 	text-align: right;
 	color: grey;
@@ -129,10 +129,10 @@ legend { font-weight: bold; padding-left: 5px; padding-right: 5px; color: black;
 
 #ctxnav ul { margin: 0; padding: 0; list-style-type: none; }
 #ctxnav li {
-	display: block;
-	float: left;
+    display: inline;
 	margin: 0 0 0 5px;
 	padding: 0;
+    position: relative;
 }
 
 
@@ -149,7 +149,15 @@ legend { font-weight: bold; padding-left: 5px; padding-right: 5px; color: black;
 #UsersListNav label { padding: 0px; margin: 0px; height: 16px; font-size: 11px; }
 #UsersListNav input[type="radio"]:checked + label { color: red; }
 #UsersListNav select, #UsersListNav option { font-size: 11px; }
-#UsersList { position: relative; }
+/*#UsersList { position: relative; } */
+
+#user_details table { width: 100%; border: 1px groove black; margin-top: 10px;}
+#user_details table th { font-weight: bold; text-align: center; background-color: lightgrey;
+                         width: 100%; }
+#user_details table .name { white-space: nowrap; font-weight: bold; text-align: right; vertical-align: top;}
+#user_details table .value { width: 100%; }
+#user_details table .button_row { font-weight: bold; text-align: right; background-color: lightgrey; }
+#user_details .buttons { cursor: hand; width: 100px; }
 
 /* #errors { border: 1px dashed red; } */
 

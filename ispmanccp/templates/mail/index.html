@@ -1,0 +1,62 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude">
+  <xi:include href="../layout.html" />
+  <head>
+    <title>${ h._('Mail') }</title>
+  </head>
+
+  <body>
+    <div id="UsersListNav">
+      <form name="sortby" id="sortby" action="/mail/userlist">
+        <nobr>
+          <!--! Our default selected radio button -->
+          <input type="radio" name="letter" id="None" value="None" checked="checked"/>
+          <label for="None">None</label>
+        <!--! Generate our All, 0-9, A-Z radio buttons -->
+        <py:for each="l in c.form_letters">
+          <input type="radio" name="letter" id="letter_${l}" value="${l}"/>
+          <label for="letter_${l}">${l}</label>
+        </py:for>
+        </nobr>&nbsp;
+        <nobr>
+          <select name="sort_by" id="sort_by">
+            <option value="ispmanUserId">User ID</option>
+            <option value="mailLocalAddress">Email Address</option>
+            <option value="givenName">First Name</option>
+            <option value="sn">Last Name</option>
+            <option value="ispmanCreateTimestamp">Date Created</option>
+            <option value="mailQuota">Email Quota</option>
+          </select>
+          <select name="sort_how" id="sort_how">
+            <option value="True">Ascending</option>
+            <option value="False">Descending</option>
+          </select>
+        </nobr>
+      </form>
+    </div>
+    ${ h.observe_form(
+    'sortby',
+    frequency=1,
+    url=h.url_for(action='userlist'),
+    update="UsersList",
+    loading=h.update_element_function(
+                "spinner",
+                content = h.image_tag('/images/loading.gif')),
+    loaded=h.update_element_function("spinner", content = ''),
+    complete=h.visual_effect('grow', 'UsersList'),
+    with="Form.serialize($('sortby'))"
+    ) }
+    <div id="UsersList" style="display:none"></div>
+    <div id="errors"></div>
+  </body>
+
+</html>
+<!--!
+$Id: index.html 6 2006-10-20 10:41:43Z s0undt3ch $
+vim: sw=2 ts=2 fenc=utf-8 ft=kid et
+-->
+

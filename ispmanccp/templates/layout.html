@@ -1,0 +1,93 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      py:strip="">
+
+<head py:match="head">
+  <title py:with="title = unicode(select('title/text()'))">
+    ${ ' - '.join(filter(None, [h._('Customer Control Pannel'), title])) }
+  </title>
+
+  <meta name="ROBOTS" content="NOINDEX, NOFOLLOW" />
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
+
+  <!--! CSS Imports -->
+  ${ h.stylesheet_link_tag('/style/main.css') }
+  ${ page_specific_css }
+  <!--! Include JavaScript Lib(s) -->
+  ${ h.javascript_include_tag('/javascripts/effects.js', builtins=True) }
+  ${ h.javascript_include_tag('/js/ispmanccp.js') }
+
+</head>
+
+<body py:match="body">
+  <a name="top"></a>
+  <noscript>
+    <div style="border-bottom: 1px solid #808080">
+      <div style="border-bottom: 1px solid #404040">
+        <table width="100%" border="0" cellpadding="0" bgcolor="#FFFFE1">
+          <tr>
+            <td valign="middle"><img src="/images/warning.gif" alt="Warning" /></td>
+            <td>&nbsp;</td>
+            <td><span style=
+                "padding: 0px; margin: 0px; font-family: Tahoma, sans-serif; font-size: 13px">
+                ${ h._('Warning, your browser does not support JavaScript and is not ' +
+                'capable of displaying the latest web pages such as those found on this ' +
+                'site. Some of the functionality will be disabled.') }</span>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </noscript>
+  <div id="header">
+    <div id="spinner"></div>
+    <!--!
+    Main Navigation
+    Is the user logged in? If so, sho him the menu
+    -->
+    <div id="mainnav" py:if="'REMOTE_USER' in request.environ">
+      <ul>
+        <!--! Loop all items on mainmenu.
+              We add py:choose="" to be able to add or not the accesskey
+              since the link's will be diferent
+        -->
+        <li py:for="name, url, akey in c.menus['mainmenu']" py:choose=""
+          class="${url == request.path_info and 'active' or None}">
+          <!--! We have an access key, let's underscore it on the name -->
+          <a py:when="akey != None" py:with="pre, post = name.split(akey)"
+            href="${url}" accesskey="${akey}"
+            class="${url == request.path_info and 'active' or None}">$pre<u>${akey}</u>$post</a>
+          <!--! No access key, so, plain simple link -->
+          <a py:otherwise="" href="${url}"
+            class="${url == request.path_info and 'active' or None}">${name}</a>
+        </li>
+      </ul>
+    </div> <!--! div id=mainnav ended -->
+  </div> <!--! div id=header ended -->
+  <div id="ctxnav" py:if="('REMOTE_USER' in request.environ) and (c.controller in c.menus)">
+    <ul>
+      <!--! Loop all items on ctxnav. The science is the same used in mainnav -->
+      <li py:for="name, url, akey in c.menus[c.controller]" py:choose=""
+        class="${url == request.path_info and 'active' or None}">
+        <a py:when="akey != None" py:with="pre, post = name.split(akey)"
+          href="${url}" accesskey="${akey}"
+          class="${url == request.path_info and 'active' or None}">$pre<u>${akey}</u>$post</a>
+        <a py:otherwise="" href="${url}"
+          class="${url == request.path_info and 'active' or None}">${name}</a>
+      </li>
+    </ul>
+  </div> <!--! div id=ctxnav ended -->
+  <div id="contents">
+    ${select("*|text()")}
+  </div>
+</body>
+</html>
+<!--!
+$Id: layout.html 6 2006-10-20 10:41:43Z s0undt3ch $
+vim: sw=2 ts=2 fenc=utf-8 ft=kid et
+-->

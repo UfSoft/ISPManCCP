@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: base.py 5 2006-09-01 19:30:14Z s0undt3ch $
+# $Id: base.py 6 2006-10-20 10:41:43Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/base.py $
-# $LastChangedDate: 2006-09-01 20:30:14 +0100 (Fri, 01 Sep 2006) $
-#             $Rev: 5 $
+# $LastChangedDate: 2006-10-20 11:41:43 +0100 (Fri, 20 Oct 2006) $
+#             $Rev: 6 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -57,7 +57,7 @@ class BaseController(WSGIController):
             menus[key] = []
             for name, url in val:
                 for n in range(len(name)):
-                    if name[n].upper() not in [x.upper() for x in keys.values()]:
+                    if name[n].upper() not in [x.upper() for x in keys.values() if x != None]:
                         keys[name] = name[n]
                         break
                     else:

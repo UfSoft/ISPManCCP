@@ -1,0 +1,29 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude">
+      <xi:include href="../layout.html" />
+  <head>
+    <title>${ h._('Home') }</title>
+  </head>
+
+  <body>
+    ${ h.tag.h1(h.tag.center(c.dominfo['cn'] + ' ' + h._('domain'))) }
+    <!-- <h1><center>${ c.dominfo['cn'] + ' ' + h._('domain') }</center></h1> -->
+    <fieldset id="dominfo">
+      <legend>${ h._('Domain Info') }</legend>
+      <p><b>${ h._('Owner') }:</b> ${ c.dominfo['ispmanDomainOwner'] } </p>
+      <p><b>${ h._('Accounts') }:</b> ${ c.dominfo['ispmanAccounts'] } of
+        ${ c.dominfo['ispmanMaxAccounts'] } accounts.</p>
+      <p><b>${ h._('Virtual Hosts') }:</b> ${ c.dominfo['ispmanVhosts'] } of
+        ${ c.dominfo['ispmanMaxVhosts'] } virtual hosts.</p>
+    </fieldset>
+  </body>
+
+</html>
+<!--!
+$Id: index.html 6 2006-10-20 10:41:43Z s0undt3ch $
+vim: sw=2 ts=2 fenc=utf-8 ft=kid et
+-->

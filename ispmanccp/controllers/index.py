@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: index.py 2 2006-08-26 17:51:50Z s0undt3ch $
+# $Id: index.py 6 2006-10-20 10:41:43Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/index.py $
-# $LastChangedDate: 2006-08-26 18:51:50 +0100 (Sat, 26 Aug 2006) $
-#             $Rev: 2 $
+# $LastChangedDate: 2006-10-20 11:41:43 +0100 (Fri, 20 Oct 2006) $
+#             $Rev: 6 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -31,4 +31,4 @@ class IndexController(BaseController):
         dominfo['ispmanAccounts'] = g.ispman.getUserCount(domain)
 
         c.dominfo = dominfo
-        return render_response('index.myt')
+        return render_response('domain.index')

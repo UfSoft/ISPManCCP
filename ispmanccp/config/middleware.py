@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: middleware.py 3 2006-08-27 08:08:11Z s0undt3ch $
+# $Id: middleware.py 6 2006-10-20 10:41:43Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/config/middleware.py $
-# $LastChangedDate: 2006-08-27 09:08:11 +0100 (Sun, 27 Aug 2006) $
-#             $Rev: 3 $
+# $LastChangedDate: 2006-10-20 11:41:43 +0100 (Fri, 20 Oct 2006) $
+#             $Rev: 6 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -25,6 +25,9 @@ import pylons.wsgiapp
 
 from ispmanccp.config.environment import load_environment
 
+# Import our Markup wrapped helpers on app loading to fasten first request
+from ispmanccp.lib import helpers
+
 def make_app(global_conf, **app_conf):
     """Create a WSGI application and return it
 
@@ -36,6 +39,10 @@ def make_app(global_conf, **app_conf):
     # Load our Pylons configuration defaults
     config = load_environment()
     config.init_app(global_conf, app_conf, package='ispmanccp')
+
+    # Setup Genshi(only) Template Engine
+    config.template_engines = []
+    config.add_template_engine('genshi', 'ispmanccp.templates', {})
 
     # Load our default Pylons WSGI app and make g available
     app = pylons.wsgiapp.PylonsApp(config)
@@ -75,7 +82,8 @@ def make_app(global_conf, **app_conf):
             g.ldap.simple_bind_s(who=domaindn, cred=password)
             return True
         except Exception, e:
-            print "Failed LDAP bind for domain %s: %s." % (domain, e[0]['desc'])
+            print "Failed LDAP bind for domain '%s': %s." % \
+                    (domain, e[0]['desc'])
             return False
 
     from paste.auth.basic import AuthBasicHandler

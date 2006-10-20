@@ -13,27 +13,27 @@
           <tbody>
             <tr><th colspan="2">${ user['mailLocalAddress'] }</th></tr>
             <tr>
-              <td class="name">${ h._("User ID") }:</td>
+              <td class="name">${ h._("User ID:") }</td>
                 <td class="value">${ user['ispmanUserId'] }</td>
             </tr>
             <tr>
-              <td class="name">${ h._("First Name") }:</td>
+              <td class="name">${ h._("First Name:") }</td>
                 <td class="value">${ user['givenName'] }</td>
             </tr>
             <tr>
-              <td class="name">${ h._("Last Name") }:</td>
+              <td class="name">${ h._("Last Name:") }</td>
                 <td class="value">${ user['givenName'] }</td>
             </tr>
             <tr>
-              <td class="name">${ h._("Created on") }:</td>
+              <td class="name">${ h._("Created on:") }</td>
                 <td class="value">${ h.date_from_tstamp(user['ispmanCreateTimestamp']) }</td>
             </tr>
             <tr>
-              <td class="name">${ h._("Email Quota") }:</td>
+              <td class="name">${ h._("Email Quota:") }</td>
                 <td class="value">${ h.convert_size(user['mailQuota']) }</td>
             </tr>
             <tr py:if="'mailAlias' in user" py:with="aliases = user['mailAlias']">
-              <td class="name">${ h._("Email Alias") }:</td>
+              <td class="name">${ h._("Email Alias:") }</td>
               <td class="value"><py:for each="alias in list(user['mailAlias'])">
                 ${alias}<br/>
                 </py:for>
@@ -60,7 +60,7 @@
 
 </html>
 <!--!
-$Id: userlist.html 7 2006-10-20 13:01:41Z s0undt3ch $
+$Id: userlist.html 8 2006-10-20 13:08:33Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: helpers.py 6 2006-10-20 10:41:43Z s0undt3ch $
+# $Id: helpers.py 10 2006-10-21 15:21:01Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/helpers.py $
-# $LastChangedDate: 2006-10-20 11:41:43 +0100 (Fri, 20 Oct 2006) $
-#             $Rev: 6 $
+# $LastChangedDate: 2006-10-21 16:21:01 +0100 (Sat, 21 Oct 2006) $
+#             $Rev: 10 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -42,6 +42,7 @@ def date_from_tstamp(tstamp):
     return date.fromtimestamp(int(tstamp))
 
 def convert_size(size):
+    """ Helper function  to convert ISPMan sizes to readable units. """
     size = int(size)
     if size < 1024:
         return '%d KB' % size
@@ -49,3 +50,23 @@ def convert_size(size):
         return '%d MB' % (size / 1024)
     else:
         return '%.2f GB' % (size / 1048576.0)
+
+def get_nav_class_state(url, request, partial=False):
+    """ Helper function that just returns the 'active'/'inactive'
+    link class based on the passed url. """
+    if partial:
+        _url = '/' + '/'.join(
+            [request.environ['pylons.routes_dict']['controller']])
+    else:
+        _url = '/' + '/'.join([
+            request.environ['pylons.routes_dict']['controller'],
+            request.environ['pylons.routes_dict']['action']])
+
+    if url == request.path_info:
+        return 'active'
+    elif url.startswith(_url) and partial:
+        return 'active'
+    elif url == _url:
+        return 'active'
+    else:
+        return 'inactive'

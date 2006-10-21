@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: base.py 6 2006-10-20 10:41:43Z s0undt3ch $
+# $Id: base.py 10 2006-10-21 15:21:01Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/base.py $
-# $LastChangedDate: 2006-10-20 11:41:43 +0100 (Fri, 20 Oct 2006) $
-#             $Rev: 6 $
+# $LastChangedDate: 2006-10-21 16:21:01 +0100 (Sat, 21 Oct 2006) $
+#             $Rev: 10 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -27,6 +27,8 @@ class BaseController(WSGIController):
         # Insert any code to be run per request here. The Routes match
         # is under environ['pylons.routes_dict'] should you want to check
         # the action or route vars here
+        if request.path_info == '/':
+            h.redirect_to('/domain')
 
         ccache = cache.get_cache('navigation')
 
@@ -35,6 +37,7 @@ class BaseController(WSGIController):
                                   type='memory', expiretime=3600)
 
         c.controller = request.environ['pylons.routes_dict']['controller']
+        c.action = request.environ['pylons.routes_dict']['action']
 
         c.form = Form()
         return WSGIController.__call__(self, environ, start_response)
@@ -43,13 +46,21 @@ class BaseController(WSGIController):
         menulist = {}
         # App's Main Menu
         menulist['mainmenu'] = [
-            (h._('Home'), h.url_for(controller='index', action='index')),
+            (h._('Home'), h.url_for(controller='domain', action='index')),
             (h._('Mail'), h.url_for(controller='mail', action='index')),
         ]
         # Mail context menu
         menulist['mail'] = [
             (h._('Accounts Index'), h.url_for(controller='mail', action='index')),
             (h._('New Account'), h.url_for(controller='mail', action='new')),
+        ]
+
+        # Domain context menu
+        menulist['domain'] = [
+            (h._('Domain Overview'),
+             h.url_for(controller="domain", action="index")),
+            (h._('Change Domain Password'),
+             h.url_for(controller="domain", action="changepass"))
         ]
         keys = {}
         menus = {}

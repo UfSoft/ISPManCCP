@@ -57,14 +57,14 @@
               since the link's will be diferent
         -->
         <li py:for="name, url, akey in c.menus['mainmenu']" py:choose=""
-          class="${url == request.path_info and 'active' or None}">
+          class="${h.get_nav_class_state(url, request, partial=True)}">
           <!--! We have an access key, let's underscore it on the name -->
           <a py:when="akey != None" py:with="pre, post = name.split(akey)"
             href="${url}" accesskey="${akey}"
-            class="${url == request.path_info and 'active' or None}">$pre<u>${akey}</u>$post</a>
+            class="${h.get_nav_class_state(url, request, partial=True)}">$pre<u>${akey}</u>$post</a>
           <!--! No access key, so, plain simple link -->
           <a py:otherwise="" href="${url}"
-            class="${url == request.path_info and 'active' or None}">${name}</a>
+            class="${h.get_nav_class_state(url, request, partial=True)}">${name}</a>
         </li>
       </ul>
     </div> <!--! div id=mainnav ended -->
@@ -73,12 +73,12 @@
     <ul>
       <!--! Loop all items on ctxnav. The science is the same used in mainnav -->
       <li py:for="name, url, akey in c.menus[c.controller]" py:choose=""
-        class="${url == request.path_info and 'active' or None}">
+        class="${h.get_nav_class_state(url, request)}">
         <a py:when="akey != None" py:with="pre, post = name.split(akey)"
           href="${url}" accesskey="${akey}"
-          class="${url == request.path_info and 'active' or None}">$pre<u>${akey}</u>$post</a>
+          class="${h.get_nav_class_state(url, request)}">$pre<u>${akey}</u>$post</a>
         <a py:otherwise="" href="${url}"
-          class="${url == request.path_info and 'active' or None}">${name}</a>
+          class="${h.get_nav_class_state(url, request)}">${name}</a>
       </li>
     </ul>
   </div> <!--! div id=ctxnav ended -->
@@ -88,6 +88,6 @@
 </body>
 </html>
 <!--!
-$Id: layout.html 6 2006-10-20 10:41:43Z s0undt3ch $
+$Id: layout.html 10 2006-10-21 15:21:01Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->

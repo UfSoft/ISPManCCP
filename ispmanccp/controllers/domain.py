@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: index.py 6 2006-10-20 10:41:43Z s0undt3ch $
+# $Id: domain.py 10 2006-10-21 15:21:01Z s0undt3ch $
 # =============================================================================
-#             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/index.py $
-# $LastChangedDate: 2006-10-20 11:41:43 +0100 (Fri, 20 Oct 2006) $
-#             $Rev: 6 $
+#             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/domain.py $
+# $LastChangedDate: 2006-10-21 16:21:01 +0100 (Sat, 21 Oct 2006) $
+#             $Rev: 10 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -15,11 +15,11 @@
 
 from ispmanccp.lib.base import *
 
-class IndexController(BaseController):
+class DomainController(BaseController):
     def index(self):
-        domain = request.environ['REMOTE_USER']
+        self.domain = request.environ['REMOTE_USER']
         # Grab Domain Info
-        dominfo = dict(g.ispman.getDomainInfo(domain).items())
+        dominfo = dict(g.ispman.getDomainInfo(self.domain).items())
         # Translate -1 to unlimited for more readability
         if dominfo['ispmanMaxVhosts'] == '-1':
             dominfo['ispmanMaxVhosts'] = 'unlimited'
@@ -27,8 +27,12 @@ class IndexController(BaseController):
             dominfo['ispmanMaxAccounts'] = 'unlimited'
 
         # Grab Current Accounts and VHosts Totals
-        dominfo['ispmanVhosts'] = g.ispman.getVhostCount(domain)
-        dominfo['ispmanAccounts'] = g.ispman.getUserCount(domain)
+        dominfo['ispmanVhosts'] = g.ispman.getVhostCount(self.domain)
+        dominfo['ispmanAccounts'] = g.ispman.getUserCount(self.domain)
 
         c.dominfo = dominfo
         return render_response('domain.index')
+
+    def changepass(self):
+        if not request.POST:
+            return render_response('domain.changepass')

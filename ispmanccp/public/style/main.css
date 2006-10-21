@@ -1,11 +1,11 @@
 /*
  * vim: sw=4 ts=4 fenc=utf-8
  * ============================================================================
- * $Id: main.css 6 2006-10-20 10:41:43Z s0undt3ch $
+ * $Id: main.css 10 2006-10-21 15:21:01Z s0undt3ch $
  * ============================================================================
  *             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/public/style/main.css $
- * $LastChangedDate: 2006-10-20 11:41:43 +0100 (Fri, 20 Oct 2006) $
- *             $Rev: 6 $
+ * $LastChangedDate: 2006-10-21 16:21:01 +0100 (Sat, 21 Oct 2006) $
+ *             $Rev: 10 $
  *   $LastChangedBy: s0undt3ch $
  * ============================================================================
  * Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -38,7 +38,7 @@ fieldset {
     border:1px solid #3363a3;
     padding: 15px;
     color: black;
-    margin: 0 10px 0 10px;
+    margin: 0 10px 10px 10px;
     text-align: left;
 }
 
@@ -151,13 +151,12 @@ legend { font-weight: bold; padding-left: 5px; padding-right: 5px; color: black;
 #UsersListNav select, #UsersListNav option { font-size: 11px; }
 /*#UsersList { position: relative; } */
 
-#user_details table { width: 100%; border: 1px groove black; margin-top: 10px;}
-#user_details table th { font-weight: bold; text-align: center; background-color: lightgrey;
-                         width: 100%; }
-#user_details table .name { white-space: nowrap; font-weight: bold; text-align: right; vertical-align: top;}
-#user_details table .value { width: 100%; }
-#user_details table .button_row { font-weight: bold; text-align: right; background-color: lightgrey; }
 #user_details .buttons { cursor: hand; width: 100px; }
+
+#user_details label, span { display: block; float: left; margin-bottom: 5px; }
+#user_details label { text-align: right; width: 130px; padding-right: 15px; font-weight: bold; }
+#user_details br { clear: left; }
+#user_details .button_row { float: right; display: block; margin-bottom: -5px; margin-right: -5px; }
 
 /* #errors { border: 1px dashed red; } */
 

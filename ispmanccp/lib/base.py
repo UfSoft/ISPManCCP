@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: base.py 10 2006-10-21 15:21:01Z s0undt3ch $
+# $Id: base.py 11 2006-10-22 10:03:27Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/base.py $
-# $LastChangedDate: 2006-10-21 16:21:01 +0100 (Sat, 21 Oct 2006) $
-#             $Rev: 10 $
+# $LastChangedDate: 2006-10-22 11:03:27 +0100 (Sun, 22 Oct 2006) $
+#             $Rev: 11 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -15,12 +15,14 @@
 
 from pylons import Response, c, g, h, cache, request, session
 from pylons.controllers import WSGIController
-from pylons.decorators import jsonify, rest, validate
+from pylons.decorators import jsonify, rest
 from pylons.templating import render, render_response
 from pylons.helpers import abort, redirect_to, etag_cache
 import ispmanccp.models as model
 from ispmanccp.lib.ispman_helpers import *
 from ispmanccp.lib.forms import Form
+
+from ispmanccp.lib.decorators import validate
 
 class BaseController(WSGIController):
     def __call__(self, environ, start_response):

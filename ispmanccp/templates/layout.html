@@ -14,10 +14,11 @@
   <meta name="ROBOTS" content="NOINDEX, NOFOLLOW" />
   <meta http-equiv="PRAGMA" content="NO-CACHE" />
   <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
+  $page_custom_meta
 
   <!--! CSS Imports -->
   ${ h.stylesheet_link_tag('/style/main.css') }
-  ${ page_specific_css }
+  $page_specific_css
   <!--! Include JavaScript Lib(s) -->
   ${ h.javascript_include_tag('/javascripts/effects.js', builtins=True) }
   ${ h.javascript_include_tag('/js/ispmanccp.js') }
@@ -88,6 +89,6 @@
 </body>
 </html>
 <!--!
-$Id: layout.html 10 2006-10-21 15:21:01Z s0undt3ch $
+$Id: layout.html 11 2006-10-22 10:03:27Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->

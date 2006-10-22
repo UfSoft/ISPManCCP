@@ -1,11 +1,11 @@
 /*
  * vim: sw=4 ts=4 fenc=utf-8
  * ============================================================================
- * $Id: main.css 10 2006-10-21 15:21:01Z s0undt3ch $
+ * $Id: main.css 11 2006-10-22 10:03:27Z s0undt3ch $
  * ============================================================================
  *             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/public/style/main.css $
- * $LastChangedDate: 2006-10-21 16:21:01 +0100 (Sat, 21 Oct 2006) $
- *             $Rev: 10 $
+ * $LastChangedDate: 2006-10-22 11:03:27 +0100 (Sun, 22 Oct 2006) $
+ *             $Rev: 11 $
  *   $LastChangedBy: s0undt3ch $
  * ============================================================================
  * Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -43,6 +43,18 @@ fieldset {
 }
 
 legend { font-weight: bold; padding-left: 5px; padding-right: 5px; color: black; }
+
+form label, form input, span { display: block; float: left; margin-bottom: 5px; }
+form label { text-align: right; width: 180px; padding-right: 15px; font-weight: bold; }
+form br { clear: left; }
+form button { float: right; display: block; margin-bottom: -5px; margin-right: -5px; margin-left: 10px; }
+.error-message {
+    margin-left: 10px;
+    color: red;
+    background-color: #ffffe1;
+    padding: 2px;
+    font-weight: bold;
+}
 
 #fakebody {
     min-height: 100%;

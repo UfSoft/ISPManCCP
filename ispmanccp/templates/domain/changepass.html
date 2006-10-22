@@ -1,0 +1,39 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      xmlns:form="http://formencode/htmlfill">
+  <xi:include href="../layout.html" />
+  <head>
+    <title>${ h._("Change Domain Password") }</title>
+  </head>
+
+  <body>
+    ${ h.tag.h1(h.tag.center(c.dominfo['cn'] + ' ' + h._('domain'))) }
+    <form name="changepass" id="changepass" method="post">
+      <fieldset>
+        <legend>${ h._("Change Domain Password") }</legend>
+        <label for="new_pass">${ h._("New Password:") }</label>
+        <input type="password" name="new_pass" id="new_pass"/>
+        <span class="error-message" py:if="'new_pass' in c.form_errors">
+          ${ c.form_errors['new_pass'] }
+        </span><br/>
+        <label for="chk_pass" class="forms">${ h._("Confirm Password:") }</label>
+        <input type="password" name="chk_pass" id="chk_pass"/>
+        <span class="error-message" py:if="'chk_pass' in c.form_errors">
+          ${ c.form_errors['chk_pass'] }
+        </span><br/>
+        <input type="hidden" name="domain" value="${ c.dominfo['ispmanDomain'] }"/>
+        <button type="submit" id="submit" name="submit">${ h._("Change Password") }</button>
+        <button type="reset">${ h._("Reset Fields") }</button>
+      </fieldset>
+    </form>
+  </body>
+</html>
+<!--!
+$Id: changepass.html 11 2006-10-22 10:03:27Z s0undt3ch $
+vim: sw=2 ts=2 fenc=utf-8 et
+-->
+

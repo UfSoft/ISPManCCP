@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: domain.py 11 2006-10-22 10:03:27Z s0undt3ch $
+# $Id: domain.py 12 2006-10-22 14:19:41Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/domain.py $
-# $LastChangedDate: 2006-10-22 11:03:27 +0100 (Sun, 22 Oct 2006) $
-#             $Rev: 11 $
+# $LastChangedDate: 2006-10-22 15:19:41 +0100 (Sun, 22 Oct 2006) $
+#             $Rev: 12 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -42,7 +42,7 @@ class DomainController(BaseController):
         c.dominfo = self.dominfo
         return render_response('domain.changepass')
 
-    @validate(template='domain.changepass', schema=ChangeDomainPassword(), form='changepass')
+    @validate(template='domain.changepass', schema=ChangeDomainPassword(), form='changepass', state=g)
     def changepass_post(self):
         domain = request.POST['domain']
         passwd = request.POST['new_pass']

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: validators.py 11 2006-10-22 10:03:27Z s0undt3ch $
+# $Id: validators.py 12 2006-10-22 14:19:41Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/models/validators.py $
-# $LastChangedDate: 2006-10-22 11:03:27 +0100 (Sun, 22 Oct 2006) $
-#             $Rev: 11 $
+# $LastChangedDate: 2006-10-22 15:19:41 +0100 (Sun, 22 Oct 2006) $
+#             $Rev: 12 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -16,6 +16,20 @@
 import re
 import formencode
 from pylons import request
+
+class CurrentPassword(formencode.FancyValidator):
+    def _to_python(self, value, state):
+        # Strip any leading/trailing whitespace
+        return value.strip()
+
+    def validate_python(self, value, state):
+        ldap_pass = state.ispman.getDomainAttribute(
+            request.POST['domain'], 'userPassword').strip()
+        coded_pass = state.ispman.encryptPassWithMethod(
+            value, state.ispman.getConf('userPassHashMethod')).strip()
+        if coded_pass != ldap_pass:
+            raise formencode.Invalid("Current Password not correct",
+                                     value, state)
 
 class SecurePassword(formencode.FancyValidator):
 

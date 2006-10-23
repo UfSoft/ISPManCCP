@@ -10,8 +10,11 @@
   </head>
 
   <body>
-    <div id="UsersListNav">
-      <form name="sortby" id="sortby" action="/mail/userlist">
+    ${ h.tag.h1(h.tag.center(c.domain + ' ' + h._('domain'))) }
+    <div id="user_search">
+      <form class="user_search" name="sortby" id="sortby" action="/mail/userlist">
+        <fieldset>
+          <legend>${ h._("Search / Select") }</legend>
         <nobr>
           <!--! Our default selected radio button -->
           <input type="radio" name="letter" id="None" value="None" checked="checked"/>
@@ -30,12 +33,13 @@
             <option value="sn">${ h._("Last Name") }</option>
             <option value="ispmanCreateTimestamp">${ h._("Date Created") }</option>
             <option value="mailQuota">${ h._("Email Quota") }</option>
-          </select>
+          </select>&nbsp;
           <select name="sort_how" id="sort_how">
             <option value="True">Ascending</option>
             <option value="False">Descending</option>
           </select>
         </nobr>
+        </fieldset>
       </form>
     </div>
     ${ h.observe_form(
@@ -47,7 +51,7 @@
                 "spinner",
                 content = h.image_tag('/images/loading.gif')),
     loaded=h.update_element_function("spinner", content = ''),
-    complete=h.visual_effect('grow', 'UsersList'),
+    complete=h.visual_effect('Blind_down', 'UsersList'),
     with="Form.serialize($('sortby'))"
     ) }
     <div id="UsersList" style="display:none"></div>
@@ -56,7 +60,7 @@
 
 </html>
 <!--!
-$Id: index.html 7 2006-10-20 13:01:41Z s0undt3ch $
+$Id: index.html 16 2006-10-23 11:30:57Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

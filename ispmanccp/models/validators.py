@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: validators.py 12 2006-10-22 14:19:41Z s0undt3ch $
+# $Id: validators.py 16 2006-10-23 11:30:57Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/models/validators.py $
-# $LastChangedDate: 2006-10-22 15:19:41 +0100 (Sun, 22 Oct 2006) $
-#             $Rev: 12 $
+# $LastChangedDate: 2006-10-23 12:30:57 +0100 (Mon, 23 Oct 2006) $
+#             $Rev: 16 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -15,7 +15,7 @@
 
 import re
 import formencode
-from pylons import request
+from pylons import request, h
 
 class CurrentPassword(formencode.FancyValidator):
     def _to_python(self, value, state):
@@ -40,11 +40,11 @@ class SecurePassword(formencode.FancyValidator):
     letter_regex = re.compile(r'[a-zA-Z]')
 
     messages = {
-        'too_few': 'Your password must be longer than %(min_length)i '
-                  'characters long',
-        'non_letter': 'You must include at least %(min_non_letter)i '
-                     'numeric character(s) in your password',
-        'non_dict': 'Please do not base your password on a dictionary term',
+        'too_few': h._('Your password must be longer than %(min_length)i '
+                  'characters long'),
+        'non_letter': h._('You must include at least %(min_non_letter)i '
+                     'numeric character(s) in your password'),
+        'non_dict': h._('Please do not base your password on a dictionary term'),
     }
 
     def _to_python(self, value, state):

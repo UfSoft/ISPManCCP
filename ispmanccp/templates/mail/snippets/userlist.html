@@ -29,25 +29,24 @@
                 <label for="mailAliases">&nbsp;</label>
               </py:for>
             </py:if>
-            <span id="button_row" class="button_row">
-              <input type="hidden" name="dn" value="${ user['dn'] }" />
-              <input class="buttons" name="Edit" value="Edit" type="submit"
-                title="${ h._('Edit User Entry')}" />
-              <input class="buttons" onClick="location.href='#top'" type="button"
-                name="Top" value="Top"
-                title="${ h._('Return to the top of the navigation links') }" />
-            </span>
+            <button type="submit" name="Top"
+              title="${ h._('Return to the top of the navigation links') }"
+              onClick="location.href='#top'">${ h._("Top") }</button>
+            <button type="submit" name="Edit"
+              title="${ h._('Edit User Entry')}">${ h._("Edit") }</button>
           </fieldset>
         </form>
       </div>
-      <div id="errors" py:otherwise="">
-        <h2>${ c.error }</h2>
+      <div id="errors" py:otherwise="c.users is not None">
+        <fieldset>
+          <h2>${ c.error }</h2>
+        </fieldset>
       </div>
     </div>
 
 </html>
 <!--!
-$Id: userlist.html 10 2006-10-21 15:21:01Z s0undt3ch $
+$Id: userlist.html 16 2006-10-23 11:30:57Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

@@ -1,11 +1,11 @@
 /*
  * vim: sw=4 ts=4 fenc=utf-8
  * ============================================================================
- * $Id: main.css 11 2006-10-22 10:03:27Z s0undt3ch $
+ * $Id: main.css 16 2006-10-23 11:30:57Z s0undt3ch $
  * ============================================================================
  *             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/public/style/main.css $
- * $LastChangedDate: 2006-10-22 11:03:27 +0100 (Sun, 22 Oct 2006) $
- *             $Rev: 11 $
+ * $LastChangedDate: 2006-10-23 12:30:57 +0100 (Mon, 23 Oct 2006) $
+ *             $Rev: 16 $
  *   $LastChangedBy: s0undt3ch $
  * ============================================================================
  * Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -14,54 +14,23 @@
  * ============================================================================
 */
 
-
-* { font-family: verdana, arial, helvetica, sans-serif; font-size: 12pt; }
-
-html, body { height: 100%; }
-html { overflow: -moz-scrollbars-vertical !important; }
-
-body {
-    margin: 0 0 0 0;
-    padding: 0 0 0 0;
-/*    background-color: #3363a3; */
-/*    background-color: #b8d8f1; */
-    font-family: Geneva,Arial,Helvetica,sans-serif;
-}
-
-a {
-    font-family: Geneva,Arial,Helvetica,sans-serif;
-    color: #333366;
-    text-decoration: none;
-}
-
+h1 { font-size: 130%; }
+h2 { font-size: 120%; }
+h3 { font-size: 110%; }
 fieldset {
     border:1px solid #3363a3;
-    padding: 15px;
-    color: black;
-    margin: 0 10px 10px 10px;
-    text-align: left;
+    padding: 3px 10px 15px 10px;
+    margin: 5px 5px 0px 5px;
 }
-
-legend { font-weight: bold; padding-left: 5px; padding-right: 5px; color: black; }
-
-form label, form input, span { display: block; float: left; margin-bottom: 5px; }
-form label { text-align: right; width: 180px; padding-right: 15px; font-weight: bold; }
-form br { clear: left; }
-form button { float: right; display: block; margin-bottom: -5px; margin-right: -5px; margin-left: 10px; }
-.error-message {
-    margin-left: 10px;
-    color: red;
-    background-color: #ffffe1;
-    padding: 2px;
-    font-weight: bold;
+legend {
+    padding: 0px 8px 0px 8px;
+    margin: 5px 0px 4px 10px;
+    font-size: 105%;
+    color: #003885;
 }
-
-#fakebody {
-    min-height: 100%;
-}
+button { float: right; display: block; margin: 0px 0px -5px 10px; padding: 2px; }
 
 #header {
-/*    padding: 15px 15px 15px 450px; */
     padding-left: 450px;
     background-image: url(/images/logo.jpg);
     background-position: top left;
@@ -70,130 +39,71 @@ form button { float: right; display: block; margin-bottom: -5px; margin-right: -
     height: 130px;
     color: white;
     text-align: right;
-/*    vertical-align: baseline;
-    line-height: 12px; */
-/*    display: table-cell; */
     position: relative;
 }
-
-
-#mainnav { bottom:0; right:10px; position: absolute; }
-#nav { padding: 4px; margin-right: 25px; font-size:9pt; top:0px ; text-align: right; color: white; }
-    /*border: 1px solid white;  text-align: right; font-size:9pt; top:0px ; position: relative;} */
-
-
-
-
-#contents {
-    min-height:550px;
-    height:auto !important;
-    height:233px;
-    padding: 5px 5px 5px 5px;
-    position: relative;
-}
-
-#mainnav, #mainnav u { margin: 0; padding: 0; font-family: verdana, arial, helvetica, sans-serif; font-size: 10pt; }
-#mainnav ul { margin: 0; padding: 0; list-style-type: none; }
-#mainnav li {
-    display: block;
-    float: left;
-    margin: 0 0 0 5px;
-    padding: 0;
-    border: 1px solid #3363a3;
-}
-#mainnav li:hover, #mainnav :link:hover { background-color: #3363a3; }
-#mainnav li.active { 
-/*    border-bottom: 1px solid #b8d8f1; */
-    border-bottom: 1px solid white;
-    font-weight: bold;
-/*    background-color: #b8d8f1; */
-    background-color: white;
-}
-
-#mainnav a { 
-    float: left;
-    display: block;
-    padding: 4px 15px 4px 15px;
-    margin: 0;
-    color: white;
-    text-decoration: none;
-    font-size: 13px;
-    letter-spacing: 1px;
-}
-#mainnav a.active { color: #3363a3; }
-
-#ctxnav {
-	margin: 0px;
-	padding-right: 5px;
-	font-family: verdana, arial, helvetica, sans-serif; font-size: 10px;
-	text-align: right;
-	color: grey;
-}
-#ctxnav a, #ctxnav u {
-	color: darkred;
-/*	text-decoration: none; */
-	font-size: 10px;
-	letter-spacing: 1px;
-	padding: 0 2px 0 2px;
-}
-#ctxnav a:hover { background-color: grey; }
-#ctxnav a.active { background-color: lightgrey; font-weight: bold; }
-
-#ctxnav ul { margin: 0; padding: 0; list-style-type: none; }
-#ctxnav li {
-    display: inline;
-	margin: 0 0 0 5px;
-	padding: 0;
-    position: relative;
-}
-
-
-#UsersListNav { width: 100%; text-align: center; margin: 0px 5px 10px 5px; }
-#UsersListNav input[type="radio"] {
-    visibility: hidden;
-    width: 0px;
-    height: 0px;
-    padding: 0px;
-    margin: 0px;
-}
-#UsersListNav input[type="radio"] + label { cursor: pointer; font-weight: bold; }
-#UsersListNav input[type="radio"] + label:hover { color: orange; }
-#UsersListNav label { padding: 0px; margin: 0px; height: 16px; font-size: 11px; }
-#UsersListNav input[type="radio"]:checked + label { color: red; }
-#UsersListNav select, #UsersListNav option { font-size: 11px; }
-/*#UsersList { position: relative; } */
-
-#user_details .buttons { cursor: hand; width: 100px; }
-
-#user_details label, span { display: block; float: left; margin-bottom: 5px; }
-#user_details label { text-align: right; width: 130px; padding-right: 15px; font-weight: bold; }
-#user_details br { clear: left; }
-#user_details .button_row { float: right; display: block; margin-bottom: -5px; margin-right: -5px; }
-
-/* #errors { border: 1px dashed red; } */
 
 #spinner { float: right; position: absolute; right: 5px; top: 5px; z-index: 333; }
+#contents { margin: 2px; padding: 0px 10px 10px 10px; border: 1px solid black; }
 
-/* Login Box */
-#login fieldset {
-    width: 320px;
-    text-align: center;
+.user_input label, input, span { display: block; float: left; margin-bottom: 5px; margin-top: 5px; }
+.user_input label { text-align: right; width: 180px; padding-right: 15px; font-weight: bold; }
+.user_input br { clear: left; }
+
+.error-message {
+    margin-left: 10px;
+    color: red;
+    background-color: #ffffe1;
+    padding: 2px;
+    font-weight: bold;
 }
 
-/* Footer */
-#footer {
+#mainnav { bottom:0; right:10px; position: absolute; font-size: 80%; letter-spacing: 1px; color: #fff; }
+#mainnav a { float: left; display: block; text-decoration: none; }
+#mainnav ul { list-style-type: none; }
+#mainnav li {
+    float: left;
+    display: block;
+    margin: 0 0 0 5px;
+    padding: 5px 15px 0px 15px;
+    border: 1px solid #3363a3;
+}
+#mainnav .active {
+    border-bottom: 1px solid white;
+    font-weight: bold;
+    background-color: white;
+    color: #3363a3;
+}
+#mainnav .inactive { color: #fff; }
+#mainnav .active:hover { color: #fff background-color: #3363a3; }
+#mainnav .inactive:hover { background-color: #3363a3; }
+
+#ctxnav { padding: 2px; font-size: 65%; text-align: right; }
+#ctxnav a { text-decoration: none; letter-spacing: 1px; }
+#ctxnav .inactive { color: darkred; }
+#ctxnav .active { font-weight: bold; background-color: lightgrey; }
+#ctxnav .inactive:hover { background-color: grey; color: #fff; }
+#ctxnav .active:hover  { background-color: grey; color: #fff; }
+#ctxnav ul { list-style-type: none; margin: 0 5px 0 0;}
+#ctxnav li { display: inline; margin-left: 5px; position: relative; padding: 3px; }
+
+/* Alphabet search fieldset */
+.user_search label, input { display: inline; margin: 0px; padding: 2px; }
+.user_search fieldset { text-align: center; }
+.user_search label, select, option { font-size: 12px; }
+.user_search input {visibility: hidden; width: 0px; height: 0px; padding: 0px; margin: 0px; }
+.user_search input + label { cursor: pointer; font-weight: bold; }
+.user_search input + label:hover { color: orange; }
+.user_search input:checked + label { color: red; }
+
+
+#user_details label, span { display: block; float: left; margin-bottom: 5px; }
+#user_details label {
     text-align: right;
-    border-top:2px solid #3363a3;
-    bottom: 0;
-    right: 0;
-    background-color: #003885;
-    color: white;
-    position: absolute;
-    padding: 5px;
-	padding-right: 15px;
-    font-size:8pt;
-    width:100%;
+    width: 130px;
+    padding-right: 15px;
+    font-weight: bold;
+    margin-top: 5px;
 }
-#footer a { color: lightgrey; font-size:8pt; }
-#footer a:visited { color: grey; font-size:8pt; }
+#user_details br { clear: left; }
+#user_details button { width: 50px; }
 

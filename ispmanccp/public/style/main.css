@@ -1,11 +1,11 @@
 /*
  * vim: sw=4 ts=4 fenc=utf-8
  * ============================================================================
- * $Id: main.css 16 2006-10-23 11:30:57Z s0undt3ch $
+ * $Id: main.css 17 2006-10-23 11:31:47Z s0undt3ch $
  * ============================================================================
  *             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/public/style/main.css $
- * $LastChangedDate: 2006-10-23 12:30:57 +0100 (Mon, 23 Oct 2006) $
- *             $Rev: 16 $
+ * $LastChangedDate: 2006-10-23 12:31:47 +0100 (Mon, 23 Oct 2006) $
+ *             $Rev: 17 $
  *   $LastChangedBy: s0undt3ch $
  * ============================================================================
  * Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -43,7 +43,7 @@ button { float: right; display: block; margin: 0px 0px -5px 10px; padding: 2px; 
 }
 
 #spinner { float: right; position: absolute; right: 5px; top: 5px; z-index: 333; }
-#contents { margin: 2px; padding: 0px 10px 10px 10px; border: 1px solid black; }
+#contents { margin: 2px; padding: 0px 10px 10px 10px; }
 
 .user_input label, input, span { display: block; float: left; margin-bottom: 5px; margin-top: 5px; }
 .user_input label { text-align: right; width: 180px; padding-right: 15px; font-weight: bold; }

@@ -1,0 +1,111 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude">
+  <xi:include href="../layout.html"/>
+  <head>
+    <title>${ h._("Edit Account") }</title>
+  </head>
+
+  <body>
+    <h1>${ c.userinfo['ispmanDomain'] + ' ' + h._('domain')}</h1>
+    <form id="edit_user" class="user_input" method="post"
+      action="${ h.url_for(action='update')}">
+      <fieldset>
+        <legend>
+          ${ h._("Edit Account") + ' - ' + c.userinfo['mailLocalAddress'] }
+        </legend>
+
+        <!--! User ID -->
+        <label for="ispmanUserId">${ h._("User ID:") }</label>
+        <span id="ispmanUserId">${ c.userinfo['ispmanUserId'] }</span><br/>
+
+        <!--! Create Date -->
+        <label for="ispmanCreateTimestamp">${ h._("Created on:") }</label>
+        <span id="ispmanCreateTimestamp">
+          ${ h.date_from_tstamp(c.userinfo['ispmanCreateTimestamp']) }
+        </span><br/>
+
+        <!--! First Name -->
+        <label for="givenName">${ h._("First Name:") }</label>
+        <input type="text" name="givenName" id="givenName"
+        value="${ c.form_result['givenName'] or c.userinfo['givenName'] }"/>
+        <span class="error-message" py:if="'givenName' in c.form_errors">
+          ${ c.form_errors['ispmanUserId']}
+        </span><br/>
+
+        <!--! Last Name -->
+        <label for="sn">${ h._("Last Name:") }</label>
+        <input type="text" name="sn" id="sn"
+        value="${ c.form_result['sn'] or c.userinfo['sn'] }"/>
+        <span class="error-message" py:if="'sn' in c.form_errors">
+          ${ c.form_errors['sn']}
+        </span><br/>
+
+        <!--! User Password -->
+        <label for="userPassword">${ h._("Password:") }</label>
+        <input type="password" name="userPassword" id="userPassword"/>
+        <span class="error-message" py:if="'userPassword' in c.form_errors">
+          ${ c.form_errors['userPassword']}
+        </span><br/>
+        <label for="userPasswordConfirm">${ h._("Re-type Password:") }</label>
+        <input type="password" name="userPasswordConfirm" id="userPasswordConfirm"/>
+        <span class="error-message" py:if="'userPasswordConfirm' in c.form_errors">
+          ${ c.form_errors['userPasswordConfirm']}
+        </span><br/>
+
+        <!--! Mailbox Quota -->
+        <label for="mailQuota">${ h._("Email Quota:") }</label>
+        <input type="text" id="mailQuota" name="mailQuota" class="quota"
+        value="${ int(c.userinfo['mailQuota'])/1024 }"/>
+        <span id="mailQuotaUnit" class="quota">${ h._("MB") }</span>
+        <span class="error-message" py:if="'mailQuota' in c.form_errors">
+          ${ c.form_errors['mailQuota']}
+        </span><br/>
+
+        <!--! Email Alias -->
+        <label for="mailAlias">${ h._("Email Alias:") }</label>
+        <py:if test="'mailAlias' in c.userinfo">
+        <py:for each="alias in list(c.userinfo['mailAlias'])">
+        <input id="mailAlias" name="mailAlias" value="${alias}" class="email"/>
+        <span class="error-message" py:if="'mailAlias' in c.form_errors">
+          ${ c.form_errors['mailAlias']}
+        </span><br/>
+        <label for="mailAlias">&nbsp;</label>
+        </py:for>
+        </py:if>
+        <py:for each="n in range(2)">
+        <input id="mailAlias" name="mailAlias" class="email"/><br/>
+        <label for="mailAlias" py:if='n &lt; 1'>&nbsp;</label>
+        </py:for>
+
+        <!--! Email Forwards -->
+        <label for="mailForwardingAddress">${ h._("Email Forwards:") }</label>
+        <py:if test="'mailForwardingAddress' in c.userinfo">
+        <py:for each="forward in list(c.userinfo['mailForwardingAddress'])">
+        <input id="mailForwardingAddress" name="mailForwardingAddress"
+        value="${forward}" class="email"/><br/>
+        <label for="mailForwardingAddress">&nbsp;</label>
+        </py:for>
+        </py:if>
+        <py:for each="n in range(2)">
+        <input id="mailForwardingAddress" name="mailForwardingAddress" class="email"/><br/>
+        <label for="mailForwardingAddress" py:if="n &lt; 1">&nbsp;</label>
+        </py:for>
+        <br/>
+
+        <button type="submit" name="Update"
+          title="${ h._('Update User Entry')}">${ h._("Update") }</button>
+        <input type="hidden" name="uid" value="${ c.userinfo['mailLocalAddress'] }" />
+        <input type="hidden" name="domain" value="${ c.userinfo['ispmanDomain'] }" />
+      </fieldset>
+    </form>
+  </body>
+</html>
+<!--!
+$Id: edituser.html 18 2006-10-24 18:16:57Z s0undt3ch $
+vim: sw=2 ts=2 fenc=utf-8 et
+-->
+

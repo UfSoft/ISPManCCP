@@ -8,7 +8,7 @@
     <div id="user_details_master" py:choose="">
       <div id="user_details" py:when="len(c.users) > 0">
         <form name="user_details" id="user_details" method="POST"
-          action="/mail/edit" py:for="user in c.users">
+          action="${ h.url_for(controller='mail', action='edit')}" py:for="user in c.users">
           <fieldset id="user_details">
             <legend>${ user['mailLocalAddress'] }</legend>
             <label for="ispmanUserId">${ h._("User ID:") }</label>
@@ -29,14 +29,23 @@
                 <label for="mailAliases">&nbsp;</label>
               </py:for>
             </py:if>
+            <py:if test="'mailForwardingAddress' in user">
+              <label for="mailForwardingAddress">${ h._("Email Forwards:") }</label>
+              <py:for each="forward in list(user['mailForwardingAddress'])">
+                <span id="mailForwardingAddress">${forward}</span><br/>
+                <label for="mailForwardingAddress">&nbsp;</label>
+              </py:for>
+            </py:if>
             <button type="submit" name="Top"
               title="${ h._('Return to the top of the navigation links') }"
               onClick="location.href='#top'">${ h._("Top") }</button>
             <button type="submit" name="Edit"
               title="${ h._('Edit User Entry')}">${ h._("Edit") }</button>
+            <input type="hidden" name="uid" value="${ user['mailLocalAddress'] }" />
           </fieldset>
         </form>
       </div>
+      <div id="none" py:when="c.users == []"></div>
       <div id="errors" py:otherwise="c.users is not None">
         <fieldset>
           <h2>${ c.error }</h2>
@@ -46,7 +55,7 @@
 
 </html>
 <!--!
-$Id: userlist.html 16 2006-10-23 11:30:57Z s0undt3ch $
+$Id: userlist.html 21 2006-10-25 02:59:26Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

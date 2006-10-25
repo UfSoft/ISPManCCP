@@ -10,7 +10,7 @@
   </head>
 
   <body>
-    ${ h.tag.h1(h.tag.center(c.domain + ' ' + h._('domain'))) }
+    <h1>${ c.domain + ' ' + h._('domain') }</h1>
     <div id="user_search">
       <form class="user_search" name="sortby" id="sortby" action="/mail/userlist">
         <fieldset>
@@ -35,8 +35,8 @@
             <option value="mailQuota">${ h._("Email Quota") }</option>
           </select>&nbsp;
           <select name="sort_how" id="sort_how">
-            <option value="True">Ascending</option>
-            <option value="False">Descending</option>
+            <option value="1">Ascending</option>
+            <option value="0">Descending</option>
           </select>
         </nobr>
         </fieldset>
@@ -60,7 +60,7 @@
 
 </html>
 <!--!
-$Id: index.html 16 2006-10-23 11:30:57Z s0undt3ch $
+$Id: index.html 23 2006-10-25 03:02:29Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

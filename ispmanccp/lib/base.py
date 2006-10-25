@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: base.py 11 2006-10-22 10:03:27Z s0undt3ch $
+# $Id: base.py 24 2006-10-25 03:07:42Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/base.py $
-# $LastChangedDate: 2006-10-22 11:03:27 +0100 (Sun, 22 Oct 2006) $
-#             $Rev: 11 $
+# $LastChangedDate: 2006-10-25 04:07:42 +0100 (Wed, 25 Oct 2006) $
+#             $Rev: 24 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -53,7 +53,7 @@ class BaseController(WSGIController):
         ]
         # Mail context menu
         menulist['mail'] = [
-            (h._('Accounts Index'), h.url_for(controller='mail', action='index')),
+            (h._('Accounts'), h.url_for(controller='mail', action='index')),
             (h._('New Account'), h.url_for(controller='mail', action='new')),
         ]
 

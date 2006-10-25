@@ -11,7 +11,7 @@
   </head>
 
   <body>
-    ${ h.tag.h1(h.tag.center(c.dominfo['cn'] + ' ' + h._('domain'))) }
+    <h1>${ c.dominfo['cn'] + ' ' + h._('domain') }</h1>
     <form class="user_input" name="changepass" id="changepass" method="post">
       <fieldset>
         <legend>${ h._("Change Domain Password") }</legend>
@@ -19,7 +19,7 @@
         <input type="password" name="cur_pass" id="cur_pass"/>
         <span class="error-message" py:if="'cur_pass' in c.form_errors">
           ${ c.form_errors['cur_pass'] }
-        </span><br/>
+        </span><br/><br/>
         <label for="new_pass">${ h._("New Password:") }</label>
         <input type="password" name="new_pass" id="new_pass"/>
         <span class="error-message" py:if="'new_pass' in c.form_errors">
@@ -38,7 +38,7 @@
   </body>
 </html>
 <!--!
-$Id: changepass.html 16 2006-10-23 11:30:57Z s0undt3ch $
+$Id: changepass.html 22 2006-10-25 03:00:31Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 et
 -->
 

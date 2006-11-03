@@ -7,14 +7,14 @@
       py:strip="">
 
   <label for="mailAlias-${n}">&nbsp;</label>
-  <input 
-    id="mailAlias-${n}" name="mailAlias-${n}" value="${aliases[n]}" class="email"/>
+  <input id="mailAlias-${n}" name="mailAlias-${n}" class="email"
+    value="${c.userinfo['mailAlias'][n]}"/>
   <span class="error-message" py:if="'mailAlias-%i' % n in c.form_errors">
     ${ c.form_errors['mailAlias-%i' % n]}
   </span><br/>
 </html>
 <!--!
-$Id: alias.html 21 2006-10-25 02:59:26Z s0undt3ch $
+$Id: alias.html 26 2006-11-03 19:29:49Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 et
 -->
 

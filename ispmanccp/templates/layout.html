@@ -14,14 +14,13 @@
   <meta name="ROBOTS" content="NOINDEX, NOFOLLOW" />
   <meta http-equiv="PRAGMA" content="NO-CACHE" />
   <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
-  $page_custom_meta
+  <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
 
   <!--! CSS Imports -->
   <!--! Sanityze CSS among browsers -->
   ${ h.stylesheet_link_tag('/style/initial.css') }
   <!--! Our Stylesheet -->
   ${ h.stylesheet_link_tag('/style/main.css') }
-  $page_specific_css
 
   <!--! Include JavaScript Lib(s) -->
   ${ h.javascript_include_tag('/javascripts/effects.js', builtins=True) }
@@ -33,27 +32,22 @@
     .user_search input { visibility: visible; }
   </style>
   <![endif]-->
+
   ${select("*|text()")}
+  <!--! The above allows templates inheriting this one to add stuff to the head -->
 
 </head>
 
 <body py:match="body">
   <a name="top"></a>
   <noscript>
-    <div style="border-bottom: 1px solid #808080">
-      <div style="border-bottom: 1px solid #404040">
-        <table width="100%" border="0" cellpadding="0" bgcolor="#FFFFE1">
-          <tr>
-            <td valign="middle"><img src="/images/warning.gif" alt="Warning" /></td>
-            <td>&nbsp;</td>
-            <td><span style=
-                "padding: 0px; margin: 0px; font-family: Tahoma, sans-serif; font-size: 13px">
-                ${ h._('Warning, your browser does not support JavaScript and is not ' +
-                'capable of displaying the latest web pages such as those found on this ' +
-                'site. Some of the functionality will be disabled.') }</span>
-            </td>
-          </tr>
-        </table>
+    <div id="warning">
+      <div>
+        <span>
+          ${ h._('Warning, your browser does not support JavaScript and is not ' +
+          'capable of displaying the latest web pages such as those found on this ' +
+          'site. Some of the functionality will be disabled.') }
+        </span>
       </div>
     </div>
   </noscript>
@@ -66,13 +60,14 @@
     <div id="spinner"></div>
     <!--!
     Main Navigation
-    Is the user logged in? If so, sho him the menu
+    Is the user logged in? If so, show him the menu.
     -->
     <div id="mainnav" py:if="'REMOTE_USER' in request.environ">
       <ul>
-        <!--! Loop all items on mainmenu.
-              We add py:choose="" to be able to add or not the accesskey
-              since the link's will be diferent
+        <!--! 
+          Loop all items on mainmenu.
+          We add py:choose="" to be able to add or not the accesskey
+          since the link's will be diferent
         -->
         <li py:for="name, url, akey in c.menus['mainmenu']" py:choose=""
           class="${h.get_nav_class_state(url, request, partial=True)}">
@@ -101,11 +96,16 @@
     </ul>
   </div> <!--! div id=ctxnav ended -->
   <div id="contents">
+    <!--! Message like success or error passed to user -->
+    <span class="error-message" py:if="c.message">
+      ${ c.message }
+    </span>
+    <!--! Grab inheriting templates body -->
     ${select("*|text()")}
   </div>
 </body>
 </html>
 <!--!
-$Id: layout.html 20 2006-10-25 02:56:07Z s0undt3ch $
+$Id: layout.html 26 2006-11-03 19:29:49Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->

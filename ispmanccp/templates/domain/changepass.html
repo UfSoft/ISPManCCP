@@ -12,7 +12,8 @@
 
   <body>
     <h1>${ c.dominfo['cn'] + ' ' + h._('domain') }</h1>
-    <form class="user_input" name="changepass" id="changepass" method="post">
+    <form class="user_input" name="changepass" id="changepass" method="post"
+      action="${h.url_for(action='changepass')}">
       <fieldset>
         <legend>${ h._("Change Domain Password") }</legend>
         <label for="cur_pass">${ h._("Current Password:") }</label>
@@ -30,7 +31,7 @@
         <span class="error-message" py:if="'chk_pass' in c.form_errors">
           ${ c.form_errors['chk_pass'] }
         </span><br/>
-        <input type="hidden" name="domain" value="${ c.dominfo['ispmanDomain'] }"/>
+        <input type="hidden" name="ispmanDomain" value="${ c.dominfo['ispmanDomain'] }"/>
         <button type="submit" id="submit" name="submit">${ h._("Change Password") }</button>
         <button type="reset">${ h._("Reset Fields") }</button>
       </fieldset>
@@ -38,7 +39,7 @@
   </body>
 </html>
 <!--!
-$Id: changepass.html 22 2006-10-25 03:00:31Z s0undt3ch $
+$Id: changepass.html 26 2006-11-03 19:29:49Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 et
 -->
 

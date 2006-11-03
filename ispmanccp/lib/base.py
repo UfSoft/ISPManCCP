@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: base.py 24 2006-10-25 03:07:42Z s0undt3ch $
+# $Id: base.py 26 2006-11-03 19:29:49Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/base.py $
-# $LastChangedDate: 2006-10-25 04:07:42 +0100 (Wed, 25 Oct 2006) $
-#             $Rev: 24 $
+# $LastChangedDate: 2006-11-03 19:29:49 +0000 (Fri, 03 Nov 2006) $
+#             $Rev: 26 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -35,26 +35,30 @@ class BaseController(WSGIController):
         ccache = cache.get_cache('navigation')
 
         c.menus = ccache.get_value('i18n_menus',
-                                  createfunc=self.create_i18n_menus,
+                                  createfunc=self.__create_i18n_menus,
                                   type='memory', expiretime=3600)
 
         c.controller = request.environ['pylons.routes_dict']['controller']
         c.action = request.environ['pylons.routes_dict']['action']
 
         c.form = Form()
+        if 'message' in session and session['message'] != '':
+            c.message = session['message']
+            session['message'] = ''
+            session.save()
         return WSGIController.__call__(self, environ, start_response)
 
-    def create_i18n_menus(self):
+    def __create_i18n_menus(self):
         menulist = {}
         # App's Main Menu
         menulist['mainmenu'] = [
-            (h._('Home'), h.url_for(controller='domain', action='index')),
-            (h._('Mail'), h.url_for(controller='mail', action='index')),
+            (h._('Home'), h.url_for(controller='domain', action='index', id=None)),
+            (h._('Mail'), h.url_for(controller='mail', action='index', id=None)),
         ]
         # Mail context menu
         menulist['mail'] = [
-            (h._('Accounts'), h.url_for(controller='mail', action='index')),
-            (h._('New Account'), h.url_for(controller='mail', action='new')),
+            (h._('Accounts'), h.url_for(controller='mail', action='index', id=None)),
+            (h._('New Account'), h.url_for(controller='mail', action='new', id=None)),
         ]
 
         # Domain context menu

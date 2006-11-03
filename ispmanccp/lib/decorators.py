@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: decorators.py 12 2006-10-22 14:19:41Z s0undt3ch $
+# $Id: decorators.py 26 2006-11-03 19:29:49Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/decorators.py $
-# $LastChangedDate: 2006-10-22 15:19:41 +0100 (Sun, 22 Oct 2006) $
-#             $Rev: 12 $
+# $LastChangedDate: 2006-11-03 19:29:49 +0000 (Fri, 03 Nov 2006) $
+#             $Rev: 26 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -18,7 +18,7 @@ import formencode.api as api
 import formencode.variabledecode as variabledecode
 
 from pylons.decorator import decorator
-from pylons import request, c 
+from pylons import request, c
 from pylons.templating import render
 
 def validate(template=None, schema=None, validators=None, form=None,
@@ -26,16 +26,16 @@ def validate(template=None, schema=None, validators=None, form=None,
              post_only=True, state=None):
     """Validate input either for a FormEncode schema, or individual validators
 
-    Given a form schema or dict of validators, validate will attempt to validate
-    the schema or validator list as long as a POST request is made. No 
-    validation is performed on GET requests.
+    Given a form schema or dict of validators, validate will attempt to
+    validate the schema or validator list as long as a POST request is made.
+    No validation is performed on GET requests.
 
     If validation was succesfull, the valid result dict will be saved
-    as ``self.form_result``. Otherwise, the action will be re-run as if it was a
-    GET, and the output will be filled by FormEncode's htmlfill to fill in the
-    form field errors.
+    as ``self.form_result``. Otherwise, the action will be re-run as if it was
+    a GET, and the output will be filled by FormEncode's htmlfill to fill in
+    the form field errors.
 
-    If you'd like validate to also check GET (query) variables during its 
+    If you'd like validate to also check GET (query) variables during its
     validation, set the ``post_only`` keyword argument to False.
 
     Example:
@@ -69,16 +69,20 @@ def validate(template=None, schema=None, validators=None, form=None,
             postvars = pylons.request.POST.copy()
         else:
             postvars = pylons.request.params.copy()
+
         if variable_decode:
             postvars = variabledecode.variable_decode(postvars, dict_char,
                                                       list_char)
 
         defaults.update(postvars)
+
         if schema:
             try:
                 self.form_result = schema.to_python(defaults, state=state)
             except api.Invalid, e:
-                errors = e.unpack_errors(variable_decode, dict_char, list_char)
+                errors = e.unpack_errors(variable_decode,
+                                         dict_char,
+                                         list_char)
         if validators:
             if isinstance(validators, dict):
                 if not hasattr(self, 'form_result'):
@@ -86,18 +90,20 @@ def validate(template=None, schema=None, validators=None, form=None,
                 for field, validator in validators.iteritems():
                     try:
                         self.form_result[field] = \
-                            validator.to_python(defaults[field] or None, state=state)
+                            validator.to_python(defaults[field] or None,
+                                                state=state)
                     except api.Invalid, error:
                         errors[field] = error
         if errors:
             request.environ['REQUEST_METHOD'] = 'GET'
             request.environ['pylons.routes_dict']['action'] = form
-            c.form_errors = errors
             c.form_result = defaults
+            c.form_errors = errors
+            if request.environ['paste.config']['global_conf']['debug'] == 'true':
+                print 'VALIDATOR ERRORS:', errors
             response = self._dispatch_call()
             response.content = [render(template)]
             return response
         return func(self, *args, **kwargs)
     return decorator(wrapper)
-
 

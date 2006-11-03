@@ -8,13 +8,13 @@
 
   <label for="mailForwardingAddress-${n}">&nbsp;</label>
   <input id="mailForwardingAddress-${n}" name="mailForwardingAddress-${n}"
-         value="${forwards[n]}" class="email"/>
+         value="${c.userinfo['mailForwardingAddress'][n]}" class="email"/>
   <span class="error-message" py:if="'mailForwardingAddress-%i' % n in c.form_errors">
     ${ c.form_errors['mailForwardingAddress-%i' % n]}
   </span><br/>
 </html>
 <!--!
-$Id: forwards.html 21 2006-10-25 02:59:26Z s0undt3ch $
+$Id: forwards.html 26 2006-11-03 19:29:49Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 et
 -->
 

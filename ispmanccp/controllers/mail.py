@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: mail.py 16 2006-10-23 11:30:57Z s0undt3ch $
+# $Id: mail.py 26 2006-11-03 19:29:49Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/mail.py $
-# $LastChangedDate: 2006-10-23 12:30:57 +0100 (Mon, 23 Oct 2006) $
-#             $Rev: 16 $
+# $LastChangedDate: 2006-11-03 19:29:49 +0000 (Fri, 03 Nov 2006) $
+#             $Rev: 26 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -15,7 +15,7 @@
 
 import string
 from ispmanccp.lib.base import *
-from ispmanccp.lib.forms import Form
+from ispmanccp.models.mail import MailAccountUpdate
 
 class MailController(BaseController):
 
@@ -28,18 +28,20 @@ class MailController(BaseController):
 
     def userlist(self):
         sort_by = request.POST['sort_by']
-        sort_how = bool(request.POST['sort_how'])
+        sort_how = bool(int(request.POST['sort_how']))
+
+        if 'None' in request.POST['letter']:
+            c.users = []
+            return render_response('mail.snippets.userlist')
 
         if 'letter' in request.POST:
             start_letter = request.POST['letter']
         else:
             start_letter = 'All'
 
-        if 'None' in request.POST['letter']:
-            c.users = []
-            return render_response('mail.snippets.userlist')
-
-        userlist = get_users_list(start_letter, sortby=sort_by, sort_ascending=sort_how)
+        c.lengths, userlist = get_users_list(start_letter,
+                                             sortby=sort_by,
+                                             sort_ascending=sort_how)
 
         if not userlist:
             c.error = h._("No results retrieved.")
@@ -47,8 +49,58 @@ class MailController(BaseController):
             c.users = userlist
         return render_response('mail.snippets.userlist')
 
-    def new(self):
-        return render_response('mail.myt')
+    def get_stored_pass(self, id):
+        domain = request.environ['REMOTE_USER']
+        uid = id + '@' + domain
+        c.userinfo = {}
+        c.userinfo['userPassword'] = get_user_attribute_values(uid, domain, 'userPassword')
+        return render_response('mail.snippets.password')
 
-    def edit(self, dn):
-        pass
+    @rest.dispatch_on(POST='edit_post')
+    def edit(self, id, message=None):
+        domain = request.environ['REMOTE_USER']
+        c.lengths, c.userinfo = get_user_info(id, domain)
+        if c.form_result:
+            # Form has been submited
+            # Assign the form_result to c.userinfo
+            for key, val in c.form_result.iteritems():
+                if isinstance(val, list):
+                    # Make shure we're not passing empty mailAlias and
+                    # mailForwardingAddress's
+                    new_list = h.to_unicode(val)
+                    if len(new_list) > 0:
+                        c.userinfo[key] = new_list
+                else:
+                    c.userinfo[key] = h.to_unicode(val)
+            # re-calculate lenghts
+            try:
+                c.lengths[uid]['forwards'] = len(c.form_result['mailForwardingAddress'])
+            except:
+                pass # there are no forwards
+            try:
+                c.lengths[uid]['aliases'] = len(c.form_result['mailAlias'])
+            except:
+                pass # there are no aliases
+        return render_response('mail.edituser')
+
+    @validate(template='mail.edituser', schema=MailAccountUpdate(), form='edit', variable_decode=True)
+    def edit_post(self, id):
+        if request.method != 'POST':
+            redirect_to(action='edit', id=id)
+        user_dict = request.POST.copy()
+        domain = user_dict['ispmanDomain']
+        user_dict['uid'] = user_dict['uid'] + '@' + domain
+        uid = user_dict['uid']
+        retval = update_user_info(user_dict)
+        if retval != 1:
+            session['message'] = 'Backend Error'
+            session.save()
+            self.message = 'Backend Error'
+            h.redirect_to(action="edit", id=id)
+        session['message'] = 'Operation Successfull'
+        session.save()
+        redirect_to(action="index", id=None)
+
+
+    def new(self):
+        return render_response('mail.newuser')

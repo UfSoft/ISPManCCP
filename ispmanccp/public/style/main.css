@@ -1,6 +1,6 @@
 /*
  * vim: sw=4 ts=4 fenc=utf-8 et
- * $Id: main.css 19 2006-10-25 02:52:31Z s0undt3ch $
+ * $Id: main.css 25 2006-11-03 17:18:07Z s0undt3ch $
 */
 
 h1 { font-size: 130%; text-align: center; }
@@ -31,6 +31,15 @@ button { float: right; display: block; margin: 0px 0px -5px 10px; padding: 2px; 
     position: relative;
 }
 
+#warning { border-bottom: 1px solid #808080; background-color: #FFFFE1; }
+#warning span { padding: 1px 1px 1px 30px; margin: 0px; font-family: Tahoma, sans-serif; font-size: 13px; }
+#warning div {
+    border-bottom: 1px solid #404040;
+    background-image: url("/images/warning.gif");
+    background-repeat: no-repeat;
+    margin-left: 3px;
+}
+
 #spinner { float: right; position: absolute; right: 5px; top: 5px; z-index: 333; }
 #contents { margin: 2px; padding: 0px 10px 10px 10px; }
 
@@ -47,9 +56,11 @@ button { float: right; display: block; margin: 0px 0px -5px 10px; padding: 2px; 
     margin-left: 10px;
     color: red;
     background-color: #ffffe1;
-    padding: 2px;
+    padding: 2px 2px 2px 25px;
     font-weight: bold;
     font-size: 90%;
+    background-image: url("/images/warning.gif");
+    background-repeat: no-repeat;
 }
 
 /* Main Navigation */
@@ -105,7 +116,7 @@ input.email { width: 250px; }
     width: 185px;
     padding-right: 15px;
     font-weight: bold;
+    cursor: text;
 }
 #user_details br { clear: left; }
 #user_details button { width: 50px; }
-

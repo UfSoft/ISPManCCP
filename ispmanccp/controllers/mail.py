@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: mail.py 26 2006-11-03 19:29:49Z s0undt3ch $
+# $Id: mail.py 27 2006-11-03 23:09:28Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/mail.py $
-# $LastChangedDate: 2006-11-03 19:29:49 +0000 (Fri, 03 Nov 2006) $
-#             $Rev: 26 $
+# $LastChangedDate: 2006-11-03 23:09:28 +0000 (Fri, 03 Nov 2006) $
+#             $Rev: 27 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -93,11 +93,11 @@ class MailController(BaseController):
         uid = user_dict['uid']
         retval = update_user_info(user_dict)
         if retval != 1:
-            session['message'] = 'Backend Error'
+            session['message'] = _('Backend Error')
             session.save()
             self.message = 'Backend Error'
             h.redirect_to(action="edit", id=id)
-        session['message'] = 'Operation Successfull'
+        session['message'] = _('Operation Successfull')
         session.save()
         redirect_to(action="index", id=None)
 

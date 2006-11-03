@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: validators.py 26 2006-11-03 19:29:49Z s0undt3ch $
+# $Id: validators.py 27 2006-11-03 23:09:28Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/models/validators.py $
-# $LastChangedDate: 2006-11-03 19:29:49 +0000 (Fri, 03 Nov 2006) $
-#             $Rev: 26 $
+# $LastChangedDate: 2006-11-03 23:09:28 +0000 (Fri, 03 Nov 2006) $
+#             $Rev: 27 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -16,6 +16,7 @@
 import re
 from formencode import validators, FancyValidator, Invalid
 from pylons import request, h, g
+from pylons.util import _
 
 
 class CurrentPassword(FancyValidator):
@@ -30,7 +31,7 @@ class CurrentPassword(FancyValidator):
         coded_pass = g.ispman.encryptPassWithMethod(
             value, g.ispman.getConf('userPassHashMethod')).strip()
         if coded_pass != ldap_pass:
-            raise Invalid(h._("Current password not correct"),
+            raise Invalid(_("Current password not correct"),
                                      value, state)
 
 class PasswordsMatch(validators.UnicodeString):
@@ -44,7 +45,7 @@ class PasswordsMatch(validators.UnicodeString):
 
         to_match = request.POST['userPassword']
         if value != to_match:
-            raise Invalid(h._("Passwords do not match."), value, state)
+            raise Invalid(_("Passwords do not match."), value, state)
 
 
 class SecurePassword(validators.UnicodeString):
@@ -57,13 +58,13 @@ class SecurePassword(validators.UnicodeString):
     letter_regex = re.compile(r'[a-zA-Z]')
 
     messages = {
-        'too_few': h._(
+        'too_few': _(
             'Your password must be longer than %(min_length)i characters long'
         ),
-        'non_letter': h._(
+        'non_letter': _(
             'You must include at least %(min_non_letter)i numeric '
                      'character(s) in your password'),
-        'non_dict': h._(
+        'non_dict': _(
             'Please do not base your password on a dictionary term'),
     }
 
@@ -96,7 +97,7 @@ class ValidMailAlias(validators.Email):
     domain. We won't allow alias to remote emails."""
 
     messages = {
-        'same_domain': h._(
+        'same_domain': _(
             "The alias must be kept under the same domain: %(domain)s"
         )
     }
@@ -115,7 +116,7 @@ class CorrectNamesValidator(validators.UnicodeString):
     more than one name, ie, FirstName: Steve Jonas, LastName: Alchemy."""
 
     messages = {
-        'not_valid': h._('%(chars)s %(plural)s not allowed on names.')
+        'not_valid': _('%(chars)s %(plural)s not allowed on names.')
     }
 
     def validate_python(self, value, state):
@@ -124,9 +125,9 @@ class CorrectNamesValidator(validators.UnicodeString):
             chars = re.findall(r'[^\w\s]|[0-9]|[_]', value, re.U)
             if chars:
                 if len(chars) == 1:
-                    plural = h._('is')
+                    plural = _('is')
                 else:
-                    plural = h._('are')
+                    plural = _('are')
                 chars =  u''.join(chars)
                 raise Invalid(
                     self.message(

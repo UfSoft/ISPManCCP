@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: environment.py 2 2006-08-26 17:51:50Z s0undt3ch $
+# $Id: environment.py 27 2006-11-03 23:09:28Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/config/environment.py $
-# $LastChangedDate: 2006-08-26 18:51:50 +0100 (Sat, 26 Aug 2006) $
-#             $Rev: 2 $
+# $LastChangedDate: 2006-11-03 23:09:28 +0000 (Fri, 03 Nov 2006) $
+#             $Rev: 27 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -14,12 +14,13 @@
 # =============================================================================
 import os
 
+import webhelpers
 import pylons.config
 
 from ispmanccp.config.routing import make_map
 
-def load_environment():
-    map = make_map()
+def load_environment(global_conf={}, app_conf={}):
+    map = make_map(global_conf, app_conf)
     # Setup our paths
     root_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     paths = {'root_path': root_path,
@@ -33,6 +34,8 @@ def load_environment():
     # available to the Myghty handler are available for your use here
     myghty = {}
     myghty['log_errors'] = True
+
+    myghty['escapes'] = dict(l=webhelpers.auto_link, s=webhelpers.simple_format)
 
     # Add your own Myghty config options here, note that all config options will override
     # any Pylons config options

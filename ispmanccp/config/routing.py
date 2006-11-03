@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: routing.py 10 2006-10-21 15:21:01Z s0undt3ch $
+# $Id: routing.py 27 2006-11-03 23:09:28Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/config/routing.py $
-# $LastChangedDate: 2006-10-21 16:21:01 +0100 (Sat, 21 Oct 2006) $
-#             $Rev: 10 $
+# $LastChangedDate: 2006-11-03 23:09:28 +0000 (Fri, 03 Nov 2006) $
+#             $Rev: 27 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -19,7 +19,7 @@ Setup your Routes options here
 import sys, os
 from routes import Mapper
 
-def make_map():
+def make_map(global_conf={}, app_conf={}):
     root_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
     map = Mapper(directory=os.path.join(root_path, 'controllers'))

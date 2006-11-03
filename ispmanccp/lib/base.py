@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: base.py 26 2006-11-03 19:29:49Z s0undt3ch $
+# $Id: base.py 27 2006-11-03 23:09:28Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/base.py $
-# $LastChangedDate: 2006-11-03 19:29:49 +0000 (Fri, 03 Nov 2006) $
-#             $Rev: 26 $
+# $LastChangedDate: 2006-11-03 23:09:28 +0000 (Fri, 03 Nov 2006) $
+#             $Rev: 27 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -13,16 +13,30 @@
 # Please view LICENSE for additional licensing information.
 # =============================================================================
 
-from pylons import Response, c, g, h, cache, request, session
+__all__ = ['Response', 'c', 'g', 'cache', 'request', 'session', 'validate',
+           'WSGIController', 'jsonify', 'rest', 'render', 'render_response',
+           'abort', 'redirect_to', 'etag_cache', '_', 'model', 'h', 
+           'BaseController']
+
+from pylons import Response, c, g, cache, request, session
 from pylons.controllers import WSGIController
 from pylons.decorators import jsonify, rest
 from pylons.templating import render, render_response
 from pylons.helpers import abort, redirect_to, etag_cache
+from pylons.util import _
 import ispmanccp.models as model
-from ispmanccp.lib.ispman_helpers import *
-from ispmanccp.lib.forms import Form
-
+import ispmanccp.lib.helpers as h
 from ispmanccp.lib.decorators import validate
+from ispmanccp.lib.ispman_helpers import *
+
+# Add ispman_helpers to __all__
+def add_ispman_helpers(localdict):
+    for name, func in localdict.iteritems():
+        if callable(func) and \
+           func.__module__.startswith('ispmanccp.lib.ispman_helpers'):
+            __all__.append(name)
+
+add_ispman_helpers(locals())
 
 class BaseController(WSGIController):
     def __call__(self, environ, start_response):
@@ -41,7 +55,6 @@ class BaseController(WSGIController):
         c.controller = request.environ['pylons.routes_dict']['controller']
         c.action = request.environ['pylons.routes_dict']['action']
 
-        c.form = Form()
         if 'message' in session and session['message'] != '':
             c.message = session['message']
             session['message'] = ''
@@ -52,20 +65,20 @@ class BaseController(WSGIController):
         menulist = {}
         # App's Main Menu
         menulist['mainmenu'] = [
-            (h._('Home'), h.url_for(controller='domain', action='index', id=None)),
-            (h._('Mail'), h.url_for(controller='mail', action='index', id=None)),
+            (_('Home'), h.url_for(controller='domain', action='index', id=None)),
+            (_('Accounts'), h.url_for(controller='mail', action='index', id=None)),
         ]
         # Mail context menu
         menulist['mail'] = [
-            (h._('Accounts'), h.url_for(controller='mail', action='index', id=None)),
-            (h._('New Account'), h.url_for(controller='mail', action='new', id=None)),
+            (_('Search Accounts'), h.url_for(controller='mail', action='index', id=None)),
+            (_('New Account'), h.url_for(controller='mail', action='new', id=None)),
         ]
 
         # Domain context menu
         menulist['domain'] = [
-            (h._('Domain Overview'),
+            (_('Domain Overview'),
              h.url_for(controller="domain", action="index")),
-            (h._('Change Domain Password'),
+            (_('Change Domain Password'),
              h.url_for(controller="domain", action="changepass"))
         ]
         keys = {}

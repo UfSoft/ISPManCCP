@@ -7,7 +7,7 @@
       py:with="uid=c.userinfo['ispmanUserId']; domain = c.userinfo['ispmanDomain']">
   <xi:include href="../layout.html"/>
   <head>
-    <title>${ h._("Edit Account") }</title>
+    <title>${ _("Edit Account") }</title>
 
     <!--! Unfortunatly we must keep those html vars long -->
     <script type="text/javascript">
@@ -42,26 +42,26 @@
   </head>
 
   <body>
-    <h1>${ domain  + ' ' + h._('domain')}</h1>
+    <h1>${ domain  + ' ' + _('domain')}</h1>
     <form id="edit_user" class="user_input" method="post" accept-charset="UTF-8"
       action="${ h.url_for(action='edit')}">
       <fieldset>
         <legend>
-          ${ h._("Edit Account") + ' - ' + c.userinfo['mailLocalAddress'] }
+          ${ _("Edit Account") + ' - ' + c.userinfo['mailLocalAddress'] }
         </legend>
 
         <!--! User ID -->
-        <label for="ispmanUserId">${ h._("User ID:") }</label>
+        <label for="ispmanUserId">${ _("User ID:") }</label>
         <span id="ispmanUserId">${ c.userinfo['ispmanUserId'] }</span><br/>
 
         <!--! Create Date -->
-        <label for="ispmanCreateTimestamp">${ h._("Created on:") }</label>
+        <label for="ispmanCreateTimestamp">${ _("Created on:") }</label>
         <span id="ispmanCreateTimestamp">
           ${ h.date_from_tstamp(c.userinfo['ispmanCreateTimestamp']) }
         </span><br/>
 
         <!--! First Name -->
-        <label for="givenName">${ h._("First Name:") }</label>
+        <label for="givenName">${ _("First Name:") }</label>
         <input type="text" name="givenName" id="givenName"
         value="${ c.userinfo['givenName'] }"/>
         <span class="error-message" py:if="'givenName' in c.form_errors">
@@ -69,7 +69,7 @@
         </span><br/>
 
         <!--! Last Name -->
-        <label for="sn">${ h._("Last Name:") }</label>
+        <label for="sn">${ _("Last Name:") }</label>
         <input type="text" name="sn" id="sn"
         value="${ c.userinfo['sn'] }"/>
         <span class="error-message" py:if="'sn' in c.form_errors">
@@ -80,24 +80,33 @@
         <div id="user_password">
           <xi:include href="snippets/password.html"/>
         </div>
-        <label for="userPasswordConfirm">${ h._("Re-type Password:") }</label>
+        <label for="userPasswordConfirm">${ _("Re-type Password:") }</label>
         <input type="password" name="userPasswordConfirm" id="userPasswordConfirm"/>
         <span class="error-message" py:if="'userPasswordConfirm' in c.form_errors">
           ${ c.form_errors['userPasswordConfirm']}
         </span><br/>
 
         <!--! Mailbox Quota -->
-        <label for="mailQuota">${ h._("Email Quota:") }</label>
+        <label for="mailQuota">${ _("Email Quota:") }</label>
         <input type="text" id="mailQuota" name="mailQuota" class="quota"
-        value="${ int(c.userinfo['mailQuota']) }"/>
-        <span id="mailQuotaUnit" class="quota">${ h._("MB") }</span>
+        value="${ c.userinfo['mailQuota'] }"/>
+        <span id="mailQuotaUnit" class="quota">${ _("MB") }</span>
         <span class="error-message" py:if="'mailQuota' in c.form_errors">
           ${ c.form_errors['mailQuota']}
         </span><br/>
 
+        <!--! FTP Quota -->
+        <label for="FTPQuotaMBytes">${ _("FTP Quota:") }</label>
+        <input type="text" id="FTPQuotaMBytes" name="FTPQuotaMBytes" class="quota"
+        value="${ c.userinfo['FTPQuotaMBytes'] }"/>
+        <span id="FTPQuotaUnit" class="quota">${ _("MB") }</span>
+        <span class="error-message" py:if="'FTPQuotaMBytes' in c.form_errors">
+          ${ c.form_errors['FTPQuotaMBytes']}
+        </span><br/>
+
         <!--! Email Alias -->
         <div id="email_alias">
-          <label>${ h._("Email Aliases:") }</label>
+          <label>${ _("Email Aliases:") }</label>
           ${ h.tag.input(type="button", name="add_alias_field",
              value="Add Alias Field", onClick="addAliasField()") }<br/>
           <py:if test="'mailAlias' in c.userinfo"> 
@@ -109,7 +118,7 @@
 
         <!--! Email Forwards -->
         <div id="email_forwards">
-          <label>${ h._("Email Forwards:") }</label>
+          <label>${ _("Email Forwards:") }</label>
           ${ h.tag.input(type="button", name="add_forwarding_field",
              value="Add Forwarding Field", onClick="addForwardsField()") }<br/>
           <py:if test="'mailForwardingAddress' in c.userinfo">
@@ -120,7 +129,7 @@
         </div>
 
         <button type="submit" name="Update"
-          title="${ h._('Update User Entry')}">${ h._("Update") }</button>
+          title="${ _('Update User Entry')}">${ _("Update") }</button>
         <input type="hidden" name="uid" value="${uid}" />
         <input type="hidden" name="ispmanDomain" value="${domain}" />
         <input type="hidden" name="mailLocalAddress"
@@ -133,7 +142,7 @@
   </body>
 </html>
 <!--!
-$Id: edituser.html 28 2006-11-03 23:24:04Z s0undt3ch $
+$Id: edituser.html 29 2006-11-03 23:48:09Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 et
 -->
 

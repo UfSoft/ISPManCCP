@@ -6,23 +6,23 @@
       xmlns:xi="http://www.w3.org/2001/XInclude">
       <xi:include href="../layout.html" />
   <head>
-    <title>${ h._('Home') }</title>
+    <title>${ _('Home') }</title>
   </head>
 
   <body>
-    <h1>${ c.dominfo['cn'] + ' ' + h._('domain') }</h1>
+    <h1>${ c.dominfo['cn'] + ' ' + _('domain') }</h1>
     <fieldset id="dominfo">
-      <legend>${ h._('Domain Info') }</legend>
-      <p><b>${ h._('Owner') }:</b> ${ c.dominfo['ispmanDomainOwner'] } </p>
-      <p><b>${ h._('Accounts') }:</b> ${ c.dominfo['ispmanAccounts'] } of
+      <legend>${ _('Domain Info') }</legend>
+      <p><b>${ _('Owner') }:</b> ${ c.dominfo['ispmanDomainOwner'] } </p>
+      <p><b>${ _('Accounts') }:</b> ${ c.dominfo['ispmanAccounts'] } of
         ${ c.dominfo['ispmanMaxAccounts'] } accounts.</p>
-      <p><b>${ h._('Virtual Hosts') }:</b> ${ c.dominfo['ispmanVhosts'] } of
+      <p><b>${ _('Virtual Hosts') }:</b> ${ c.dominfo['ispmanVhosts'] } of
         ${ c.dominfo['ispmanMaxVhosts'] } virtual hosts.</p>
     </fieldset>
   </body>
 
 </html>
 <!--!
-$Id: index.html 22 2006-10-25 03:00:31Z s0undt3ch $
+$Id: index.html 29 2006-11-03 23:48:09Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->

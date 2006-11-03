@@ -6,15 +6,15 @@
       xmlns:xi="http://www.w3.org/2001/XInclude">
   <xi:include href="../layout.html" />
   <head>
-    <title>${ h._('Mail') }</title>
+    <title>${ _('Mail') }</title>
   </head>
 
   <body>
-    <h1>${ c.domain + ' ' + h._('domain') }</h1>
+    <h1>${ c.domain + ' ' + _('domain') }</h1>
     <div id="user_search">
-      <form class="user_search" name="sortby" id="sortby" action="/mail/userlist">
+      <form class="user_search" name="sortby" id="sortby">
         <fieldset>
-          <legend>${ h._("Search / Select") }</legend>
+          <legend>${ _("Search / Select") }</legend>
         <nobr>
           <!--! Our default selected radio button -->
           <input type="radio" name="letter" id="None" value="None" checked="checked"/>
@@ -27,12 +27,13 @@
         </nobr>&nbsp;
         <nobr>
           <select name="sort_by" id="sort_by">
-            <option value="ispmanUserId">${ h._("User ID") }</option>
-            <option value="mailLocalAddress">${ h._("Email Address") }</option>
-            <option value="givenName">${ h._("First Name") }</option>
-            <option value="sn">${ h._("Last Name") }</option>
-            <option value="ispmanCreateTimestamp">${ h._("Date Created") }</option>
-            <option value="mailQuota">${ h._("Email Quota") }</option>
+            <option value="ispmanUserId">${ _("User ID") }</option>
+            <option value="mailLocalAddress">${ _("Email Address") }</option>
+            <option value="givenName">${ _("First Name") }</option>
+            <option value="sn">${ _("Last Name") }</option>
+            <option value="ispmanCreateTimestamp">${ _("Date Created") }</option>
+            <option value="mailQuota">${ _("Email Quota") }</option>
+            <option value="FTPQuotaMBytes">${ _("FTP Quota") }</option>
           </select>&nbsp;
           <select name="sort_how" id="sort_how">
             <option value="1">Ascending</option>
@@ -60,7 +61,7 @@
 
 </html>
 <!--!
-$Id: index.html 28 2006-11-03 23:24:04Z s0undt3ch $
+$Id: index.html 29 2006-11-03 23:48:09Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

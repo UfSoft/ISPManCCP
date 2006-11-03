@@ -11,19 +11,28 @@
           py:for="user in c.users"
           py:with="uid = user['ispmanUserId']">
           <legend>${ user['mailLocalAddress'] }</legend>
-          <label for="ispmanUserId">${ h._("User ID:") }</label>
+          <!--! ID -->
+          <label for="ispmanUserId">${ _("User ID:") }</label>
           <span id="ispmanUserId">${ user['ispmanUserId'] }</span><br/>
-          <label for="givenName">${ h._("First Name:") }</label>
+          <!--! First Name -->
+          <label for="givenName">${ _("First Name:") }</label>
           <span id="givenName">${ user['givenName'] }</span><br/>
-          <label for="sn">${ h._("Last Name:") }</label>
+          <!--! Last Name -->
+          <label for="sn">${ _("Last Name:") }</label>
           <span id="sn">${ user['sn'] }</span><br/>
-          <label for="ispmanCreateTimestamp">${ h._("Created on:") }</label>
+          <!--! Create Date -->
+          <label for="ispmanCreateTimestamp">${ _("Created on:") }</label>
           <span id="ispmanCreateTimestamp">
             ${ h.date_from_tstamp(user['ispmanCreateTimestamp']) }</span><br/>
-          <label for="mailQuota">${ h._("Email Quota:") }</label>
+          <!--! Mail Quota -->
+          <label for="mailQuota">${ _("Email Quota:") }</label>
           <span id="mailQuota">${ h.convert_size(user['mailQuota']) }</span><br/>
+          <!--! FTP Quota -->
+          <label for="FTPQuotaMBytes">${ _("FTP Quota:") }</label>
+          <span id="FTPQuotaMBytes">${ user['FTPQuotaMBytes'] }.0 MB</span><br/>
+          <!--! Mail Aliases -->
           <py:if test="'mailAlias' in user">
-            <label for="mailAlias">${ h._("Email Alias:") }</label>
+            <label for="mailAlias">${ _("Email Alias:") }</label>
             <py:for each="n in range(c.lengths[uid].aliases)">
               <span id="mailAliases">${user['mailAlias'][n]}</span><br/>
               <label for="mailAliases"
@@ -32,8 +41,9 @@
               </label>
             </py:for>
           </py:if>
+          <!--! Mail Forwards -->
           <py:if test="'mailForwardingAddress' in user">
-            <label for="mailForwardingAddress">${ h._("Email Forwards:") }</label>
+            <label for="mailForwardingAddress">${ _("Email Forwards:") }</label>
             <py:for each="n in range(c.lengths[uid].forwards)">
               <span id="mailForwardingAddress">
                 ${user['mailForwardingAddress'][n]}
@@ -44,11 +54,11 @@
               </label>
             </py:for>
           </py:if>
-          <button title="${ h._('Return to the top of the navigation links') }"
-            onClick="location.href='#top'">${ h._("Top") }</button>
+          <button title="${ _('Return to the top of the navigation links') }"
+            onClick="location.href='#top'">${ _("Top") }</button>
           ${h.tag.button(
-              h._("Edit"),
-              title=h._("Edit Account Entry"),
+              _("Edit"),
+              title=_("Edit Account Entry"),
               onClick="location.href='" + h.url_for(controller="accounts", action="edit", id=uid) + "'")
           }
         </fieldset>
@@ -63,7 +73,7 @@
 
 </html>
 <!--!
-$Id: userlist.html 28 2006-11-03 23:24:04Z s0undt3ch $
+$Id: userlist.html 29 2006-11-03 23:48:09Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

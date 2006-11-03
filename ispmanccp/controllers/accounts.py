@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: mail.py 27 2006-11-03 23:09:28Z s0undt3ch $
+# $Id: accounts.py 28 2006-11-03 23:24:04Z s0undt3ch $
 # =============================================================================
-#             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/mail.py $
-# $LastChangedDate: 2006-11-03 23:09:28 +0000 (Fri, 03 Nov 2006) $
-#             $Rev: 27 $
+#             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/accounts.py $
+# $LastChangedDate: 2006-11-03 23:24:04 +0000 (Fri, 03 Nov 2006) $
+#             $Rev: 28 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -15,16 +15,16 @@
 
 import string
 from ispmanccp.lib.base import *
-from ispmanccp.models.mail import MailAccountUpdate
+from ispmanccp.models.accounts import MailAccountUpdate
 
-class MailController(BaseController):
+class AccountsController(BaseController):
 
     def index(self):
         self.form_letters = ['All']
         self.form_letters.extend(list(string.digits + string.uppercase))
         c.form_letters = self.form_letters
         c.domain = request.environ['REMOTE_USER']
-        return render_response('mail.index')
+        return render_response('accounts.index')
 
     def userlist(self):
         sort_by = request.POST['sort_by']
@@ -32,7 +32,7 @@ class MailController(BaseController):
 
         if 'None' in request.POST['letter']:
             c.users = []
-            return render_response('mail.snippets.userlist')
+            return render_response('accounts.snippets.userlist')
 
         if 'letter' in request.POST:
             start_letter = request.POST['letter']
@@ -47,14 +47,14 @@ class MailController(BaseController):
             c.error = h._("No results retrieved.")
         else:
             c.users = userlist
-        return render_response('mail.snippets.userlist')
+        return render_response('accounts.snippets.userlist')
 
     def get_stored_pass(self, id):
         domain = request.environ['REMOTE_USER']
         uid = id + '@' + domain
         c.userinfo = {}
         c.userinfo['userPassword'] = get_user_attribute_values(uid, domain, 'userPassword')
-        return render_response('mail.snippets.password')
+        return render_response('accounts.snippets.password')
 
     @rest.dispatch_on(POST='edit_post')
     def edit(self, id, message=None):
@@ -81,9 +81,9 @@ class MailController(BaseController):
                 c.lengths[uid]['aliases'] = len(c.form_result['mailAlias'])
             except:
                 pass # there are no aliases
-        return render_response('mail.edituser')
+        return render_response('accounts.edituser')
 
-    @validate(template='mail.edituser', schema=MailAccountUpdate(), form='edit', variable_decode=True)
+    @validate(template='accounts.edituser', schema=MailAccountUpdate(), form='edit', variable_decode=True)
     def edit_post(self, id):
         if request.method != 'POST':
             redirect_to(action='edit', id=id)
@@ -103,4 +103,4 @@ class MailController(BaseController):
 
 
     def new(self):
-        return render_response('mail.newuser')
+        return render_response('accounts.newuser')

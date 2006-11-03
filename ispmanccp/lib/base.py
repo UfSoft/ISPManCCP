@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: base.py 27 2006-11-03 23:09:28Z s0undt3ch $
+# $Id: base.py 28 2006-11-03 23:24:04Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/base.py $
-# $LastChangedDate: 2006-11-03 23:09:28 +0000 (Fri, 03 Nov 2006) $
-#             $Rev: 27 $
+# $LastChangedDate: 2006-11-03 23:24:04 +0000 (Fri, 03 Nov 2006) $
+#             $Rev: 28 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -66,12 +66,12 @@ class BaseController(WSGIController):
         # App's Main Menu
         menulist['mainmenu'] = [
             (_('Home'), h.url_for(controller='domain', action='index', id=None)),
-            (_('Accounts'), h.url_for(controller='mail', action='index', id=None)),
+            (_('Accounts'), h.url_for(controller='accounts', action='index', id=None)),
         ]
         # Mail context menu
-        menulist['mail'] = [
-            (_('Search Accounts'), h.url_for(controller='mail', action='index', id=None)),
-            (_('New Account'), h.url_for(controller='mail', action='new', id=None)),
+        menulist['accounts'] = [
+            (_('Search Accounts'), h.url_for(controller='accounts', action='index', id=None)),
+            (_('New Account'), h.url_for(controller='accounts', action='new', id=None)),
         ]
 
         # Domain context menu

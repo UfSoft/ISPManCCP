@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: accounts.py 28 2006-11-03 23:24:04Z s0undt3ch $
+# $Id: accounts.py 30 2006-11-04 02:13:16Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/accounts.py $
-# $LastChangedDate: 2006-11-03 23:24:04 +0000 (Fri, 03 Nov 2006) $
-#             $Rev: 28 $
+# $LastChangedDate: 2006-11-04 02:13:16 +0000 (Sat, 04 Nov 2006) $
+#             $Rev: 30 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -44,7 +44,7 @@ class AccountsController(BaseController):
                                              sort_ascending=sort_how)
 
         if not userlist:
-            c.error = h._("No results retrieved.")
+            c.error = _("No results retrieved.")
         else:
             c.users = userlist
         return render_response('accounts.snippets.userlist')

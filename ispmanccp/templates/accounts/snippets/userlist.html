@@ -24,12 +24,17 @@
           <label for="ispmanCreateTimestamp">${ _("Created on:") }</label>
           <span id="ispmanCreateTimestamp">
             ${ h.date_from_tstamp(user['ispmanCreateTimestamp']) }</span><br/>
-          <!--! Mail Quota -->
-          <label for="mailQuota">${ _("Email Quota:") }</label>
-          <span id="mailQuota">${ h.convert_size(user['mailQuota']) }</span><br/>
           <!--! FTP Quota -->
           <label for="FTPQuotaMBytes">${ _("FTP Quota:") }</label>
           <span id="FTPQuotaMBytes">${ user['FTPQuotaMBytes'] }.0 MB</span><br/>
+          <!--!FTP Status -->
+          <label for="FTPStatus">${ _("FTP Status:") }</label>
+          <span id="FTPStatus" py:if="user['FTPStatus'] == 'enabled'">Enabled</span>
+          <span id="FTPStatus" py:if="user['FTPStatus'] == 'disabled'">Suspended</span>
+          <br/>
+          <!--! Mail Quota -->
+          <label for="mailQuota">${ _("Email Quota:") }</label>
+          <span id="mailQuota">${ h.convert_size(user['mailQuota']) }</span><br/>
           <!--! Mail Aliases -->
           <py:if test="'mailAlias' in user">
             <label for="mailAlias">${ _("Email Alias:") }</label>
@@ -73,7 +78,7 @@
 
 </html>
 <!--!
-$Id: userlist.html 29 2006-11-03 23:48:09Z s0undt3ch $
+$Id: userlist.html 30 2006-11-04 02:13:16Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

@@ -86,15 +86,6 @@
           ${ c.form_errors['userPasswordConfirm']}
         </span><br/>
 
-        <!--! Mailbox Quota -->
-        <label for="mailQuota">${ _("Email Quota:") }</label>
-        <input type="text" id="mailQuota" name="mailQuota" class="quota"
-        value="${ c.userinfo['mailQuota'] }"/>
-        <span id="mailQuotaUnit" class="quota">${ _("MB") }</span>
-        <span class="error-message" py:if="'mailQuota' in c.form_errors">
-          ${ c.form_errors['mailQuota']}
-        </span><br/>
-
         <!--! FTP Quota -->
         <label for="FTPQuotaMBytes">${ _("FTP Quota:") }</label>
         <input type="text" id="FTPQuotaMBytes" name="FTPQuotaMBytes" class="quota"
@@ -102,6 +93,21 @@
         <span id="FTPQuotaUnit" class="quota">${ _("MB") }</span>
         <span class="error-message" py:if="'FTPQuotaMBytes' in c.form_errors">
           ${ c.form_errors['FTPQuotaMBytes']}
+        </span><br/>
+
+        <!--! FTP Status -->
+        <label for="FTPStatus">${ _("FTP Status:") }</label>
+        <select id="FTPStatus" name="FTPStatus">
+          <xi:include href="snippets/${c.userinfo['FTPStatus']}_ftp_status.html"/>
+        </select><br/>
+
+        <!--! Mailbox Quota -->
+        <label for="mailQuota">${ _("Email Quota:") }</label>
+        <input type="text" id="mailQuota" name="mailQuota" class="quota"
+        value="${ c.userinfo['mailQuota'] }"/>
+        <span id="mailQuotaUnit" class="quota">${ _("MB") }</span>
+        <span class="error-message" py:if="'mailQuota' in c.form_errors">
+          ${ c.form_errors['mailQuota']}
         </span><br/>
 
         <!--! Email Alias -->
@@ -142,7 +148,7 @@
   </body>
 </html>
 <!--!
-$Id: edituser.html 29 2006-11-03 23:48:09Z s0undt3ch $
+$Id: edituser.html 30 2006-11-04 02:13:16Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 et
 -->
 

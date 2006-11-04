@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: ispman_helpers.py 29 2006-11-03 23:48:09Z s0undt3ch $
+# $Id: ispman_helpers.py 30 2006-11-04 02:13:16Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/ispman_helpers.py $
-# $LastChangedDate: 2006-11-03 23:48:09 +0000 (Fri, 03 Nov 2006) $
-#             $Rev: 29 $
+# $LastChangedDate: 2006-11-04 02:13:16 +0000 (Sat, 04 Nov 2006) $
+#             $Rev: 30 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -28,7 +28,7 @@ allowed_user_attributes = (
 updatable_attributes = (
     'ispmanStatus', 'mailQuota', 'mailAlias', 'sn', 'userPassword',
     'givenName', 'updateUser', 'uid', 'ispmanDomain', 'mailForwardingAddress',
-    'FTPQuotaMBytes'
+    'FTPQuotaMBytes', 'FTPStatus'
 )
 
 
@@ -55,7 +55,8 @@ def get_users_list(letter, sortby=None, sort_ascending=True):
             "userPassword",
             "mailQuota",
             "mailAlias",
-            "FTPQuotaMBytes"
+            "FTPQuotaMBytes",
+            "FTPStatus"
         ]
     ))
 #    domain_users = to_unicode(domain_users)

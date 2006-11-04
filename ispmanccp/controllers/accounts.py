@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: accounts.py 30 2006-11-04 02:13:16Z s0undt3ch $
+# $Id: accounts.py 32 2006-11-04 19:33:10Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/accounts.py $
-# $LastChangedDate: 2006-11-04 02:13:16 +0000 (Sat, 04 Nov 2006) $
-#             $Rev: 30 $
+# $LastChangedDate: 2006-11-04 19:33:10 +0000 (Sat, 04 Nov 2006) $
+#             $Rev: 32 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -20,10 +20,9 @@ from ispmanccp.models.accounts import MailAccountUpdate
 class AccountsController(BaseController):
 
     def index(self):
-        self.form_letters = ['All']
-        self.form_letters.extend(list(string.digits + string.uppercase))
-        c.form_letters = self.form_letters
-        c.domain = request.environ['REMOTE_USER']
+        c.nav_1st_half = ['All']
+        c.nav_1st_half.extend(list(string.digits))
+        c.nav_2nd_half = list(string.uppercase)
         return render_response('accounts.index')
 
     def userlist(self):

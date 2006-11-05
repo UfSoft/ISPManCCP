@@ -65,7 +65,7 @@
     Main Navigation
     Is the user logged in? If so, show him the menu.
     -->
-    <div id="mainnav" py:if="'REMOTE_USER' in request.environ">
+    <div id="mainnav" py:if="not c.domain_locked">
       <ul>
         <!--! 
           Loop all items on mainmenu.
@@ -85,7 +85,7 @@
       </ul>
     </div> <!--! div id=mainnav ended -->
   </div> <!--! div id=header ended -->
-  <div id="ctxnav" py:if="('REMOTE_USER' in request.environ) and (c.controller in c.menus)">
+  <div id="ctxnav" py:if="(not c.domain_locked) and (c.controller in c.menus)">
     <ul>
       <!--! Loop all items on ctxnav. The science is the same used in mainnav -->
       <li py:for="name, url, akey in c.menus[c.controller]" py:choose=""
@@ -109,6 +109,6 @@
 </body>
 </html>
 <!--!
-$Id: layout.html 32 2006-11-04 19:33:10Z s0undt3ch $
+$Id: layout.html 34 2006-11-05 18:57:20Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->

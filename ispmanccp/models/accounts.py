@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: accounts.py 30 2006-11-04 02:13:16Z s0undt3ch $
+# $Id: accounts.py 34 2006-11-05 18:57:20Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/models/accounts.py $
-# $LastChangedDate: 2006-11-04 02:13:16 +0000 (Sat, 04 Nov 2006) $
-#             $Rev: 30 $
+# $LastChangedDate: 2006-11-05 18:57:20 +0000 (Sun, 05 Nov 2006) $
+#             $Rev: 34 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -23,7 +23,7 @@ try:
 except ImportError:
     dns_available = False
 
-class MailAccountUpdate(Schema):
+class AccountUpdate(Schema):
     allow_extra_fields = True
     filter_extra_fields = True
     ispmanDomain = validators.UnicodeString(not_empty=True, encoding='UTF-8')

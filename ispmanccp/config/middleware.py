@@ -1,10 +1,10 @@
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: middleware.py 27 2006-11-03 23:09:28Z s0undt3ch $
+# $Id: middleware.py 34 2006-11-05 18:57:20Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/config/middleware.py $
-# $LastChangedDate: 2006-11-03 23:09:28 +0000 (Fri, 03 Nov 2006) $
-#             $Rev: 27 $
+# $LastChangedDate: 2006-11-05 18:57:20 +0000 (Sun, 05 Nov 2006) $
+#             $Rev: 34 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -47,8 +47,7 @@ def make_app(global_conf, full_stack=True, **app_conf):
     app = pylons.wsgiapp.PylonsApp(config, helpers=ispmanccp.lib.helpers,
                                    g=app_globals.Globals)
     g = app.globals
-    app = ConfigMiddleware(app, {'app_conf':app_conf,
-        'global_conf':global_conf})
+    app = ConfigMiddleware(app, {'app_conf':app_conf, 'global_conf':global_conf})
 
     # YOUR MIDDLEWARE
     # Put your own middleware here, so that any problems are caught by the error

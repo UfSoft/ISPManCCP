@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: base.py 28 2006-11-03 23:24:04Z s0undt3ch $
+# $Id: base.py 34 2006-11-05 18:57:20Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/base.py $
-# $LastChangedDate: 2006-11-03 23:24:04 +0000 (Fri, 03 Nov 2006) $
-#             $Rev: 28 $
+# $LastChangedDate: 2006-11-05 18:57:20 +0000 (Sun, 05 Nov 2006) $
+#             $Rev: 34 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -39,11 +39,21 @@ def add_ispman_helpers(localdict):
 add_ispman_helpers(locals())
 
 class BaseController(WSGIController):
+
     def __call__(self, environ, start_response):
         # Insert any code to be run per request here. The Routes match
         # is under environ['pylons.routes_dict'] should you want to check
         # the action or route vars here
-        if request.path_info == '/':
+
+        # Grab Domain Info
+        self.domain = request.environ['REMOTE_USER']
+        self.dominfo = get_domain_info(self.domain)
+
+        # Don't allow Locked Domains to make any changes
+        if self.dominfo['ispmanDomainLocked'] == 'true' and \
+           request.path_info != '/locked':
+            h.redirect_to('/locked')
+        elif request.path_info == '/':
             h.redirect_to('/domain')
 
         ccache = cache.get_cache('navigation')
@@ -61,6 +71,7 @@ class BaseController(WSGIController):
             session.save()
         return WSGIController.__call__(self, environ, start_response)
 
+
     def __create_i18n_menus(self):
         menulist = {}
         # App's Main Menu
@@ -77,9 +88,9 @@ class BaseController(WSGIController):
         # Domain context menu
         menulist['domain'] = [
             (_('Domain Overview'),
-             h.url_for(controller="domain", action="index")),
+             h.url_for(controller="domain", action="index", id=None)),
             (_('Change Domain Password'),
-             h.url_for(controller="domain", action="changepass"))
+             h.url_for(controller="domain", action="changepass", id=None))
         ]
         keys = {}
         menus = {}
@@ -96,3 +107,4 @@ class BaseController(WSGIController):
                     keys[name] = None
                 menus[key].append((name, url, keys[name]))
         return menus
+

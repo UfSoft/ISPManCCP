@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: ispman_helpers.py 30 2006-11-04 02:13:16Z s0undt3ch $
+# $Id: ispman_helpers.py 34 2006-11-05 18:57:20Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/ispman_helpers.py $
-# $LastChangedDate: 2006-11-04 02:13:16 +0000 (Sat, 04 Nov 2006) $
-#             $Rev: 30 $
+# $LastChangedDate: 2006-11-05 18:57:20 +0000 (Sun, 05 Nov 2006) $
+#             $Rev: 34 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -15,14 +15,17 @@
 
 from string import join
 from formencode.variabledecode import variable_decode
-from pylons import request, g, h
+from pylons import request, g, cache
+from ispmanccp.lib.helpers import to_unicode
+
+ispman_cache = cache.get_cache('ispman')
 
 allowed_user_attributes = (
     'dn', 'dialupAccess', 'radiusProfileDn', 'uid', 'uidNumber', 'gidNumber',
     'homeDirectory', 'loginShell', 'ispmanStatus', 'ispmanCreateTimestamp',
     'ispmanUserId', 'ispmanDomain', 'DestinationAddress', 'DestinationPort',
     'mailQuota', 'mailHost', 'fileHost', 'cn', 'mailRoutingAddress',
-    'FTPStatus', 'FTPQuotaMBytes', 'mailAlias', 'sn', 'mailLocalAddress', 
+    'FTPStatus', 'FTPQuotaMBytes', 'mailAlias', 'sn', 'mailLocalAddress',
     'userPassword', 'mailForwardingAddress', 'givenName')
 
 updatable_attributes = (
@@ -36,15 +39,15 @@ def conv_to_list(obj):
     """Helper to covert perl ARRAY's which sometimes
     are just strings, to lists."""
     if isinstance(obj, str):
-        return 1, [h.to_unicode(obj)]
+        return 1, [to_unicode(obj)]
     else:
-        listing = h.to_unicode(obj)
+        listing = to_unicode(obj)
         return len(listing), listing
 
 
-def get_users_list(letter, sortby=None, sort_ascending=True):
-    domain_users = dict(g.ispman.getUsers(
-        request.environ['REMOTE_USER'], [
+def get_users_list(domain, letter, sortby=None, sort_ascending=True):
+    domain_users = to_unicode(g.ispman.getUsers(
+        domain, [
             "dn",
             "givenName",
             "surname",
@@ -59,13 +62,12 @@ def get_users_list(letter, sortby=None, sort_ascending=True):
             "FTPStatus"
         ]
     ))
-#    domain_users = to_unicode(domain_users)
 
     userlist = []
     lengths = {}
     for user, vals in domain_users.items():
         # add the dn since the user data does not carry that info
-        vals = h.to_unicode(dict(vals))
+        vals = to_unicode(dict(vals))
         vals['dn'] = user
         user_id = vals['ispmanUserId']
         lengths[user_id] = {}
@@ -97,7 +99,7 @@ def get_users_list(letter, sortby=None, sort_ascending=True):
 
 
 def get_user_info(uid, domain):
-    user_info = h.to_unicode(dict(g.ispman.getUserInfo(uid + '@' + domain, domain)))
+    user_info = to_unicode(g.ispman.getUserInfo(uid + '@' + domain, domain))
     lengths = {}
     lengths[uid] = {}
     if 'mailAlias' in user_info:
@@ -131,4 +133,24 @@ def update_user_info(attrib_dict):
     return g.ispman.update_user(cgi)
 
 def get_user_attribute_values(id, domain, attribute):
-    return h.to_unicode(g.ispman.getUserAttributeValues(id, domain, attribute))
+    return to_unicode(
+        g.ispman.getUserAttributeValues(id, domain, attribute)
+    )
+
+
+def get_domain_info(domain):
+    def get():
+        return to_unicode(dict(
+            g.ispman.getDomainInfo(domain, 2))
+        )
+
+    cached = ispman_cache.get_value(
+        'domain_info', createfunc=get, type="memory", expiretime=300)
+    return cached
+
+def get_domain_vhost_count(domain):
+    return to_unicode(g.ispman.getVhostCount(domain))
+
+def get_domain_user_count(domain):
+    return to_unicode(g.ispman.getUserCount(domain))
+

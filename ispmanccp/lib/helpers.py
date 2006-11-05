@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: helpers.py 27 2006-11-03 23:09:28Z s0undt3ch $
+# $Id: helpers.py 34 2006-11-05 18:57:20Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/helpers.py $
-# $LastChangedDate: 2006-11-03 23:09:28 +0000 (Fri, 03 Nov 2006) $
-#             $Rev: 27 $
+# $LastChangedDate: 2006-11-05 18:57:20 +0000 (Sun, 05 Nov 2006) $
+#             $Rev: 34 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -39,7 +39,6 @@ wrap_helpers(locals())
 from genshi.builder import tag
 from datetime import date
 
-
 def date_from_tstamp(tstamp):
     return date.fromtimestamp(int(tstamp))
 
@@ -70,7 +69,10 @@ def get_nav_class_state(url, request, partial=False):
         return 'inactive'
 
 def to_unicode(in_obj):
-    if isinstance(in_obj, unicode):
+    """ Function to convert whatever we can to unicode."""
+    if not in_obj:
+        pass
+    elif isinstance(in_obj, unicode) or isinstance(in_obj, int):
         return in_obj
     elif isinstance(in_obj, str):
         return unicode(in_obj, 'UTF-8')
@@ -82,4 +84,16 @@ def to_unicode(in_obj):
             out_dict[key] = to_unicode(val)
         return out_dict
     else:
-        return in_obj
+        try:
+#            print 'try dict'
+            return to_unicode(dict(in_obj))
+        except: # Exception, e:
+            pass
+#            print 'try dict', e
+        try:
+#            print 'try list'
+            return to_unicode(list(in_obj))
+        except: # Exception, e:
+            pass
+#                 print 'try list', e
+    return in_obj

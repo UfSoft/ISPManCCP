@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: domain.py 27 2006-11-03 23:09:28Z s0undt3ch $
+# $Id: domain.py 34 2006-11-05 18:57:20Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/domain.py $
-# $LastChangedDate: 2006-11-03 23:09:28 +0000 (Fri, 03 Nov 2006) $
-#             $Rev: 27 $
+# $LastChangedDate: 2006-11-05 18:57:20 +0000 (Sun, 05 Nov 2006) $
+#             $Rev: 34 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -17,9 +17,9 @@ from ispmanccp.models.domain import ChangeDomainPassword
 from ispmanccp.lib.base import *
 
 class DomainController(BaseController):
-    # Grab Domain Info
-    domain = request.environ['REMOTE_USER']
-    dominfo = dict(g.ispman.getDomainInfo(domain).items())
+    # Verbose descriptions
+    accounts_verbose = _("%(ispmanAccounts)s of %(ispmanMaxAccounts)s accounts.")
+    vhosts_verbose = _("%(ispmanVhosts)s of %(ispmanMaxVhosts)s vhosts.")
 
     def index(self):
         # Translate -1 to unlimited for more readability
@@ -29,8 +29,13 @@ class DomainController(BaseController):
             self.dominfo['ispmanMaxAccounts'] = _('unlimited')
 
         # Grab Current Accounts and VHosts Totals
-        self.dominfo['ispmanVhosts'] = g.ispman.getVhostCount(self.domain)
-        self.dominfo['ispmanAccounts'] = g.ispman.getUserCount(self.domain)
+        self.dominfo['ispmanVhosts'] = get_domain_vhost_count(self.domain)
+        self.dominfo['ispmanAccounts'] = get_domain_user_count(self.domain)
+
+        # Construct verbose descriptions
+        c.accounts_verbose = self.accounts_verbose % self.dominfo
+        c.vhosts_verbose = self.vhosts_verbose % self.dominfo
+
         c.dominfo = self.dominfo
         return render_response('domain.index')
 

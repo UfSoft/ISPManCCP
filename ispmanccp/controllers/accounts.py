@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: accounts.py 32 2006-11-04 19:33:10Z s0undt3ch $
+# $Id: accounts.py 34 2006-11-05 18:57:20Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/accounts.py $
-# $LastChangedDate: 2006-11-04 19:33:10 +0000 (Sat, 04 Nov 2006) $
-#             $Rev: 32 $
+# $LastChangedDate: 2006-11-05 18:57:20 +0000 (Sun, 05 Nov 2006) $
+#             $Rev: 34 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -13,17 +13,19 @@
 # Please view LICENSE for additional licensing information.
 # =============================================================================
 
-import string
+from string import uppercase, digits
 from ispmanccp.lib.base import *
-from ispmanccp.models.accounts import MailAccountUpdate
+from ispmanccp.models.accounts import AccountUpdate
 
 class AccountsController(BaseController):
 
     def index(self):
         c.nav_1st_half = ['All']
-        c.nav_1st_half.extend(list(string.digits))
-        c.nav_2nd_half = list(string.uppercase)
+        c.nav_1st_half.extend(list(digits))
+        c.nav_2nd_half = list(uppercase)
+        c.domain = self.domain
         return render_response('accounts.index')
+
 
     def userlist(self):
         sort_by = request.POST['sort_by']
@@ -38,7 +40,8 @@ class AccountsController(BaseController):
         else:
             start_letter = 'All'
 
-        c.lengths, userlist = get_users_list(start_letter,
+        c.lengths, userlist = get_users_list(self.domain,
+                                             start_letter,
                                              sortby=sort_by,
                                              sort_ascending=sort_how)
 
@@ -48,17 +51,17 @@ class AccountsController(BaseController):
             c.users = userlist
         return render_response('accounts.snippets.userlist')
 
+
     def get_stored_pass(self, id):
-        domain = request.environ['REMOTE_USER']
-        uid = id + '@' + domain
+        uid = id + '@' + self.domain
         c.userinfo = {}
-        c.userinfo['userPassword'] = get_user_attribute_values(uid, domain, 'userPassword')
+        c.userinfo['userPassword'] = get_user_attribute_values(uid, self.domain, 'userPassword')
         return render_response('accounts.snippets.password')
+
 
     @rest.dispatch_on(POST='edit_post')
     def edit(self, id, message=None):
-        domain = request.environ['REMOTE_USER']
-        c.lengths, c.userinfo = get_user_info(id, domain)
+        c.lengths, c.userinfo = get_user_info(id, self.domain)
         if c.form_result:
             # Form has been submited
             # Assign the form_result to c.userinfo
@@ -82,13 +85,13 @@ class AccountsController(BaseController):
                 pass # there are no aliases
         return render_response('accounts.edituser')
 
-    @validate(template='accounts.edituser', schema=MailAccountUpdate(), form='edit', variable_decode=True)
+
+    @validate(template='accounts.edituser', schema=AccountUpdate(), form='edit', variable_decode=True)
     def edit_post(self, id):
         if request.method != 'POST':
             redirect_to(action='edit', id=id)
         user_dict = request.POST.copy()
-        domain = user_dict['ispmanDomain']
-        user_dict['uid'] = user_dict['uid'] + '@' + domain
+        user_dict['uid'] = user_dict['uid'] + '@' + self.domain
         uid = user_dict['uid']
         retval = update_user_info(user_dict)
         if retval != 1:
@@ -101,5 +104,10 @@ class AccountsController(BaseController):
         redirect_to(action="index", id=None)
 
 
-    def new(self):
+    @rest.dispatch_on(POST='new_post')
+    def new(self, id):
+        c.domain = self.domain
         return render_response('accounts.newuser')
+
+    def new_post(self, id):
+        pass

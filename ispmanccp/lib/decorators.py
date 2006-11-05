@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: decorators.py 26 2006-11-03 19:29:49Z s0undt3ch $
+# $Id: decorators.py 34 2006-11-05 18:57:20Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/decorators.py $
-# $LastChangedDate: 2006-11-03 19:29:49 +0000 (Fri, 03 Nov 2006) $
-#             $Rev: 26 $
+# $LastChangedDate: 2006-11-05 18:57:20 +0000 (Sun, 05 Nov 2006) $
+#             $Rev: 34 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -100,7 +100,7 @@ def validate(template=None, schema=None, validators=None, form=None,
             c.form_result = defaults
             c.form_errors = errors
             if request.environ['paste.config']['global_conf']['debug'] == 'true':
-                print 'VALIDATOR ERRORS:', errors
+                print 'VALIDATOR ERRORS: %s' % errors
             response = self._dispatch_call()
             response.content = [render(template)]
             return response

@@ -1,6 +1,6 @@
 /*
  * vim: sw=4 ts=4 fenc=utf-8 et
- * $Id: main.css 25 2006-11-03 17:18:07Z s0undt3ch $
+ * $Id: main.css 33 2006-11-05 18:37:08Z s0undt3ch $
 */
 
 h1 { font-size: 130%; text-align: center; }
@@ -108,15 +108,17 @@ input.quota { width: 50px; text-align: right; margin-right: 5px; }
 span.quota { margin-top: 7px; font-style: italic; }
 input.email { width: 250px; }
 
-
+/* Domain Details */
 /* User details shown on search */
-#user_details label, #user_details span { display: block; float: left; margin-bottom: 5px; }
-#user_details label {
+#user_details label, #user_details span, #domain_info label, #domain_info span {
+    display: block; float: left; margin-bottom: 5px; 
+}
+#user_details label, #domain_info label {
     text-align: right;
     width: 185px;
     padding-right: 15px;
     font-weight: bold;
     cursor: text;
 }
-#user_details br { clear: left; }
+#user_details br, #domain_info br { clear: left; }
 #user_details button { width: 50px; }

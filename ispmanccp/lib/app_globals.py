@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: app_globals.py 26 2006-11-03 19:29:49Z s0undt3ch $
+# $Id: app_globals.py 35 2006-11-05 21:59:17Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/app_globals.py $
-# $LastChangedDate: 2006-11-03 19:29:49 +0000 (Fri, 03 Nov 2006) $
-#             $Rev: 26 $
+# $LastChangedDate: 2006-11-05 21:59:17 +0000 (Sun, 05 Nov 2006) $
+#             $Rev: 35 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -61,8 +61,12 @@ class Globals(object):
         # Setup an ISPMan instance
         perl.require('ISPMan')
         perl.require('CGI')
+
         try:
-            self.ispman = perl.eval('$ispman = ISPMan->new() or die "$@"')
+            self.ispman = perl.eval(
+                '$ENV{"HTTP_USER_AGENT"} = "PYTHON-CCP-NG"; ' +
+                '$ispman = ISPMan->new() or die "$@"'
+            )
         except Exception, e:
             print e
 

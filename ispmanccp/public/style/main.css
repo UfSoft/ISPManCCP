@@ -1,6 +1,6 @@
 /*
  * vim: sw=4 ts=4 fenc=utf-8 et
- * $Id: main.css 36 2006-11-06 18:17:03Z s0undt3ch $
+ * $Id: main.css 37 2006-11-06 20:23:58Z s0undt3ch $
 */
 
 h1 { font-size: 130%; text-align: center; }
@@ -81,7 +81,7 @@ button { float: right; display: block; margin: 0px 0px -5px 10px; padding: 2px; 
     color: #3363a3;
 }
 #mainnav .inactive { color: #fff; }
-#mainnav .active:hover { color: #fff background-color: #3363a3; }
+#mainnav .active:hover { color: #fff; background-color: #3363a3; }
 #mainnav .inactive:hover { background-color: #3363a3; }
 
 /* Context Navigation */

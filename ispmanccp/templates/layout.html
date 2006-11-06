@@ -100,15 +100,18 @@
   </div> <!--! div id=ctxnav ended -->
   <div id="contents">
     <!--! Message like success or error passed to user -->
-    <span class="error-message" py:if="c.message">
+    <span id="message" class="error-message" py:if="c.message">
       ${ c.message }
     </span>
     <!--! Grab inheriting templates body -->
     ${select("*|text()")}
   </div>
+  <script type="text/javascript" py:if="c.message">
+    ${ h.visual_effect('fade', 'message', duration=6) }
+  </script>
 </body>
 </html>
 <!--!
-$Id: layout.html 34 2006-11-05 18:57:20Z s0undt3ch $
+$Id: layout.html 37 2006-11-06 20:23:58Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->

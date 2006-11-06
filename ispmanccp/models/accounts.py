@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: accounts.py 34 2006-11-05 18:57:20Z s0undt3ch $
+# $Id: accounts.py 36 2006-11-06 18:17:03Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/models/accounts.py $
-# $LastChangedDate: 2006-11-05 18:57:20 +0000 (Sun, 05 Nov 2006) $
-#             $Rev: 34 $
+# $LastChangedDate: 2006-11-06 18:17:03 +0000 (Mon, 06 Nov 2006) $
+#             $Rev: 36 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -44,3 +44,9 @@ class AccountUpdate(Schema):
                          strip=True,
                          resolve_domain=dns_available)
     )
+
+class AccountDelete(Schema):
+    allow_extra_fields = True
+    filter_extra_fields = True
+    ispmanDomain = validators.UnicodeString(not_empty=True, encoding='UTF-8')
+    uid = validators.UnicodeString(not_empty=True, encoding='UTF-8')

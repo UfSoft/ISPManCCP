@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: accounts.py 34 2006-11-05 18:57:20Z s0undt3ch $
+# $Id: accounts.py 36 2006-11-06 18:17:03Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/accounts.py $
-# $LastChangedDate: 2006-11-05 18:57:20 +0000 (Sun, 05 Nov 2006) $
-#             $Rev: 34 $
+# $LastChangedDate: 2006-11-06 18:17:03 +0000 (Mon, 06 Nov 2006) $
+#             $Rev: 36 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -15,7 +15,7 @@
 
 from string import uppercase, digits
 from ispmanccp.lib.base import *
-from ispmanccp.models.accounts import AccountUpdate
+from ispmanccp.models.accounts import AccountUpdate, AccountDelete
 
 class AccountsController(BaseController):
 
@@ -57,6 +57,27 @@ class AccountsController(BaseController):
         c.userinfo = {}
         c.userinfo['userPassword'] = get_user_attribute_values(uid, self.domain, 'userPassword')
         return render_response('accounts.snippets.password')
+
+
+
+    @rest.dispatch_on(POST='delete_post')
+    def delete(self, id):
+        c.lengths, c.userinfo = get_user_info(id, self.domain)
+        return render_response('accounts.deleteuser')
+
+
+    @validate(template='accounts.deleteuser', schema=AccountDelete(), form='delete')
+    def delete_post(self, id):
+        retval = delete_user(request.POST)
+        if retval != "1" or retval != 1:
+            session['message'] = _('Backend Error')
+            session.save()
+            self.message = 'Backend Error'
+            h.redirect_to(action="delete", id=id)
+        session['message'] = _('Operation Successfull')
+        session.save()
+        redirect_to(action="index", id=None)
+
 
 
     @rest.dispatch_on(POST='edit_post')
@@ -106,7 +127,8 @@ class AccountsController(BaseController):
 
     @rest.dispatch_on(POST='new_post')
     def new(self, id):
-        c.domain = self.domain
+        c.defaults = get_default_acount_vars()
+        c.dominfo = self.dominfo
         return render_response('accounts.newuser')
 
     def new_post(self, id):

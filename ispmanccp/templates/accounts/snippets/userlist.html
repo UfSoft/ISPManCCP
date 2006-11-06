@@ -64,8 +64,16 @@
           ${h.tag.button(
               _("Edit"),
               title=_("Edit Account Entry"),
-              onClick="location.href='" + h.url_for(controller="accounts", action="edit", id=uid) + "'")
+              onClick="location.href='" + h.url_for(controller="accounts", action="edit", id=uid) + "'"
+            )
           }
+          ${h.tag.button(
+              _("Delete Account"),
+              title=_("Delete Account"),
+              onClick="location.href='" + h.url_for(controller="accounts", action="delete", id=uid) + "'"
+            )
+          }
+
         </fieldset>
       </div>
       <div id="none" py:when="c.users == []"></div>
@@ -78,7 +86,7 @@
 
 </html>
 <!--!
-$Id: userlist.html 30 2006-11-04 02:13:16Z s0undt3ch $
+$Id: userlist.html 36 2006-11-06 18:17:03Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

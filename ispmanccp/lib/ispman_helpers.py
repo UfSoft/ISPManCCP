@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: ispman_helpers.py 34 2006-11-05 18:57:20Z s0undt3ch $
+# $Id: ispman_helpers.py 36 2006-11-06 18:17:03Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/ispman_helpers.py $
-# $LastChangedDate: 2006-11-05 18:57:20 +0000 (Sun, 05 Nov 2006) $
-#             $Rev: 34 $
+# $LastChangedDate: 2006-11-06 18:17:03 +0000 (Mon, 06 Nov 2006) $
+#             $Rev: 36 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -132,11 +132,16 @@ def update_user_info(attrib_dict):
     cgi = get_perl_cgi(attrib_dict)
     return g.ispman.update_user(cgi)
 
+
 def get_user_attribute_values(id, domain, attribute):
     return to_unicode(
         g.ispman.getUserAttributeValues(id, domain, attribute)
     )
 
+
+def delete_user(post_dict):
+    cgi = get_perl_cgi(post_dict)
+    return g.ispman.deleteUser(cgi)
 
 def get_domain_info(domain):
     def get():
@@ -144,7 +149,7 @@ def get_domain_info(domain):
             g.ispman.getDomainInfo(domain, 2))
         )
 
-    cached = ispman_cache.get_value(
+    cached = ispman_cache.get_value(        # cache it for 5 minutes
         'domain_info', createfunc=get, type="memory", expiretime=300)
     return cached
 
@@ -153,4 +158,18 @@ def get_domain_vhost_count(domain):
 
 def get_domain_user_count(domain):
     return to_unicode(g.ispman.getUserCount(domain))
+
+def get_default_acount_vars():
+    def get():
+        defaults = {}
+        defaults['defaultUserFtpQuota'] = to_unicode(
+            g.ispman.getConf('defaultUserFtpQuota')
+        )
+        defaults['defaultUserMailQuota'] = to_unicode(
+            g.ispman.getConf('defaultUserMailQuota')
+        )
+        return defaults
+    cached = ispman_cache.get_value(               # cache it for one hour
+        'account_defaults', createfunc=get, type="memory", expiretime=3600)
+    return cached
 

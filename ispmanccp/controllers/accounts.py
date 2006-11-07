@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: accounts.py 36 2006-11-06 18:17:03Z s0undt3ch $
+# $Id: accounts.py 38 2006-11-07 11:22:16Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/accounts.py $
-# $LastChangedDate: 2006-11-06 18:17:03 +0000 (Mon, 06 Nov 2006) $
-#             $Rev: 36 $
+# $LastChangedDate: 2006-11-07 11:22:16 +0000 (Tue, 07 Nov 2006) $
+#             $Rev: 38 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -16,6 +16,7 @@
 from string import uppercase, digits
 from ispmanccp.lib.base import *
 from ispmanccp.models.accounts import AccountUpdate, AccountDelete
+
 
 class AccountsController(BaseController):
 
@@ -50,6 +51,27 @@ class AccountsController(BaseController):
         else:
             c.users = userlist
         return render_response('accounts.snippets.userlist')
+
+
+    def search(self):
+        sort_by = request.POST['sort_by']
+        sort_how = bool(int(request.POST['sort_how']))
+        c.lengths, userlist = get_users_list(self.domain,
+                                             'All',
+                                             sortby=sort_by,
+                                             sort_ascending=sort_how)
+
+        html = u'<ul>\n'
+        for user in userlist:
+            html += u'<li>\n'
+            html += u'<div class="uid">%(ispmanUserId)s</div>\n'
+            html += u'<span class="informal">%(cn)s</span>\n'
+            html += u'<div class="email">'
+            html += u'<span class="informal">%(mailLocalAddress)s</span>'
+            html += u'</div>\n</li>\n'
+            html = html % user
+        html += u'</ul>\n'
+        return Response(html)
 
 
     def get_stored_pass(self, id):

@@ -12,9 +12,9 @@
   <body>
     <h1>${ c.domain + ' ' + _('domain') }</h1>
     <div id="user_search">
-      <form class="user_search" name="sortby" id="sortby">
-        <fieldset>
-          <legend>${ _("Search / Select") }</legend>
+      <fieldset>
+        <legend>${ _("Search / Select") }</legend>
+        <form class="user_search" name="sortby" id="sortby">
         <nobr>
           <!--! Our default selected radio button -->
           <input type="radio" name="letter" id="None" value="None" checked="checked"/>
@@ -48,9 +48,27 @@
             <option value="0">Descending</option>
           </select>
         </nobr>
-        </fieldset>
-      </form>
+        </form><br/>
+        <div class="autocomplete">
+          <label for="uidsearch">${ _("User ID Search:") }</label>
+          <input autocomplete="off" type="text" id="uidsearch" name="uidsearch"/>
+          <input type="submit" name="submit" value="${ _('Edit Account') }"
+            title="_('Edit Account')"
+            onClick="location.href='/accounts/edit/'+$('uidsearch').value"/>
+        </div>
+        <div class="auto_complete" id="uid_auto_complete"></div>
+        <script type="text/javascript">
+          new Ajax.Autocompleter(
+              'uidsearch',
+              'uid_auto_complete',
+              '/accounts/search/',
+              { parameters:Form.serialize('sortby') },
+              ignoreCase = true
+          )
+        </script>
+      </fieldset>
     </div>
+
     ${ h.observe_form(
     'sortby',
     frequency=1,
@@ -69,7 +87,7 @@
 
 </html>
 <!--!
-$Id: index.html 34 2006-11-05 18:57:20Z s0undt3ch $
+$Id: index.html 38 2006-11-07 11:22:16Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: helpers.py 34 2006-11-05 18:57:20Z s0undt3ch $
+# $Id: helpers.py 38 2006-11-07 11:22:16Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/helpers.py $
-# $LastChangedDate: 2006-11-05 18:57:20 +0000 (Sun, 05 Nov 2006) $
-#             $Rev: 34 $
+# $LastChangedDate: 2006-11-07 11:22:16 +0000 (Tue, 07 Nov 2006) $
+#             $Rev: 38 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -21,6 +21,8 @@ All names available in this module will be available under the Pylons h object.
 from webhelpers import *
 from pylons import h
 from pylons.util import _, log, set_lang, get_lang
+from genshi.builder import tag
+
 
 def wrap_helpers(localdict):
     from genshi import Markup
@@ -35,8 +37,7 @@ def wrap_helpers(localdict):
         localdict[name] = helper_wrapper(func)
 wrap_helpers(locals())
 
-# These imports are made here so they don't get wrapped, there's no need to.
-from genshi.builder import tag
+# Don't know why but this import needs to be done after the wrapper
 from datetime import date
 
 def date_from_tstamp(tstamp):

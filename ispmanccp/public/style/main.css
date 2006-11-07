@@ -1,6 +1,6 @@
 /*
  * vim: sw=4 ts=4 fenc=utf-8 et
- * $Id: main.css 37 2006-11-06 20:23:58Z s0undt3ch $
+ * $Id: main.css 38 2006-11-07 11:22:16Z s0undt3ch $
 */
 
 h1 { font-size: 130%; text-align: center; }
@@ -95,13 +95,42 @@ button { float: right; display: block; margin: 0px 0px -5px 10px; padding: 2px; 
 #ctxnav li { display: inline; margin-left: 5px; position: relative; padding: 3px; }
 
 /* Alphabet search fieldset */
+.user_search{ text-align: center; }
 .user_search label, .user_search input { display: inline; padding: 0px; }
-.user_search fieldset { text-align: center; }
 .user_search label, .user_search select, .user_search option { font-size: 12px; }
 .user_search input {visibility: hidden; width: 0px; height: 0px; padding: 0px; margin: 0px; }
 .user_search input + label { cursor: pointer; font-weight: bold; }
 .user_search input + label:hover { color: orange; }
 .user_search input:checked + label { color: red; }
+
+
+/* Autocomplete */
+div.autocomplete { text-align: center; }
+div.autocomplete label { cursor: text; font-weight: bold; }
+div.auto_complete {
+    position:absolute;
+    width: 600px;
+    background-color:white;
+    border:1px solid #888;
+    margin:0px;
+    padding:0px;
+}
+div.auto_complete ul {
+    list-style-type:none;
+    margin:0px;
+    padding:0px;
+}
+div.auto_complete ul li.selected { background-color: #ffb;}
+div.auto_complete ul li {
+    list-style-type:none;
+    display:block;
+    margin:0;
+    padding:2px;
+    height:60px;
+    cursor:pointer;
+}
+div.auto_complete li div.email { font-size:10px; }
+div.auto_complete li div.uid { font-weight: bold; font-size: 12px; line-height: 1.2em; }
 
 /* Edit user special cases */
 input.quota { width: 50px; text-align: right; margin-right: 5px; }

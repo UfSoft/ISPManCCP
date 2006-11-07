@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: ispman_helpers.py 36 2006-11-06 18:17:03Z s0undt3ch $
+# $Id: ispman_helpers.py 38 2006-11-07 11:22:16Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/ispman_helpers.py $
-# $LastChangedDate: 2006-11-06 18:17:03 +0000 (Mon, 06 Nov 2006) $
-#             $Rev: 36 $
+# $LastChangedDate: 2006-11-07 11:22:16 +0000 (Tue, 07 Nov 2006) $
+#             $Rev: 38 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -50,7 +50,8 @@ def get_users_list(domain, letter, sortby=None, sort_ascending=True):
         domain, [
             "dn",
             "givenName",
-            "surname",
+            "sn",
+            "cn",
             "ispmanCreateTimestamp",
             "ispmanUserId",
             "mailLocalAddress",

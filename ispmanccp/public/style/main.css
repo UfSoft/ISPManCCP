@@ -1,6 +1,6 @@
 /*
  * vim: sw=4 ts=4 fenc=utf-8 et
- * $Id: main.css 38 2006-11-07 11:22:16Z s0undt3ch $
+ * $Id: main.css 39 2006-11-07 12:13:05Z s0undt3ch $
 */
 
 h1 { font-size: 130%; text-align: center; }
@@ -61,6 +61,15 @@ button { float: right; display: block; margin: 0px 0px -5px 10px; padding: 2px; 
     font-size: 90%;
     background-image: url("/images/warning.gif");
     background-repeat: no-repeat;
+}
+
+.sys-message {
+    position: absolute;
+    top: 25px;
+    right: 50px;
+    color: #fff;
+    font-weight: bold;
+    letter-spacing: 1px;
 }
 
 /* Main Navigation */
@@ -131,6 +140,7 @@ div.auto_complete ul li {
 }
 div.auto_complete li div.email { font-size:10px; }
 div.auto_complete li div.uid { font-weight: bold; font-size: 12px; line-height: 1.2em; }
+
 
 /* Edit user special cases */
 input.quota { width: 50px; text-align: right; margin-right: 5px; }

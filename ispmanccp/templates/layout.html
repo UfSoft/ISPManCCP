@@ -60,7 +60,14 @@
     You really shouldn't use IE.<br>Because of that I'll spend you some more
     bandwidth,<br>and I won't promisse this webtool will work in perfection.    </p>
     <![endif]-->
+
+    <!--! Message like success or error passed to user -->
+    <span id="message" class="sys-message" py:if="c.message">
+      ${ c.message }
+    </span>
+    <!-- Our "in background action" spinner -->
     <div id="spinner"></div>
+
     <!--!
     Main Navigation
     Is the user logged in? If so, show him the menu.
@@ -99,19 +106,15 @@
     </ul>
   </div> <!--! div id=ctxnav ended -->
   <div id="contents">
-    <!--! Message like success or error passed to user -->
-    <span id="message" class="error-message" py:if="c.message">
-      ${ c.message }
-    </span>
     <!--! Grab inheriting templates body -->
     ${select("*|text()")}
   </div>
   <script type="text/javascript" py:if="c.message">
-    ${ h.visual_effect('fade', 'message', duration=6) }
+    ${ h.visual_effect('fade', 'message', duration=10) }
   </script>
 </body>
 </html>
 <!--!
-$Id: layout.html 37 2006-11-06 20:23:58Z s0undt3ch $
+$Id: layout.html 39 2006-11-07 12:13:05Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->

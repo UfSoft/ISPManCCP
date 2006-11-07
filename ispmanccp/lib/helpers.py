@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: helpers.py 38 2006-11-07 11:22:16Z s0undt3ch $
+# $Id: helpers.py 40 2006-11-07 22:30:49Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/helpers.py $
-# $LastChangedDate: 2006-11-07 11:22:16 +0000 (Tue, 07 Nov 2006) $
-#             $Rev: 38 $
+# $LastChangedDate: 2006-11-07 22:30:49 +0000 (Tue, 07 Nov 2006) $
+#             $Rev: 40 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -71,14 +71,14 @@ def get_nav_class_state(url, request, partial=False):
 
 def to_unicode(in_obj):
     """ Function to convert whatever we can to unicode."""
-    if not in_obj:
+    if not in_obj or in_obj == '':
         pass
     elif isinstance(in_obj, unicode) or isinstance(in_obj, int):
         return in_obj
     elif isinstance(in_obj, str):
         return unicode(in_obj, 'UTF-8')
     elif isinstance(in_obj, list):
-        return [to_unicode(x) for x in in_obj if x != '' or None]
+        return [to_unicode(x) for x in in_obj if x not in ('', u'', None)]
     elif isinstance(in_obj, dict):
         out_dict = {}
         for key, val in in_obj.iteritems():
@@ -98,3 +98,77 @@ def to_unicode(in_obj):
             pass
 #                 print 'try list', e
     return in_obj
+
+
+def remap_user_dict(form_dict, user_dict):
+    uid = user_dict['ispmanUserId']
+    lengths = {}
+    lengths[uid] = {}
+
+    for key, val in form_dict.iteritems():
+        if isinstance(val, list):
+            # Make shure we're not passing empty mailAlias and/or
+            # mailForwardingAddress's
+            new_list = to_unicode(val)
+            if len(new_list) > 0:
+                user_dict[key] = new_list
+        else:
+            user_dict[key] = to_unicode(val)
+    # calculate lenghts
+    try:
+        lengths[uid]['forwards'] = len(user_dict['mailForwardingAddress'])
+    except:
+        pass # there are no forwards
+    try:
+        lengths[uid]['aliases'] = len(user_dict['mailAlias'])
+    except:
+        pass # there are no aliases
+
+    return lengths, user_dict
+
+
+def random_pass(alpha, num):
+    """
+    Returns a human-readble password (say rol86din instead of
+    a difficult to remember K8Yn9muL )
+    From http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/410076
+    """
+    import string
+    import random
+    vowels = ['a','e','i','o','u']
+    consonants = [a for a in string.ascii_lowercase if a not in vowels]
+    digits = string.digits
+
+    ####utility functions
+    def a_part(slen):
+        ret = ''
+        for i in range(slen):
+            if i%2 ==0:
+                randid = random.randint(0,20) #number of consonants
+                ret += consonants[randid]
+            else:
+                randid = random.randint(0,4) #number of vowels
+                ret += vowels[randid]
+        return ret
+
+    def n_part(slen):
+        ret = ''
+        for i in range(slen):
+            randid = random.randint(0,9) #number of digits
+            ret += digits[randid]
+        return ret
+
+    ###
+    fpl = alpha/2
+    if alpha % 2 :
+        fpl = int(alpha/2) + 1
+    lpl = alpha - fpl
+
+    start = a_part(fpl)
+    mid = n_part(num)
+    end = a_part(lpl)
+
+    return u"%s%s%s" % (start,mid,end)
+
+
+

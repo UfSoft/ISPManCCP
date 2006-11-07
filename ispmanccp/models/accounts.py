@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: accounts.py 36 2006-11-06 18:17:03Z s0undt3ch $
+# $Id: accounts.py 40 2006-11-07 22:30:49Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/models/accounts.py $
-# $LastChangedDate: 2006-11-06 18:17:03 +0000 (Mon, 06 Nov 2006) $
-#             $Rev: 36 $
+# $LastChangedDate: 2006-11-07 22:30:49 +0000 (Tue, 07 Nov 2006) $
+#             $Rev: 40 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -17,11 +17,14 @@ from pylons.util import _
 from formencode import Schema, validators, ForEach, All
 from ispmanccp.models.validators import *
 
+__all__ = ['AccountUpdate', 'AccountDelete', 'AccountCreate']
+
 try:
     import DNS
     dns_available = True
 except ImportError:
     dns_available = False
+
 
 class AccountUpdate(Schema):
     allow_extra_fields = True
@@ -45,8 +48,32 @@ class AccountUpdate(Schema):
                          resolve_domain=dns_available)
     )
 
+
 class AccountDelete(Schema):
     allow_extra_fields = True
     filter_extra_fields = True
     ispmanDomain = validators.UnicodeString(not_empty=True, encoding='UTF-8')
     uid = validators.UnicodeString(not_empty=True, encoding='UTF-8')
+
+
+class AccountCreate(Schema):
+    allow_extra_fields = True
+    filter_extra_fields = True
+    ispmanDomain = validators.UnicodeString(not_empty=True, encoding='UTF-8')
+    uid = validators.UnicodeString(not_empty=True, encoding='UTF-8')
+    givenName = CorrectNamesValidator(not_empty=True, strip=True, encoding='UTF-8')
+    sn = CorrectNamesValidator(not_empty=True, strip=True, encoding='UTF-8')
+    userPassword = SecurePassword(
+        not_empty=True, strip=True,
+        messages={'empty': _("Please enter a value or click button to regenerate password")}
+    )
+    ispmanUserId = UniqueUserId(not_empty=True, strip=True, encoding='UTF-8')
+    FTPQuotaMBytes = validators.Int(not_empty=False, strip=True)
+    FTPStatus = validators.OneOf([u'enabled', u'disabled'])
+    mailQuota = validators.Int(not_empty=False, strip=True)
+    mailAlias = ForEach(ValidMailAlias(not_empty=True, strip=True))#, unique=True)
+    mailForwardingAddress = ForEach(
+        validators.Email(not_empty=True,
+                         strip=True,
+                         resolve_domain=dns_available)
+    )

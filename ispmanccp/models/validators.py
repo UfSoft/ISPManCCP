@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: validators.py 27 2006-11-03 23:09:28Z s0undt3ch $
+# $Id: validators.py 40 2006-11-07 22:30:49Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/models/validators.py $
-# $LastChangedDate: 2006-11-03 23:09:28 +0000 (Fri, 03 Nov 2006) $
-#             $Rev: 27 $
+# $LastChangedDate: 2006-11-07 22:30:49 +0000 (Tue, 07 Nov 2006) $
+#             $Rev: 40 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -15,6 +15,7 @@
 
 import re
 from formencode import validators, FancyValidator, Invalid
+from formencode.variabledecode import variable_decode
 from pylons import request, h, g
 from pylons.util import _
 
@@ -99,14 +100,24 @@ class ValidMailAlias(validators.Email):
     messages = {
         'same_domain': _(
             "The alias must be kept under the same domain: %(domain)s"
-        )
+        ),
+        'not_unique': _(
+            'This address is already taken. Please choose a diferent one.'
+        ),
+        'duplicate': _("Don't duplicate mail aliases.")
     }
 
     def validate_python(self, value, state):
+#        if variable_decode(request.POST)['mailAlias'].count(value) > 1:
+#            raise Invalid(self.message('duplicate', state), value, state)
+
+        from ispmanccp.lib.ispman_helpers import address_exists
         domain = request.POST['ispmanDomain']
         if not value.endswith(domain):
             raise Invalid(self.message('same_domain', state, domain=domain),
                           value, state)
+        if address_exists(value):
+            raise Invalid(self.message('not_unique', state), value, state)
         validators.Email.validate_python(self, value, state)
 
 
@@ -116,7 +127,8 @@ class CorrectNamesValidator(validators.UnicodeString):
     more than one name, ie, FirstName: Steve Jonas, LastName: Alchemy."""
 
     messages = {
-        'not_valid': _('%(chars)s %(plural)s not allowed on names.')
+        'not_valid_singular': _('%(chars)s is not allowed on names.'),
+        'not_valid_plural': _('%(chars)s are not allowed on names.')
     }
 
     def validate_python(self, value, state):
@@ -125,11 +137,52 @@ class CorrectNamesValidator(validators.UnicodeString):
             chars = re.findall(r'[^\w\s]|[0-9]|[_]', value, re.U)
             if chars:
                 if len(chars) == 1:
-                    plural = _('is')
-                else:
-                    plural = _('are')
-                chars =  u''.join(chars)
-                raise Invalid(
-                    self.message(
-                        'not_valid', state, chars=chars, plural=plural
+                    raise Invalid(
+                        self.message(
+                            'not_valid_singular', state, chars=u''.join(chars)
                     ), value, state)
+                else:
+                    raise Invalid(
+                        self.message(
+                            'not_valid_singular', state, chars=u''.join(chars)
+                        ), value, state)
+
+class UniqueUserId(validators.UnicodeString):
+    """Validator for user Id's. Allow everythin in the unicode charecter map,
+    plus dot's, plus scores, ie(a_good.user-id)."""
+
+    messages = {
+        'not_valid_singular': _('%(chars)s is not allowed on names.'),
+        'not_valid_plural': _('%(chars)s are not allowed on names.'),
+        'not_unique': _('This User ID is already taken.'),
+        'change_uid': _('Please change User ID.')
+    }
+
+    def _from_python(self, value, state):
+        return validators.UnicodeString._from_python(value.lower())
+
+    def validate_python(self, value, state):
+        if value == u'please change me':
+            raise Invalid(
+                self.message('change_uid', state), value, state)
+
+        from ispmanccp.lib.ispman_helpers import user_exists
+        validators.UnicodeString.validate_python(self, value, state)
+        if value:
+            chars = re.findall(r'[^\w\.-]', value, re.U)
+            if chars:
+                print len(chars)
+                if len(chars) == 1:
+                    raise Invalid(
+                        self.message(
+                            'not_valid_singular', state, chars=u''.join(chars)
+                    ), value, state)
+                else:
+                    raise Invalid(
+                        self.message(
+                            'not_valid_plural', state, chars=u''.join(chars)
+                        ), value, state)
+        if user_exists(value):
+            raise Invalid(
+                self.message(
+                    'not_unique', state), value, state)

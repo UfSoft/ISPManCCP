@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: ispman_helpers.py 38 2006-11-07 11:22:16Z s0undt3ch $
+# $Id: ispman_helpers.py 40 2006-11-07 22:30:49Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/ispman_helpers.py $
-# $LastChangedDate: 2006-11-07 11:22:16 +0000 (Tue, 07 Nov 2006) $
-#             $Rev: 38 $
+# $LastChangedDate: 2006-11-07 22:30:49 +0000 (Tue, 07 Nov 2006) $
+#             $Rev: 40 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -17,6 +17,8 @@ from string import join
 from formencode.variabledecode import variable_decode
 from pylons import request, g, cache
 from ispmanccp.lib.helpers import to_unicode
+
+APP_CONF = request.environ['paste.config']['app_conf']
 
 ispman_cache = cache.get_cache('ispman')
 
@@ -38,7 +40,7 @@ updatable_attributes = (
 def conv_to_list(obj):
     """Helper to covert perl ARRAY's which sometimes
     are just strings, to lists."""
-    if isinstance(obj, str):
+    if isinstance(obj, str) or isinstance(obj, unicode):
         return 1, [to_unicode(obj)]
     else:
         listing = to_unicode(obj)
@@ -144,6 +146,12 @@ def delete_user(post_dict):
     cgi = get_perl_cgi(post_dict)
     return g.ispman.deleteUser(cgi)
 
+
+def user_exists(user_id):
+    uid = user_id + '@' + request.POST['ispmanDomain']
+    return bool(int(g.ispman.userExists(uid)))
+
+
 def get_domain_info(domain):
     def get():
         return to_unicode(dict(
@@ -154,11 +162,14 @@ def get_domain_info(domain):
         'domain_info', createfunc=get, type="memory", expiretime=300)
     return cached
 
+
 def get_domain_vhost_count(domain):
     return to_unicode(g.ispman.getVhostCount(domain))
 
+
 def get_domain_user_count(domain):
     return to_unicode(g.ispman.getUserCount(domain))
+
 
 def get_default_acount_vars():
     def get():
@@ -173,4 +184,17 @@ def get_default_acount_vars():
     cached = ispman_cache.get_value(               # cache it for one hour
         'account_defaults', createfunc=get, type="memory", expiretime=3600)
     return cached
+
+
+def address_exists(address):
+    base = APP_CONF['ispman_ldap_base_dn']
+    scope = 'sub'
+    ldap_filter = "&(mailAlias=%(address)s)(mailLocalAddress=%(address)s)"
+    ldap_filter = ldap_filter % {'address': address}
+    return bool(int(g.ispman.getCount(base, ldap_filter)))
+
+
+def add_user(attrib_dict):
+    cgi = get_perl_cgi(attrib_dict)
+    return g.ispman.addUser(cgi)
 

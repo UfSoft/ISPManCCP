@@ -4,15 +4,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:py="http://genshi.edgewall.org/"
       xmlns:xi="http://www.w3.org/2001/XInclude"
-      py:with="domain = c.dominfo['ispmanDomain']">
+      py:with="domain = c.dominfo['ispmanDomain']; uid=c.userinfo['ispmanUserId']">
   <xi:include href="../layout.html"/>
   <head>
     <title>${ _("New Account") }</title>
 
     <!--! Unfortunatly we must keep those html vars long -->
     <script type="text/javascript">
-      var total_alias = 0;
-      var total_forwards = 0;
+      var total_alias = ${c.lengths[uid].aliases or 0};
+      var total_forwards = ${c.lengths[uid].forwards or 0};
 
       function addAliasField() {
         var html = '\n<label for="mailAlias-'+total_alias+'">&nbsp;</label>\n';
@@ -35,7 +35,7 @@
   <body>
     <h1>${ domain  + ' ' + _('domain')}</h1>
     <form id="new_user" class="user_input" method="post" accept-charset="UTF-8"
-      action="${ h.url_for(action='new')}">
+      action="${ h.url_for(action='new')}" onSubmit="$(uid).value = $(ispmanUserId).value;">
       <fieldset>
         <legend>
           ${ _("New Account") }
@@ -44,7 +44,8 @@
         <!--! User ID -->
         <label for="ispmanUserId">${ _("User ID:") }</label>
         <input type="text" name="ispmanUserId" id="ispmanUserId"
-        value="${ c.userinfo['ispmanUserId'] }"/>
+        value="${ c.userinfo['ispmanUserId'] }"
+        onClick="if (this.value == 'please change me') { this.value=''; return false; }"/>
         <span class="error-message" py:if="'ispmanUserId' in c.form_errors">
           ${ c.form_errors['ispmanUserId']}
         </span><br/>
@@ -72,16 +73,9 @@
         </span><br/>
 
         <!--! User Password -->
-        <label for="userPassword">${ _("Password:") }</label>
-        <input type="password" name="userPassword" id="userPassword"/>
-        <span class="error-message" py:if="'userPassword' in c.form_errors">
-          ${ c.form_errors['userPassword']}
-        </span><br/>
-        <label for="userPasswordConfirm">${ _("Re-type Password:") }</label>
-        <input type="password" name="userPasswordConfirm" id="userPasswordConfirm"/>
-        <span class="error-message" py:if="'userPasswordConfirm' in c.form_errors">
-          ${ c.form_errors['userPasswordConfirm']}
-        </span><br/>
+        <div id="user_password">
+          <xi:include href="snippets/newpassword.html"/>
+        </div>
 
         <!--! FTP Quota -->
         <label for="FTPQuotaMBytes">${ _("FTP Quota:") }</label>
@@ -133,18 +127,14 @@
 
         <button type="submit" name="Update"
           title="${ _('Add User Entry')}">${ _("Add User") }</button>
-        <input type="hidden" name="uid" value="${uid}" />
+        <input type="hidden" name="uid" value="" />
         <input type="hidden" name="ispmanDomain" value="${domain}" />
-        <input type="hidden" name="mailLocalAddress"
-          value="${c.userinfo['mailLocalAddress']}" />
-        <input type="hidden" name="ispmanCreateTimestamp"
-          value="${c.userinfo['ispmanCreateTimestamp']}"/>
       </fieldset>
     </form>
   </body>
 </html>
 <!--!
-$Id: newuser.html 36 2006-11-06 18:17:03Z s0undt3ch $
+$Id: newuser.html 40 2006-11-07 22:30:49Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

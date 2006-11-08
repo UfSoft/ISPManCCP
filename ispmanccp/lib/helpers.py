@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: helpers.py 40 2006-11-07 22:30:49Z s0undt3ch $
+# $Id: helpers.py 41 2006-11-08 14:24:50Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/helpers.py $
-# $LastChangedDate: 2006-11-07 22:30:49 +0000 (Tue, 07 Nov 2006) $
-#             $Rev: 40 $
+# $LastChangedDate: 2006-11-08 14:24:50 +0000 (Wed, 08 Nov 2006) $
+#             $Rev: 41 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -39,6 +39,7 @@ wrap_helpers(locals())
 
 # Don't know why but this import needs to be done after the wrapper
 from datetime import date
+from paste.deploy.converters import asbool as paste_asbool
 
 def date_from_tstamp(tstamp):
     return date.fromtimestamp(int(tstamp))
@@ -169,6 +170,13 @@ def random_pass(alpha, num):
     end = a_part(lpl)
 
     return u"%s%s%s" % (start,mid,end)
+
+
+def asbool(obj):
+    try:
+        return bool(int(obj))
+    except:
+        return paste_asbool(obj)
 
 
 

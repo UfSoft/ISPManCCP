@@ -137,6 +137,7 @@
         <button type="submit" name="Update"
           title="${ _('Update User Entry')}">${ _("Update") }</button>
         <input type="hidden" name="uid" value="${uid}" />
+        <input type="hidden" name="ispmanUserId" value="${ c.userinfo['ispmanUserId'] }"/>
         <input type="hidden" name="ispmanDomain" value="${domain}" />
         <input type="hidden" name="mailLocalAddress"
           value="${c.userinfo['mailLocalAddress']}" />
@@ -148,7 +149,7 @@
   </body>
 </html>
 <!--!
-$Id: edituser.html 36 2006-11-06 18:17:03Z s0undt3ch $
+$Id: edituser.html 41 2006-11-08 14:24:50Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

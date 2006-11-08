@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: validators.py 40 2006-11-07 22:30:49Z s0undt3ch $
+# $Id: validators.py 41 2006-11-08 14:24:50Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/models/validators.py $
-# $LastChangedDate: 2006-11-07 22:30:49 +0000 (Tue, 07 Nov 2006) $
-#             $Rev: 40 $
+# $LastChangedDate: 2006-11-08 14:24:50 +0000 (Wed, 08 Nov 2006) $
+#             $Rev: 41 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -108,16 +108,29 @@ class ValidMailAlias(validators.Email):
     }
 
     def validate_python(self, value, state):
-#        if variable_decode(request.POST)['mailAlias'].count(value) > 1:
-#            raise Invalid(self.message('duplicate', state), value, state)
+        if variable_decode(request.POST)['mailAlias'].count(value) > 1:
+            raise Invalid(self.message('duplicate', state), value, state)
 
-        from ispmanccp.lib.ispman_helpers import address_exists
+        from ispmanccp.lib.ispman_helpers import address_exists, ldap_search
         domain = request.POST['ispmanDomain']
+        uid = request.POST['ispmanUserId']
         if not value.endswith(domain):
             raise Invalid(self.message('same_domain', state, domain=domain),
                           value, state)
-        if address_exists(value):
-            raise Invalid(self.message('not_unique', state), value, state)
+
+        query = '&(objectClass=ispmanDomainUser)(ispmanDomain=' + domain + \
+                ')(|(mailAlias=%(addr)s)(mailLocalAddress=%(addr)s))'
+
+        query = query % {'addr': value}
+
+        results = ldap_search(query)
+
+        if results:
+            for entry in results:
+                if entry['ispmanUserId'] != uid:
+                    raise Invalid(self.message(
+                        'not_unique', state), value, state)
+
         validators.Email.validate_python(self, value, state)
 
 

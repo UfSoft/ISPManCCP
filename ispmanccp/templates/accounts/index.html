@@ -50,8 +50,8 @@
         </nobr>
         </form><br/>
         <div class="autocomplete">
-          <label for="uidsearch">${ _("User ID Search:") }</label>
-          <input autocomplete="off" type="text" id="uidsearch" name="uidsearch"/>
+          <label for="uidsearch">${ _("Search:") }</label>
+          <input autocomplete="off" type="text" id="uidsearch" name="uidsearch" class="uidsearch"/>
           <input type="submit" name="submit" value="${ _('Edit Account') }"
             title="_('Edit Account')"
             onClick="location.href='/accounts/edit/'+$('uidsearch').value"/>
@@ -87,7 +87,7 @@
 
 </html>
 <!--!
-$Id: index.html 38 2006-11-07 11:22:16Z s0undt3ch $
+$Id: index.html 41 2006-11-08 14:24:50Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

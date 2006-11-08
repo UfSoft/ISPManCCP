@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: ispman_helpers.py 40 2006-11-07 22:30:49Z s0undt3ch $
+# $Id: ispman_helpers.py 41 2006-11-08 14:24:50Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/ispman_helpers.py $
-# $LastChangedDate: 2006-11-07 22:30:49 +0000 (Tue, 07 Nov 2006) $
-#             $Rev: 40 $
+# $LastChangedDate: 2006-11-08 14:24:50 +0000 (Wed, 08 Nov 2006) $
+#             $Rev: 41 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -16,7 +16,7 @@
 from string import join
 from formencode.variabledecode import variable_decode
 from pylons import request, g, cache
-from ispmanccp.lib.helpers import to_unicode
+from ispmanccp.lib.helpers import to_unicode, asbool
 
 APP_CONF = request.environ['paste.config']['app_conf']
 
@@ -133,7 +133,7 @@ def get_perl_cgi(params_dict):
 
 def update_user_info(attrib_dict):
     cgi = get_perl_cgi(attrib_dict)
-    return g.ispman.update_user(cgi)
+    return asbool(g.ispman.update_user(cgi))
 
 
 def get_user_attribute_values(id, domain, attribute):
@@ -144,7 +144,7 @@ def get_user_attribute_values(id, domain, attribute):
 
 def delete_user(post_dict):
     cgi = get_perl_cgi(post_dict)
-    return g.ispman.deleteUser(cgi)
+    return asbool(g.ispman.deleteUser(cgi))
 
 
 def user_exists(user_id):
@@ -198,3 +198,40 @@ def add_user(attrib_dict):
     cgi = get_perl_cgi(attrib_dict)
     return g.ispman.addUser(cgi)
 
+
+def ldap_search(ldap_filter="objectClass=*",
+                attrs=None,
+                scope="sub",
+                sort='ispmanUserId',
+                ascending=True):
+
+    base = APP_CONF['ispman_ldap_base_dn']
+    if attrs is not None:
+        results = to_unicode(
+            g.ispman.getEntriesAsHashRef(base, ldap_filter, attrs, scope)
+        )
+    else:
+        results = to_unicode(
+            g.ispman.getEntriesAsHashRef(base, ldap_filter)
+        )
+    entries = []
+
+    if not results:
+        return None
+
+    for dn in results:
+        vals = results[dn]
+        vals['dn'] = dn
+        entries.append(vals)
+
+    if len(entries) <= 1:
+        return entries
+
+    decorated = [(dict_[sort], dict_) for dict_ in entries]
+    decorated.sort()
+
+    if not ascending:
+        decorated.reverse()
+
+    result = [dict_ for (key, dict_) in decorated]
+    return result

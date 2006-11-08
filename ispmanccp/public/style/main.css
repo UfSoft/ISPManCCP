@@ -1,6 +1,6 @@
 /*
  * vim: sw=4 ts=4 fenc=utf-8 et
- * $Id: main.css 39 2006-11-07 12:13:05Z s0undt3ch $
+ * $Id: main.css 41 2006-11-08 14:24:50Z s0undt3ch $
 */
 
 h1 { font-size: 130%; text-align: center; }
@@ -140,6 +140,7 @@ div.auto_complete ul li {
 }
 div.auto_complete li div.email { font-size:10px; }
 div.auto_complete li div.uid { font-weight: bold; font-size: 12px; line-height: 1.2em; }
+input.uidsearch { width: 300px; }
 
 
 /* Edit user special cases */

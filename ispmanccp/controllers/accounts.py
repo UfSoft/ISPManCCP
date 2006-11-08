@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: accounts.py 40 2006-11-07 22:30:49Z s0undt3ch $
+# $Id: accounts.py 41 2006-11-08 14:24:50Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/accounts.py $
-# $LastChangedDate: 2006-11-07 22:30:49 +0000 (Tue, 07 Nov 2006) $
-#             $Rev: 40 $
+# $LastChangedDate: 2006-11-08 14:24:50 +0000 (Wed, 08 Nov 2006) $
+#             $Rev: 41 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -32,7 +32,7 @@ class AccountsController(BaseController):
     def userlist(self):
         """Action that returns the user list for the passed start key."""
         sort_by = request.POST['sort_by']
-        sort_how = bool(int(request.POST['sort_how']))
+        sort_how = h.asbool(request.POST['sort_how'])
 
         if 'None' in request.POST['letter']:
             c.users = []
@@ -59,14 +59,21 @@ class AccountsController(BaseController):
         """Action that returns an html list of entries for the
         auto-complete search field."""
         sort_by = request.POST['sort_by']
-        sort_how = bool(int(request.POST['sort_how']))
-        c.lengths, userlist = get_users_list(self.domain,
-                                             'All',
-                                             sortby=sort_by,
-                                             sort_ascending=sort_how)
+        if sort_by not in ("ispmanUserId", "mailLocalAddress", "givenName", "sn"):
+            sort_by = "ispmanUserId"
+        sort_how = h.asbool(request.POST['sort_how'])
+        search_str = request.POST['uidsearch']
+        ldap_filter = '&(objectClass=ispmanDomainUser)' + \
+                '(ispmanDomain=' + self.domain + \
+                ')(' + sort_by + '=' + search_str + '*)'
+
+        results = ldap_search(ldap_filter=ldap_filter, sort=sort_by, ascending=sort_how)
+
+        if not results:
+            return Response()
 
         html = u'<ul>\n'
-        for user in userlist:
+        for user in results:
             html += u'<li>\n'
             html += u'<div class="uid">%(ispmanUserId)s</div>\n'
             html += u'<span class="informal">%(cn)s</span>\n'
@@ -90,6 +97,8 @@ class AccountsController(BaseController):
     @rest.dispatch_on(POST='delete_post')
     def delete(self, id):
         """Action to delete the account."""
+        if request.method == 'POST':
+            print request.POST
         c.lengths, c.userinfo = get_user_info(id, self.domain)
         return render_response('accounts.deleteuser')
 
@@ -97,8 +106,11 @@ class AccountsController(BaseController):
     @validate(template='accounts.deleteuser', schema=AccountDelete(), form='delete')
     def delete_post(self, id):
         """The real work for the above action."""
+        if request.method != 'POST':
+            redirect_to(action="delete", id=id)
+
         retval = delete_user(request.POST)
-        if retval != "1" or retval != 1:
+        if not retval:
             session['message'] = _('Backend Error')
             session.save()
             self.message = 'Backend Error'
@@ -130,7 +142,7 @@ class AccountsController(BaseController):
         user_dict['uid'] = user_dict['uid'] + '@' + self.domain
         uid = user_dict['uid']
         retval = update_user_info(user_dict)
-        if retval != 1:
+        if not retval:
             session['message'] = _('Backend Error')
             session.save()
             self.message = 'Backend Error'
@@ -145,7 +157,10 @@ class AccountsController(BaseController):
         """Action to create a new account."""
         # Can the domain have more accounts
         max_accounts = int(get_domain_user_count(self.domain))
-        cur_accounts = int(self.dominfo['ispmanMaxAccounts'])
+        if self.dominfo['ispmanMaxAccounts'] == 'unlimited':
+            cur_accounts = -1
+        else:
+            cur_accounts = int(self.dominfo['ispmanMaxAccounts'])
         if max_accounts != -1 and cur_accounts + 1 > max_accounts:
             session['message'] = _(
                 'You cannot create more accounts. Allowed maximum reached.'

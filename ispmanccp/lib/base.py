@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: base.py 34 2006-11-05 18:57:20Z s0undt3ch $
+# $Id: base.py 43 2006-11-10 12:22:56Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/base.py $
-# $LastChangedDate: 2006-11-05 18:57:20 +0000 (Sun, 05 Nov 2006) $
-#             $Rev: 34 $
+# $LastChangedDate: 2006-11-10 12:22:56 +0000 (Fri, 10 Nov 2006) $
+#             $Rev: 43 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -16,11 +16,12 @@
 __all__ = ['Response', 'c', 'g', 'cache', 'request', 'session', 'validate',
            'WSGIController', 'jsonify', 'rest', 'render', 'render_response',
            'abort', 'redirect_to', 'etag_cache', '_', 'model', 'h', 
-           'BaseController']
+           'BaseController', 'beaker_cache']
 
 from pylons import Response, c, g, cache, request, session
 from pylons.controllers import WSGIController
 from pylons.decorators import jsonify, rest
+from pylons.decorators.cache import beaker_cache
 from pylons.templating import render, render_response
 from pylons.helpers import abort, redirect_to, etag_cache
 from pylons.util import _
@@ -69,6 +70,7 @@ class BaseController(WSGIController):
             c.message = session['message']
             session['message'] = ''
             session.save()
+
         return WSGIController.__call__(self, environ, start_response)
 
 

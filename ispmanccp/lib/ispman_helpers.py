@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: ispman_helpers.py 41 2006-11-08 14:24:50Z s0undt3ch $
+# $Id: ispman_helpers.py 43 2006-11-10 12:22:56Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/ispman_helpers.py $
-# $LastChangedDate: 2006-11-08 14:24:50 +0000 (Wed, 08 Nov 2006) $
-#             $Rev: 41 $
+# $LastChangedDate: 2006-11-10 12:22:56 +0000 (Fri, 10 Nov 2006) $
+#             $Rev: 43 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -16,9 +16,10 @@
 from string import join
 from formencode.variabledecode import variable_decode
 from pylons import request, g, cache
+from pylons.decorators.cache import beaker_cache
 from ispmanccp.lib.helpers import to_unicode, asbool
 
-APP_CONF = request.environ['paste.config']['app_conf']
+APP_CONF = g.pylons_config.app_conf
 
 ispman_cache = cache.get_cache('ispman')
 
@@ -35,6 +36,10 @@ updatable_attributes = (
     'givenName', 'updateUser', 'uid', 'ispmanDomain', 'mailForwardingAddress',
     'FTPQuotaMBytes', 'FTPStatus'
 )
+
+
+def get_cache(domain):
+    return cache.get_cache(domain)
 
 
 def conv_to_list(obj):
@@ -151,16 +156,12 @@ def user_exists(user_id):
     uid = user_id + '@' + request.POST['ispmanDomain']
     return bool(int(g.ispman.userExists(uid)))
 
-
+# cache it for 5 minutes
+@beaker_cache(expire=300, query_args=True)
 def get_domain_info(domain):
-    def get():
-        return to_unicode(dict(
-            g.ispman.getDomainInfo(domain, 2))
-        )
-
-    cached = ispman_cache.get_value(        # cache it for 5 minutes
-        'domain_info', createfunc=get, type="memory", expiretime=300)
-    return cached
+    return to_unicode(dict(
+        g.ispman.getDomainInfo(domain, 2))
+    )
 
 
 def get_domain_vhost_count(domain):
@@ -171,19 +172,17 @@ def get_domain_user_count(domain):
     return to_unicode(g.ispman.getUserCount(domain))
 
 
+# cache it for 1 hour
+@beaker_cache(expire=3600, query_args=True)
 def get_default_acount_vars():
-    def get():
-        defaults = {}
-        defaults['defaultUserFtpQuota'] = to_unicode(
-            g.ispman.getConf('defaultUserFtpQuota')
-        )
-        defaults['defaultUserMailQuota'] = to_unicode(
-            g.ispman.getConf('defaultUserMailQuota')
-        )
-        return defaults
-    cached = ispman_cache.get_value(               # cache it for one hour
-        'account_defaults', createfunc=get, type="memory", expiretime=3600)
-    return cached
+    defaults = {}
+    defaults['defaultUserFtpQuota'] = to_unicode(
+        g.ispman.getConf('defaultUserFtpQuota')
+    )
+    defaults['defaultUserMailQuota'] = to_unicode(
+        g.ispman.getConf('defaultUserMailQuota')
+    )
+    return defaults
 
 
 def address_exists(address):

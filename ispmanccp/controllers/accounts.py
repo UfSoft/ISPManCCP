@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: accounts.py 46 2006-11-10 19:18:01Z s0undt3ch $
+# $Id: accounts.py 48 2006-11-10 19:28:57Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/accounts.py $
-# $LastChangedDate: 2006-11-10 19:18:01 +0000 (Fri, 10 Nov 2006) $
-#             $Rev: 46 $
+# $LastChangedDate: 2006-11-10 19:28:57 +0000 (Fri, 10 Nov 2006) $
+#             $Rev: 48 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -99,13 +99,6 @@ class AccountsController(BaseController):
                     else:
                         html += pre_html % (_('Forwarding:'),
                                             user[attr_found][idx_found])
-                elif attr_found not in ('ispmanUserId', 'cn', 'givenName',
-                                        'sn', 'mailLocalAddress', 'dn'):
-                    pre_html = u'<span class="informal"><em>%s</em></span>'
-                    if isinstance(user[attr_found], list):
-                        html += pre_html % user[attr_found][idx_found]
-                    else:
-                        html += pre_html % user[attr_found]
                 else:
                     html += u'<div class="email">'
                     html += u'<span class="informal"><em><b>' + _('Email:')

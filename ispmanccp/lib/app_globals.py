@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: app_globals.py 35 2006-11-05 21:59:17Z s0undt3ch $
+# $Id: app_globals.py 50 2006-11-10 20:49:35Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/app_globals.py $
-# $LastChangedDate: 2006-11-05 21:59:17 +0000 (Sun, 05 Nov 2006) $
-#             $Rev: 35 $
+# $LastChangedDate: 2006-11-10 20:49:35 +0000 (Fri, 10 Nov 2006) $
+#             $Rev: 50 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -61,6 +61,7 @@ class Globals(object):
         # Setup an ISPMan instance
         perl.require('ISPMan')
         perl.require('CGI')
+        perl.require('Net::LDAP')
 
         try:
             self.ispman = perl.eval(
@@ -70,20 +71,14 @@ class Globals(object):
         except Exception, e:
             print e
 
-        # Setup an LDAP connection, which will only be used for
-        # initial authentication purposes
-        try:
-            import ldap
-        except ImportError:
-            print "You must have python-ldap module instaled."
-            print "You can get it from:"
-            print "   http://python-ldap.sourceforge.net/"
-            sys.exit(1)
-
         ldap_host = self.ispman.getConf('ldapHost')
         ldap_version = self.ispman.getConf('ldapVersion')
-        self.ldap = ldap.initialize("ldap://%s:389" % ldap_host)
-        self.ldap.protocol_version = int(ldap_version)
+        try:
+            self.ldap = perl.eval(
+                '$ldap = Net::LDAP->new('+ldap_host+', version => '+ldap_version+') or die "$@"'
+            )
+        except Exception, e:
+            print e
 
         # Also pass the perl reference for further use within the app
         self.perl = perl

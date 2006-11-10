@@ -63,12 +63,14 @@
             onClick="location.href='#top'">${ _("Top") }</button>
           ${h.tag.button(
               _("Delete Account"),
+              type="button",
               title=_("Delete Account"),
               onClick="location.href='" + h.url_for(controller="accounts", action="delete", id=uid) + "'"
             )
           }
           ${h.tag.button(
               _("Edit"),
+              type="button",
               title=_("Edit Account"),
               onClick="location.href='" + h.url_for(controller="accounts", action="edit", id=uid) + "'"
             )
@@ -86,7 +88,7 @@
 
 </html>
 <!--!
-$Id: userlist.html 38 2006-11-07 11:22:16Z s0undt3ch $
+$Id: userlist.html 49 2006-11-10 19:37:35Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

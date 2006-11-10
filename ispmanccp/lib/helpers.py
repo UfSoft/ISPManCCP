@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: helpers.py 41 2006-11-08 14:24:50Z s0undt3ch $
+# $Id: helpers.py 47 2006-11-10 19:22:10Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/helpers.py $
-# $LastChangedDate: 2006-11-08 14:24:50 +0000 (Wed, 08 Nov 2006) $
-#             $Rev: 41 $
+# $LastChangedDate: 2006-11-10 19:22:10 +0000 (Fri, 10 Nov 2006) $
+#             $Rev: 47 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -79,7 +79,7 @@ def to_unicode(in_obj):
     elif isinstance(in_obj, str):
         return unicode(in_obj, 'UTF-8')
     elif isinstance(in_obj, list):
-        return [to_unicode(x) for x in in_obj if x not in ('', u'', None)]
+        return [to_unicode(x) for x in in_obj] # if x not in ('', u'', None)]
     elif isinstance(in_obj, dict):
         out_dict = {}
         for key, val in in_obj.iteritems():

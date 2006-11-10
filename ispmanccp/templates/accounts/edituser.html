@@ -43,10 +43,8 @@
       }
 
       function removeForwardsField(obj) {
-        alert($('email_forwards').innerHTML);
         new Effect.Shrink(obj, { afterFinish: function(){ Element.remove(obj); } });
         total_forwards--;
-        alert($('email_forwards').innerHTML);
       }
 
       function checkFieldStatus() {
@@ -169,7 +167,7 @@
   </body>
 </html>
 <!--!
-$Id: edituser.html 42 2006-11-10 11:50:18Z s0undt3ch $
+$Id: edituser.html 44 2006-11-10 16:32:00Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

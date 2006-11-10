@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: accounts.py 41 2006-11-08 14:24:50Z s0undt3ch $
+# $Id: accounts.py 44 2006-11-10 16:32:00Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/accounts.py $
-# $LastChangedDate: 2006-11-08 14:24:50 +0000 (Wed, 08 Nov 2006) $
-#             $Rev: 41 $
+# $LastChangedDate: 2006-11-10 16:32:00 +0000 (Fri, 10 Nov 2006) $
+#             $Rev: 44 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -20,15 +20,18 @@ from ispmanccp.models.accounts import *
 
 class AccountsController(BaseController):
 
+    @beaker_cache(expire='never')
     def index(self):
         """Main Index."""
-        c.nav_1st_half = ['All']
-        c.nav_1st_half.extend(list(digits))
+        nav_1st_half = ['All']
+        nav_1st_half.extend(list(digits))
         c.nav_2nd_half = list(uppercase)
+        c.nav_1st_half = nav_1st_half
         c.domain = self.domain
         return render_response('accounts.index')
 
 
+    #@beaker_cache(expire=180)
     def userlist(self):
         """Action that returns the user list for the passed start key."""
         sort_by = request.POST['sort_by']
@@ -63,24 +66,53 @@ class AccountsController(BaseController):
             sort_by = "ispmanUserId"
         sort_how = h.asbool(request.POST['sort_how'])
         search_str = request.POST['uidsearch']
-        ldap_filter = '&(objectClass=ispmanDomainUser)' + \
-                '(ispmanDomain=' + self.domain + \
-                ')(' + sort_by + '=' + search_str + '*)'
 
-        results = ldap_search(ldap_filter=ldap_filter, sort=sort_by, ascending=sort_how)
+        lengths, userlist = get_users_list(self.domain, 'All',
+                                           sortby=sort_by,
+                                           sort_ascending=sort_how)
 
-        if not results:
-            return Response()
+        def _found_on_user(user_dict):
+            for key, val in user.iteritems():
+                if isinstance(val, list):
+                    for n in range(len(val)):
+                        if val[n].find(search_str) != -1:
+                            return n, key, True
+                elif user_dict[key].find(search_str) != -1:
+                    return None, key, True
+            return None, None, False
 
         html = u'<ul>\n'
-        for user in results:
-            html += u'<li>\n'
-            html += u'<div class="uid">%(ispmanUserId)s</div>\n'
-            html += u'<span class="informal">%(cn)s</span>\n'
-            html += u'<div class="email">'
-            html += u'<span class="informal">%(mailLocalAddress)s</span>'
-            html += u'</div>\n</li>\n'
-            html = html % user
+        for user in userlist:
+            idx_found, attr_found, user_found = _found_on_user(user)
+            if user_found:
+                html += '<li>\n'
+                html += u'<span class="informal">%(cn)s</span>\n'
+                html += u'<div class="uid">%(ispmanUserId)s</div>\n'
+                if attr_found in ('mailAlias', 'mailForwardingAddress'):
+                    pre_html = u'<div class="email">\n'
+                    pre_html += u'<span class="informal"><em>'
+                    pre_html += u'<b>%s</b> %s</em></span>'
+                    pre_html += u'</div>\n'
+                    if attr_found == 'mailAlias':
+                        html += pre_html % (_('Alias:'),
+                                            user[attr_found][idx_found])
+                    else:
+                        html += pre_html % (_('Forwarding:'),
+                                            user[attr_found][idx_found])
+                elif attr_found not in ('ispmanUserId', 'cn', 'givenName',
+                                        'sn', 'mailLocalAddress', 'dn'):
+                    pre_html = u'<span class="informal"><em>%s</em></span>'
+                    if isinstance(user[attr_found], list):
+                        html += pre_html % user[attr_found][idx_found]
+                    else:
+                        html += pre_html % user[attr_found]
+                else:
+                    html += u'<div class="email">'
+                    html += u'<span class="informal"><em><b>' + _('Email:')
+                    html += '</b> %(mailLocalAddress)s</em></span>'
+                    html += u'</div>\n'
+                html += u'</li>'
+                html = html % user
         html += u'</ul>\n'
         return Response(html)
 
@@ -121,6 +153,7 @@ class AccountsController(BaseController):
 
 
 
+    #@beaker_cache(expire=180)
     @rest.dispatch_on(POST='edit_post')
     def edit(self, id):
         """Action to edit the account details."""
@@ -145,7 +178,6 @@ class AccountsController(BaseController):
         if not retval:
             session['message'] = _('Backend Error')
             session.save()
-            self.message = 'Backend Error'
             h.redirect_to(action="edit", id=id)
         session['message'] = _('Operation Successfull')
         session.save()
@@ -172,7 +204,6 @@ class AccountsController(BaseController):
         c.defaults = get_default_acount_vars()
         c.dominfo = self.dominfo
         c.password = self._generate_new_password()
-        print self.dominfo
         if 'ispmanUserId' not in request.POST:
             c.userinfo = {'ispmanUserId': u'please change me'}
 
@@ -202,7 +233,6 @@ class AccountsController(BaseController):
         if retval != 1:
             session['message'] = _('Backend Error')
             session.save()
-            self.message = 'Backend Error'
             h.redirect_to(action="new", id=None)
         session['message'] = _('Operation Successfull')
         session.save()

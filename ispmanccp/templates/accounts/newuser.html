@@ -11,23 +11,50 @@
 
     <!--! Unfortunatly we must keep those html vars long -->
     <script type="text/javascript">
+      // <![CDATA[
       var total_alias = ${c.lengths[uid].aliases or 0};
       var total_forwards = ${c.lengths[uid].forwards or 0};
 
       function addAliasField() {
-        var html = '\n<label for="mailAlias-'+total_alias+'">&nbsp;</label>\n';
-        html += '<input id="mailAlias-'+total_alias+'" name="mailAlias-'+total_alias+'" class="email"/><br/>\n';
+        var html = '\n<div style="display:none;" id="mailAlias-'+total_alias+'-div">\n';
+        html += '\n<label for="mailAlias-'+total_alias+'">&nbsp;</label>\n';
+        html += '<input id="mailAlias-'+total_alias+'" name="mailAlias-'+total_alias+'" class="email"/>\n';
+        html += '<input style="margin-left: 15px;" type="button" value="-" onClick="removeAliasField(\'mailAlias-'+total_alias+'-div\'); return false;"/>\n';
+        html += '<br/></div>\n';
         new Insertion.Bottom('email_alias', html);
+        new Effect.Grow('mailAlias-'+total_alias+'-div', { direction: 'top-right' });
         total_alias++;
       }
 
+      function removeAliasField(obj) {
+        new Effect.Shrink(obj, { afterFinish: function(){ Element.remove(obj); } });
+        total_alias--;
+      }
+
       function addForwardsField() {
-        var html = '\n<label for="mailForwardingAddress-'+total_forwards+'">&nbsp;</label>\n';
-        html += '<input id="mailForwardingAddress-'+total_forwards+'" name="mailForwardingAddress-'+total_forwards+'" class="email"/><br/>\n';
+        var html = '\n<div style="display:none;" id="mailForwardingAddress-'+total_forwards+'-div">\n'
+        html += '\n<label for="mailForwardingAddress-'+total_forwards+'">&nbsp;</label>\n';
+        html += '<input id="mailForwardingAddress-'+total_forwards+'" name="mailForwardingAddress-'+total_forwards+'" class="email"/>\n';
+        html += '<input style="margin-left: 15px;" type="button" value="-" onClick="removeForwardsField(\'mailForwardingAddress-'+total_forwards+'-div\'); return false;"/>\n';
+        html += '<br/></div>\n';
         new Insertion.Bottom('email_forwards', html);
+        new Effect.Grow('mailForwardingAddress-'+total_forwards+'-div', { direction: 'top-right' });
         total_forwards++;
       }
 
+      function removeForwardsField(obj) {
+        new Effect.Shrink(obj, { afterFinish: function(){ Element.remove(obj); } });
+        total_forwards--;
+      }
+
+      function checkFieldStatus() {
+        if ( document.forms['edit_user'].userPassword.value == "" ) {
+          document.forms['edit_user'].restore_btn.disabled = false;
+        } else {
+          document.forms['edit_user'].restore_btn.disabled = true;
+        }
+      }
+      // ]]>
     </script>
 
   </head>
@@ -134,7 +161,7 @@
   </body>
 </html>
 <!--!
-$Id: newuser.html 40 2006-11-07 22:30:49Z s0undt3ch $
+$Id: newuser.html 45 2006-11-10 18:54:45Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

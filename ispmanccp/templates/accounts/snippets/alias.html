@@ -4,16 +4,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:py="http://genshi.edgewall.org/"
       py:strip="">
-
-  <label for="mailAlias-${n}">&nbsp;</label>
-  <input id="mailAlias-${n}" name="mailAlias-${n}" class="email"
-    value="${c.userinfo['mailAlias'][n]}"/>
-  <span class="error-message" py:if="'mailAlias-%i' % n in c.form_errors">
-    ${ c.form_errors['mailAlias-%i' % n]}
-  </span><br/>
+  
+  <div id="mailAlias-${n}-div">
+    <label for="mailAlias-${n}">&nbsp;</label>
+    <input id="mailAlias-${n}" name="mailAlias-${n}" class="email"
+      value="${c.userinfo['mailAlias'][n]}"/>
+    <input style="margin-left: 15px;" type="button" name="remove" value="-"
+    onClick="removeAliasField('mailAlias-${n}-div');"/>
+    <span class="error-message" py:if="'mailAlias-%i' % n in c.form_errors">
+      ${ c.form_errors['mailAlias-%i' % n]}
+    </span><br/>
+  </div>
 </html>
 <!--!
-$Id: alias.html 36 2006-11-06 18:17:03Z s0undt3ch $
+$Id: alias.html 42 2006-11-10 11:50:18Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

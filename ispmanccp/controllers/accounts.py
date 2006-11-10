@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: accounts.py 44 2006-11-10 16:32:00Z s0undt3ch $
+# $Id: accounts.py 46 2006-11-10 19:18:01Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/accounts.py $
-# $LastChangedDate: 2006-11-10 16:32:00 +0000 (Fri, 10 Nov 2006) $
-#             $Rev: 44 $
+# $LastChangedDate: 2006-11-10 19:18:01 +0000 (Fri, 10 Nov 2006) $
+#             $Rev: 46 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -20,7 +20,7 @@ from ispmanccp.models.accounts import *
 
 class AccountsController(BaseController):
 
-    @beaker_cache(expire='never')
+    #@beaker_cache(expire='never')
     def index(self):
         """Main Index."""
         nav_1st_half = ['All']
@@ -230,7 +230,7 @@ class AccountsController(BaseController):
         userinfo['fileHost'] = self.dominfo['ispmanDomainDefaultFileServer']
 
         retval = add_user(userinfo)
-        if retval != 1:
+        if not retval:
             session['message'] = _('Backend Error')
             session.save()
             h.redirect_to(action="new", id=None)

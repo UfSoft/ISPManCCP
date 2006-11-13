@@ -62,8 +62,11 @@
               'uidsearch',
               'uid_auto_complete',
               '/accounts/search/',
-              { parameters:Form.serialize('sortby') },
-              ignoreCase = true
+              {
+                parameters:Form.serialize('sortby'),
+                ignoreCase: true,
+                minChars: 2
+              }
           )
         </script>
       </fieldset>
@@ -87,7 +90,7 @@
 
 </html>
 <!--!
-$Id: index.html 41 2006-11-08 14:24:50Z s0undt3ch $
+$Id: index.html 51 2006-11-13 07:55:45Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

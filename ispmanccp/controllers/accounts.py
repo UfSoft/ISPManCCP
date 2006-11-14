@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: accounts.py 48 2006-11-10 19:28:57Z s0undt3ch $
+# $Id: accounts.py 52 2006-11-14 03:25:59Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/accounts.py $
-# $LastChangedDate: 2006-11-10 19:28:57 +0000 (Fri, 10 Nov 2006) $
-#             $Rev: 48 $
+# $LastChangedDate: 2006-11-14 03:25:59 +0000 (Tue, 14 Nov 2006) $
+#             $Rev: 52 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -67,12 +67,21 @@ class AccountsController(BaseController):
         sort_how = h.asbool(request.POST['sort_how'])
         search_str = request.POST['uidsearch']
 
-        lengths, userlist = get_users_list(self.domain, 'All',
-                                           sortby=sort_by,
-                                           sort_ascending=sort_how)
+        userlist = get_domain_users(
+            self.domain,
+            [
+                "ispmanUserId",
+                "mailLocalAddress",
+                "givenName",
+                "sn",
+                "cn",
+                "mailAlias",
+                "mailForwardingAddress"
+            ]
+        )
 
-        def _found_on_user(user_dict):
-            for key, val in user.iteritems():
+        def _search_user_attributes(user_dict):
+            for key, val in user_dict.iteritems():
                 if isinstance(val, list):
                     for n in range(len(val)):
                         if val[n].find(search_str) != -1:
@@ -83,7 +92,7 @@ class AccountsController(BaseController):
 
         html = u'<ul>\n'
         for user in userlist:
-            idx_found, attr_found, user_found = _found_on_user(user)
+            idx_found, attr_found, user_found = _search_user_attributes(user)
             if user_found:
                 html += '<li>\n'
                 html += u'<span class="informal">%(cn)s</span>\n'

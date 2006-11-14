@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: ispman_helpers.py 43 2006-11-10 12:22:56Z s0undt3ch $
+# $Id: ispman_helpers.py 52 2006-11-14 03:25:59Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/ispman_helpers.py $
-# $LastChangedDate: 2006-11-10 12:22:56 +0000 (Fri, 10 Nov 2006) $
-#             $Rev: 43 $
+# $LastChangedDate: 2006-11-14 03:25:59 +0000 (Tue, 14 Nov 2006) $
+#             $Rev: 52 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -42,18 +42,41 @@ def get_cache(domain):
     return cache.get_cache(domain)
 
 
-def conv_to_list(obj):
-    """Helper to covert perl ARRAY's which sometimes
-    are just strings, to lists."""
-    if isinstance(obj, str) or isinstance(obj, unicode):
-        return 1, [to_unicode(obj)]
-    else:
-        listing = to_unicode(obj)
-        return len(listing), listing
+def get_domain_users(domain, attr_list): #attributes_to_retrieve):
+    """Function to get the `attr_list` from all users on `domain`"""
+    if attr_list.count('ispmanUserId') < 1:
+        attr_list.append('ispmanUserId')
+
+    userlist = to_unicode(g.ispman.getUsers(domain, attr_list))
+    decorated = [(dict_['ispmanUserId'], dict_) for dict_ in userlist.values()]
+    decorated.sort()
+    result = [dict_ for (key, dict_) in decorated]
+    return result
+
+
+def address_exists_on_domain(domain, address):
+    users = get_domain_users(
+        domain,
+        [
+            "ispmanUserId",
+            "mailAlias",
+            "mailLocalAddress",
+            #"mailForwardingAddress"
+        ]
+    )
+    for user in users:
+        for key, val, in user.iteritems():
+            if isinstance(val, list):
+                for n in range(len(val)):
+                    if val[n] == address:
+                        return user["ispmanUserId"]
+            elif val == address:
+                return user["ispmanUserId"]
+    return None
 
 
 def get_users_list(domain, letter, sortby=None, sort_ascending=True):
-    domain_users = to_unicode(g.ispman.getUsers(
+    domain_users = get_domain_users(
         domain, [
             "dn",
             "givenName",
@@ -69,29 +92,24 @@ def get_users_list(domain, letter, sortby=None, sort_ascending=True):
             "FTPQuotaMBytes",
             "FTPStatus"
         ]
-    ))
+    )
 
     userlist = []
     lengths = {}
-    for user, vals in domain_users.items():
-        # add the dn since the user data does not carry that info
-        vals = to_unicode(dict(vals))
-        vals['dn'] = user
-        user_id = vals['ispmanUserId']
+    for user in domain_users:
+        user_id = user['ispmanUserId']
         lengths[user_id] = {}
 
         # Aparently Genshi converts what it can to strings,
         # we have to make these lists
-        if 'mailAlias' in vals:
-            lengths[user_id]['aliases'], vals['mailAlias'] = \
-                    conv_to_list(vals['mailAlias'])
+        if 'mailAlias' in user:
+            lengths[user_id]['aliases'] = len(user['mailAlias'])
 
-        if 'mailForwardingAddress' in vals:
-            lengths[user_id]['forwards'], vals['mailForwardingAddress'] = \
-                    conv_to_list(vals['mailForwardingAddress'])
+        if 'mailForwardingAddress' in user:
+            lengths[user_id]['forwards'] = len(user['mailForwardingAddress'])
 
         if letter == 'All' or user_id.upper().startswith(letter):
-            userlist.append(vals)
+            userlist.append(user)
 
     # let's save some time and return right away if we don't need any sorting
     if len(userlist) <= 1:
@@ -111,11 +129,9 @@ def get_user_info(uid, domain):
     lengths = {}
     lengths[uid] = {}
     if 'mailAlias' in user_info:
-        lengths[uid]['aliases'], user_info['mailAlias'] = \
-                conv_to_list(user_info['mailAlias'])
+        lengths[uid]['aliases'] = len(user_info['mailAlias'])
     if 'mailForwardingAddress' in user_info:
-        lengths[uid]['forwards'], user_info['mailForwardingAddress'] = \
-                conv_to_list(user_info['mailForwardingAddress'])
+        lengths[uid]['forwards'] = len(user_info['mailForwardingAddress'])
     user_info['mailQuota'] = int(user_info['mailQuota'])/1024
     return lengths, user_info
 
@@ -183,14 +199,6 @@ def get_default_acount_vars():
         g.ispman.getConf('defaultUserMailQuota')
     )
     return defaults
-
-
-def address_exists(address):
-    base = APP_CONF['ispman_ldap_base_dn']
-    scope = 'sub'
-    ldap_filter = "&(mailAlias=%(address)s)(mailLocalAddress=%(address)s)"
-    ldap_filter = ldap_filter % {'address': address}
-    return bool(int(g.ispman.getCount(base, ldap_filter)))
 
 
 def add_user(attrib_dict):

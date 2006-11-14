@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: validators.py 41 2006-11-08 14:24:50Z s0undt3ch $
+# $Id: validators.py 52 2006-11-14 03:25:59Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/models/validators.py $
-# $LastChangedDate: 2006-11-08 14:24:50 +0000 (Wed, 08 Nov 2006) $
-#             $Rev: 41 $
+# $LastChangedDate: 2006-11-14 03:25:59 +0000 (Tue, 14 Nov 2006) $
+#             $Rev: 52 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -18,6 +18,7 @@ from formencode import validators, FancyValidator, Invalid
 from formencode.variabledecode import variable_decode
 from pylons import request, h, g
 from pylons.util import _
+from ispmanccp.lib.ispman_helpers import address_exists_on_domain
 
 
 class CurrentPassword(FancyValidator):
@@ -34,6 +35,7 @@ class CurrentPassword(FancyValidator):
         if coded_pass != ldap_pass:
             raise Invalid(_("Current password not correct"),
                                      value, state)
+
 
 class PasswordsMatch(validators.UnicodeString):
     """ Validator that does not complain about the empty value. This is to
@@ -104,33 +106,34 @@ class ValidMailAlias(validators.Email):
         'not_unique': _(
             'This address is already taken. Please choose a diferent one.'
         ),
-        'duplicate': _("Don't duplicate mail aliases.")
+        'duplicate': _("Don't duplicate mail aliases."),
+        'equal_to_local': _(
+            "This alias is equal to your local address. There's no need to.")
     }
 
     def validate_python(self, value, state):
+        # Check for duplicate alias on the same user.
         if variable_decode(request.POST)['mailAlias'].count(value) > 1:
             raise Invalid(self.message('duplicate', state), value, state)
 
-        from ispmanccp.lib.ispman_helpers import address_exists, ldap_search
         domain = request.POST['ispmanDomain']
         uid = request.POST['ispmanUserId']
+
+        # Check if alias is equal to local address
+        if uid + '@' + domain == value:
+            raise Invalid(self.message('equal_to_local', state), value, state)
+
+        # Check if alias is within the domain
         if not value.endswith(domain):
             raise Invalid(self.message('same_domain', state, domain=domain),
                           value, state)
 
-        query = '&(objectClass=ispmanDomainUser)(ispmanDomain=' + domain + \
-                ')(|(mailAlias=%(addr)s)(mailLocalAddress=%(addr)s))'
+        # Check if alias is not yet taken by another user
+        not_unique = address_exists_on_domain(domain, value)
+        if not_unique != None and not_unique != uid:
+            raise Invalid(self.message('not_unique', state), value, state)
 
-        query = query % {'addr': value}
-
-        results = ldap_search(query)
-
-        if results:
-            for entry in results:
-                if entry['ispmanUserId'] != uid:
-                    raise Invalid(self.message(
-                        'not_unique', state), value, state)
-
+        # Finally check if alias complies with a normal email address
         validators.Email.validate_python(self, value, state)
 
 

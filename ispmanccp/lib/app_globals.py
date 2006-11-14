@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: app_globals.py 50 2006-11-10 20:49:35Z s0undt3ch $
+# $Id: app_globals.py 52 2006-11-14 03:25:59Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/app_globals.py $
-# $LastChangedDate: 2006-11-10 20:49:35 +0000 (Fri, 10 Nov 2006) $
-#             $Rev: 50 $
+# $LastChangedDate: 2006-11-14 03:25:59 +0000 (Tue, 14 Nov 2006) $
+#             $Rev: 52 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -86,7 +86,7 @@ class Globals(object):
 
     def __del__(self):
         """
-        Put any cleanup code to be run when the application finally exits 
+        Put any cleanup code to be run when the application finally exits
         here.
         """
         pass

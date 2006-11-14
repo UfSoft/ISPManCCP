@@ -1,10 +1,10 @@
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: middleware.py 50 2006-11-10 20:49:35Z s0undt3ch $
+# $Id: middleware.py 52 2006-11-14 03:25:59Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/config/middleware.py $
-# $LastChangedDate: 2006-11-10 20:49:35 +0000 (Fri, 10 Nov 2006) $
-#             $Rev: 50 $
+# $LastChangedDate: 2006-11-14 03:25:59 +0000 (Tue, 14 Nov 2006) $
+#             $Rev: 52 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -75,18 +75,24 @@ def make_app(global_conf, full_stack=True, **app_conf):
     app = Cascade([static_app, javascripts_app, app])
 
     def authenticate(aplication, domain, password):
+        ldap_host = g.ispman.getConf('ldapHost')
+        ldap_version = g.ispman.getConf('ldapVersion')
         domaindn = 'ispmanDomain=' + domain + ',' + app_conf['ispman_ldap_base_dn']
         try:
-            result = g.ldap.bind(domaindn, password=password)
+            ldap = g.perl.eval(
+                '$ldap = Net::LDAP->new('+ldap_host+', version => '+ldap_version+') or die "$@"'
+            )
+
+            result = ldap.bind(domaindn, password=password)
             if result.code():
                 print  "Failed LDAP bind for domain '%s': %s." % \
                         (domain, result.error())
-                g.ldap.unbind()
+                ldap.unbind()
                 return False
-            g.ldap.unbind()
+            ldap.unbind()
             return True
         except Exception, e:
-            g.ldap.unbind()
+            ldap.unbind()
             print e
             return False
 

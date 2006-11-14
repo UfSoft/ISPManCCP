@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: helpers.py 47 2006-11-10 19:22:10Z s0undt3ch $
+# $Id: helpers.py 52 2006-11-14 03:25:59Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/helpers.py $
-# $LastChangedDate: 2006-11-10 19:22:10 +0000 (Fri, 10 Nov 2006) $
-#             $Rev: 47 $
+# $LastChangedDate: 2006-11-14 03:25:59 +0000 (Tue, 14 Nov 2006) $
+#             $Rev: 52 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -81,23 +81,29 @@ def to_unicode(in_obj):
     elif isinstance(in_obj, list):
         return [to_unicode(x) for x in in_obj] # if x not in ('', u'', None)]
     elif isinstance(in_obj, dict):
+        def conv_to_list(obj):
+            if isinstance(obj, str) or isinstance(obj, unicode):
+                return [to_unicode(obj)]
+            else:
+                return to_unicode(obj)
         out_dict = {}
         for key, val in in_obj.iteritems():
-            out_dict[key] = to_unicode(val)
+            if key == 'mailAlias':
+                out_dict[key] = conv_to_list(val)
+            elif key == 'mailForwardingAddress':
+                out_dict[key] = conv_to_list(val)
+            else:
+                out_dict[key] = to_unicode(val)
         return out_dict
     else:
         try:
-#            print 'try dict'
             return to_unicode(dict(in_obj))
-        except: # Exception, e:
+        except: # Failed to convert to dict
             pass
-#            print 'try dict', e
         try:
-#            print 'try list'
             return to_unicode(list(in_obj))
-        except: # Exception, e:
+        except: # Failed to convert to list
             pass
-#                 print 'try list', e
     return in_obj
 
 

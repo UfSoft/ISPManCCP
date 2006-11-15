@@ -1,6 +1,6 @@
 /*
  * vim: sw=4 ts=4 fenc=utf-8 et
- * $Id: main.css 41 2006-11-08 14:24:50Z s0undt3ch $
+ * $Id: main.css 53 2006-11-15 03:08:10Z s0undt3ch $
 */
 
 h1 { font-size: 130%; text-align: center; }
@@ -161,4 +161,12 @@ input.email { width: 250px; }
     cursor: text;
 }
 #user_details br, #domain_info br { clear: left; }
-#user_details button { padding-left: 5px; padding-right: 5px; } 
+#user_details button { padding-left: 5px; padding-right: 5px; }
+
+span.forwarding_account_message {
+    float: right;
+    color: red;
+    margin-right: 15px;
+    font-weight: bold;
+    font-style: italic;
+}

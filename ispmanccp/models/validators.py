@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: validators.py 52 2006-11-14 03:25:59Z s0undt3ch $
+# $Id: validators.py 53 2006-11-15 03:08:10Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/models/validators.py $
-# $LastChangedDate: 2006-11-14 03:25:59 +0000 (Tue, 14 Nov 2006) $
-#             $Rev: 52 $
+# $LastChangedDate: 2006-11-15 03:08:10 +0000 (Wed, 15 Nov 2006) $
+#             $Rev: 53 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -202,3 +202,24 @@ class UniqueUserId(validators.UnicodeString):
             raise Invalid(
                 self.message(
                     'not_unique', state), value, state)
+
+
+class ForwardingOnlyValidator(FancyValidator):
+    """Validator that makes sure an admin set's up at least one
+    forwarding address for a forwarding only account."""
+
+    messages = {
+        'not_enough_forwards': _(
+            "This is a forwarding only account. Like such, you need to " +
+            "setup at least one forwarding address."
+        )
+    }
+
+    def validate_python(self, value, state):
+        post_vars = variable_decode(request.POST)
+        if 'mailForwardingAddress' not in post_vars and h.asbool(post_vars['ForwardingOnly']):
+            raise Invalid(
+                self.message('not_enough_forwards', state),
+                value,
+                state
+            )

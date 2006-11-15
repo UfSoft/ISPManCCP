@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: accounts.py 40 2006-11-07 22:30:49Z s0undt3ch $
+# $Id: accounts.py 53 2006-11-15 03:08:10Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/models/accounts.py $
-# $LastChangedDate: 2006-11-07 22:30:49 +0000 (Tue, 07 Nov 2006) $
-#             $Rev: 40 $
+# $LastChangedDate: 2006-11-15 03:08:10 +0000 (Wed, 15 Nov 2006) $
+#             $Rev: 53 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -47,6 +47,7 @@ class AccountUpdate(Schema):
                          strip=True,
                          resolve_domain=dns_available)
     )
+    ForwardingOnly = ForwardingOnlyValidator(not_empty=True)
 
 
 class AccountDelete(Schema):

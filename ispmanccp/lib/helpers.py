@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: helpers.py 52 2006-11-14 03:25:59Z s0undt3ch $
+# $Id: helpers.py 53 2006-11-15 03:08:10Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/helpers.py $
-# $LastChangedDate: 2006-11-14 03:25:59 +0000 (Tue, 14 Nov 2006) $
-#             $Rev: 52 $
+# $LastChangedDate: 2006-11-15 03:08:10 +0000 (Wed, 15 Nov 2006) $
+#             $Rev: 53 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -72,7 +72,7 @@ def get_nav_class_state(url, request, partial=False):
 
 def to_unicode(in_obj):
     """ Function to convert whatever we can to unicode."""
-    if not in_obj or in_obj == '':
+    if not in_obj: # or in_obj == '':
         pass
     elif isinstance(in_obj, unicode) or isinstance(in_obj, int):
         return in_obj

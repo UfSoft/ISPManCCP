@@ -12,46 +12,23 @@
     <!--! Unfortunatly we must keep those html vars long -->
     <script type="text/javascript">
       // <![CDATA[
-      var total_alias = ${c.lengths[uid].aliases or 0};
-      var total_forwards = ${c.lengths[uid].forwards or 0};
-
-      function addAliasField() {
-        var html = '\n<div style="display:none;" id="mailAlias-'+total_alias+'-div">\n';
-        html += '\n<label for="mailAlias-'+total_alias+'">&nbsp;</label>\n';
-        html += '<input id="mailAlias-'+total_alias+'" name="mailAlias-'+total_alias+'" class="email"/>\n';
-        html += '<input style="margin-left: 15px;" type="button" value="-" onClick="removeAliasField(\'mailAlias-'+total_alias+'-div\'); return false;"/>\n';
-        html += '<br/></div>\n';
-        new Insertion.Bottom('email_alias', html);
-        new Effect.Grow('mailAlias-'+total_alias+'-div', { direction: 'top-right' });
-        total_alias++;
-      }
-
-      function removeAliasField(obj) {
-        new Effect.Shrink(obj, { afterFinish: function(){ Element.remove(obj); } });
-        total_alias--;
-      }
-
-      function addForwardsField() {
-        var html = '\n<div style="display:none;" id="mailForwardingAddress-'+total_forwards+'-div">\n'
-        html += '\n<label for="mailForwardingAddress-'+total_forwards+'">&nbsp;</label>\n';
-        html += '<input id="mailForwardingAddress-'+total_forwards+'" name="mailForwardingAddress-'+total_forwards+'" class="email"/>\n';
-        html += '<input style="margin-left: 15px;" type="button" value="-" onClick="removeForwardsField(\'mailForwardingAddress-'+total_forwards+'-div\'); return false;"/>\n';
-        html += '<br/></div>\n';
-        new Insertion.Bottom('email_forwards', html);
-        new Effect.Grow('mailForwardingAddress-'+total_forwards+'-div', { direction: 'top-right' });
-        total_forwards++;
-      }
-
-      function removeForwardsField(obj) {
-        new Effect.Shrink(obj, { afterFinish: function(){ Element.remove(obj); } });
-        total_forwards--;
-      }
-
-      function checkFieldStatus() {
-        if ( document.forms['edit_user'].userPassword.value == "" ) {
-          document.forms['edit_user'].restore_btn.disabled = false;
+      function forwardingCheck() {
+        if ( $('ForwardingOnly').value == 0 ) {
+          $('forwarding_toggle').value = "${ _('Enable') }";
         } else {
-          document.forms['edit_user'].restore_btn.disabled = true;
+          $('forwarding_toggle').value = "${ _('Disable') }";
+        }
+      }
+
+      function forwardingOnlyToggle() {
+        if ( $('ForwardingOnly').value == 0 ) {
+          new Effect.Grow('forwarding_message', {});
+          $('ForwardingOnly').value = 1;
+          forwardingCheck();
+        } else {
+          new Effect.Shrink('forwarding_message', {});
+          $('ForwardingOnly').value = 0;
+          forwardingCheck();
         }
       }
       // ]]>
@@ -119,49 +96,37 @@
           <xi:include href="snippets/${c.userinfo['FTPStatus'] or 'enabled'}_ftp_status.html"/>
         </select><br/>
 
+        <span id='forwarding_message' style="display: none;" class="forwarding_account_message">
+          ${ _("Forwarding only accounts involve a second step.") }<br/>
+          ${ _("On the next step you'll add the needed forwarding address for the account.") }
+        </span>
+
         <!--! Mailbox Quota -->
         <label for="mailQuota">${ _("Email Quota:") }</label>
         <input type="text" id="mailQuota" name="mailQuota" class="quota"
-        value="${ c.userinfo['mailQuota'] or c.defaults['defaultUserMailQuota']}"/>
+          value="${ c.userinfo['mailQuota'] or c.defaults['defaultUserMailQuota']}"/>
         <span id="mailQuotaUnit" class="quota">${ _("MB") }</span>
         <span class="error-message" py:if="'mailQuota' in c.form_errors">
           ${ c.form_errors['mailQuota']}
         </span><br/>
 
-        <!--! Email Alias -->
-        <div id="email_alias">
-          <label>${ _("Email Aliases:") }</label>
-          ${ h.tag.input(type="button", name="add_alias_field",
-             value="Add Alias Field", onClick="addAliasField()") }<br/>
-          <py:if test="'mailAlias' in c.userinfo"> 
-            <py:for each="n in range(c.lengths[uid].aliases or 1)">
-              <xi:include href="snippets/alias.html"/>
-            </py:for>
-          </py:if>
-        </div>
-
-        <!--! Email Forwards -->
-        <div id="email_forwards">
-          <label>${ _("Email Forwards:") }</label>
-          ${ h.tag.input(type="button", name="add_forwarding_field",
-             value="Add Forwarding Field", onClick="addForwardsField()") }<br/>
-          <py:if test="'mailForwardingAddress' in c.userinfo">
-            <py:for each="n in range(c.lengths[uid].forwards or 1)">
-              <xi:include href="snippets/forwards.html"/>
-            </py:for>
-          </py:if>
-        </div>
+        <label for="forwarding_toggle">Forwarding Only:</label>
+        <input type="button" id="forwarding_toggle" value="Enable"
+          onClick="forwardingOnlyToggle(); return false;"/><br/>
 
         <button type="submit" name="Update"
-          title="${ _('Add User Entry')}">${ _("Add User") }</button>
+          title="${ _('Proceed to next step') }">${ _("Next Step") }</button>
         <input type="hidden" name="uid" value="" />
         <input type="hidden" name="ispmanDomain" value="${domain}" />
+        <input type="hidden" name="ForwardingOnly" id="ForwardingOnly"
+          value="${ c.form_result['ForwardingOnly'] or 0}"/>
+        <script type="text/javascript">forwardingCheck()</script>
       </fieldset>
     </form>
   </body>
 </html>
 <!--!
-$Id: newuser.html 45 2006-11-10 18:54:45Z s0undt3ch $
+$Id: newuser.html 53 2006-11-15 03:08:10Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

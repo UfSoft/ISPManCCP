@@ -1,10 +1,10 @@
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: middleware.py 52 2006-11-14 03:25:59Z s0undt3ch $
+# $Id: middleware.py 53 2006-11-15 03:08:10Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/config/middleware.py $
-# $LastChangedDate: 2006-11-14 03:25:59 +0000 (Tue, 14 Nov 2006) $
-#             $Rev: 52 $
+# $LastChangedDate: 2006-11-15 03:08:10 +0000 (Wed, 15 Nov 2006) $
+#             $Rev: 53 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -12,6 +12,7 @@
 # Please view LICENSE for additional licensing information.
 # =============================================================================
 
+import ldap
 from paste import httpexceptions
 from paste.cascade import Cascade
 from paste.urlparser import StaticURLParser
@@ -78,22 +79,16 @@ def make_app(global_conf, full_stack=True, **app_conf):
         ldap_host = g.ispman.getConf('ldapHost')
         ldap_version = g.ispman.getConf('ldapVersion')
         domaindn = 'ispmanDomain=' + domain + ',' + app_conf['ispman_ldap_base_dn']
-        try:
-            ldap = g.perl.eval(
-                '$ldap = Net::LDAP->new('+ldap_host+', version => '+ldap_version+') or die "$@"'
-            )
 
-            result = ldap.bind(domaindn, password=password)
-            if result.code():
-                print  "Failed LDAP bind for domain '%s': %s." % \
-                        (domain, result.error())
-                ldap.unbind()
-                return False
-            ldap.unbind()
+        conn = ldap.initialize("ldap://%s:389" % ldap_host)
+        conn.protocol_version = int(ldap_version)
+        try:
+            conn.simple_bind_s(who=domaindn, cred=password)
             return True
         except Exception, e:
-            ldap.unbind()
-            print e
+            conn.unbind_s()
+            print "Failed LDAP bind for domain '%s': %s." % \
+                    (domain, e[0]['desc'])
             return False
 
     from paste.auth.basic import AuthBasicHandler

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: ispman_helpers.py 52 2006-11-14 03:25:59Z s0undt3ch $
+# $Id: ispman_helpers.py 53 2006-11-15 03:08:10Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/ispman_helpers.py $
-# $LastChangedDate: 2006-11-14 03:25:59 +0000 (Tue, 14 Nov 2006) $
-#             $Rev: 52 $
+# $LastChangedDate: 2006-11-15 03:08:10 +0000 (Wed, 15 Nov 2006) $
+#             $Rev: 53 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -34,7 +34,8 @@ allowed_user_attributes = (
 updatable_attributes = (
     'ispmanStatus', 'mailQuota', 'mailAlias', 'sn', 'userPassword',
     'givenName', 'updateUser', 'uid', 'ispmanDomain', 'mailForwardingAddress',
-    'FTPQuotaMBytes', 'FTPStatus'
+    'FTPQuotaMBytes', 'FTPStatus', 'mailHost', 'fileHost', 'dialupAccess',
+    'radiusProfileDN'
 )
 
 
@@ -171,6 +172,7 @@ def delete_user(post_dict):
 def user_exists(user_id):
     uid = user_id + '@' + request.POST['ispmanDomain']
     return bool(int(g.ispman.userExists(uid)))
+
 
 # cache it for 5 minutes
 @beaker_cache(expire=300, query_args=True)

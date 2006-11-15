@@ -68,6 +68,10 @@
           ${ _("Edit Account") + ' - ' + c.userinfo['mailLocalAddress'] }
         </legend>
 
+        <span class="forwarding_account_message" py:if="'mailHost' not in c.userinfo">
+          ${ _("This is a forwarding only account") }
+        </span>
+
         <!--! User ID -->
         <label for="ispmanUserId">${ _("User ID:") }</label>
         <span id="ispmanUserId">${ c.userinfo['ispmanUserId'] }</span><br/>
@@ -152,6 +156,10 @@
           </py:if>
         </div>
 
+        <span class="error-message" py:if="'ForwardingOnly' in c.form_errors">
+          ${ c.form_errors['ForwardingOnly']}
+        </span><br/>
+
         <button type="submit" name="Update"
           title="${ _('Update User Entry')}">${ _("Update") }</button>
         ${h.tag.button(
@@ -168,13 +176,15 @@
           value="${c.userinfo['mailLocalAddress']}" />
         <input type="hidden" name="ispmanCreateTimestamp"
           value="${c.userinfo['ispmanCreateTimestamp']}"/>
+        <input type="hidden" name="ForwardingOnly" id="ForwardingOnly"
+          value="${ 'mailHost' not in c.userinfo and 1 or 0}"/>
       </fieldset>
     </form>
     <script type="text/javascript">checkFieldStatus();</script>
   </body>
 </html>
 <!--!
-$Id: edituser.html 49 2006-11-10 19:37:35Z s0undt3ch $
+$Id: edituser.html 53 2006-11-15 03:08:10Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

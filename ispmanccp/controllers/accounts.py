@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: accounts.py 52 2006-11-14 03:25:59Z s0undt3ch $
+# $Id: accounts.py 53 2006-11-15 03:08:10Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/accounts.py $
-# $LastChangedDate: 2006-11-14 03:25:59 +0000 (Tue, 14 Nov 2006) $
-#             $Rev: 52 $
+# $LastChangedDate: 2006-11-15 03:08:10 +0000 (Wed, 15 Nov 2006) $
+#             $Rev: 53 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -226,19 +226,31 @@ class AccountsController(BaseController):
         userinfo = request.POST.copy()
         # add some account defaults
         userinfo['dialupAccess'] = u'disabled'
-        userinfo['radiusProfileDN'] = 'cn=default, ou=ou=radiusprofiles, ' + \
+        userinfo['radiusProfileDN'] = u'cn=default, ou=radiusprofiles, ' + \
                 APP_CONF['ispman_ldap_base_dn']
-        userinfo['mailHost'] = self.dominfo['ispmanDomainDefaultMailDropHost']
+
         userinfo['fileHost'] = self.dominfo['ispmanDomainDefaultFileServer']
+
+        if not h.asbool(userinfo['ForwardingOnly']):
+            userinfo['mailHost'] = self.dominfo['ispmanDomainDefaultMailDropHost']
 
         retval = add_user(userinfo)
         if not retval:
             session['message'] = _('Backend Error')
             session.save()
             h.redirect_to(action="new", id=None)
-        session['message'] = _('Operation Successfull')
+
+        # Choose message to display  based on the account being forwarding only or not
+        if h.asbool(userinfo['ForwardingOnly']):
+            session['message'] = _(
+                'Account added. You now need to setup a forwarding address.'
+            )
+        else:
+            session['message'] = _(
+                'Account added. You can now setup alias and/or forwarding addresses.'
+            )
         session.save()
-        redirect_to(action="index", id=None)
+        redirect_to(action="edit", id=userinfo['ispmanUserId'])
 
 
     def _generate_new_password(self):

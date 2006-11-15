@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: setup.py 56 2006-11-15 08:06:55Z s0undt3ch $
+# $Id: setup.py 58 2006-11-15 22:12:50Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/setup.py $
-# $LastChangedDate: 2006-11-15 08:06:55 +0000 (Wed, 15 Nov 2006) $
-#             $Rev: 56 $
+# $LastChangedDate: 2006-11-15 22:12:50 +0000 (Wed, 15 Nov 2006) $
+#             $Rev: 58 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -105,7 +105,6 @@ setup(
     download_url = "http://ccp.ufsoft.org/download/%s/" % VERSION,
     zip_safe = False,
     install_requires = [
-        "pyperl>=1.0.1c",
         "Pylons>=0.9.3",
         "Genshi>=0.3.4",
         "formencode>=0.6",

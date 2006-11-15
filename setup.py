@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: setup.py 54 2006-11-15 03:36:46Z s0undt3ch $
+# $Id: setup.py 56 2006-11-15 08:06:55Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/setup.py $
-# $LastChangedDate: 2006-11-15 03:36:46 +0000 (Wed, 15 Nov 2006) $
-#             $Rev: 54 $
+# $LastChangedDate: 2006-11-15 08:06:55 +0000 (Wed, 15 Nov 2006) $
+#             $Rev: 56 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -16,6 +16,41 @@
 
 from setuptools import setup, find_packages
 
+try:
+    # Let's find out if we have python-ldap
+    import ldap
+except ImportError:
+    # We don't have python-ldap, exit nicely
+    from sys import exit
+    print
+    print "You must have the python-ldap module instaled."
+    print "Most distributions already provide it, just install it."
+    print "As an alternative, you can get it from:"
+    print "   http://python-ldap.sourceforge.net/"
+    print
+    exit(1)
+
+def setup_pyperl():
+    """Function that call's pyperl's setup.py"""
+    import os, subprocess
+    cur_dir = os.path.dirname(os.path.abspath(__file__))
+    os.chdir(os.path.join(cur_dir, 'extra-packages', 'pyperl-1.0.1d'))
+    retcode = subprocess.call(['python', './setup.py', 'install'])
+    os.chdir(cur_dir)
+
+
+try:
+    # Let's find out if we have PyPerl installed
+    import perl
+except ImportError:
+    # We don't have PyPerl, so, install it
+    setup_pyperl()
+
+
+# We now resume normal setup operation
+
+
+VERSION = "0.1"
 DESCRIPTION = """
 ==========================================
 ISPManCCP - ISPMan Customer Control Pannel
@@ -59,7 +94,7 @@ WikiTemplates can be installed with `Easy Install
 """
 setup(
     name = 'ISPManCCP',
-    version = "0.1",
+    version = VERSION,
     description = "Customer Control Pannel for ISPMan",
     long_description = DESCRIPTION,
     license = 'BSD',
@@ -67,10 +102,10 @@ setup(
     author = "Pedro Algarvio",
     author_email = "ufs@ufsoft.org",
     url = "http://ccp.ufsoft.org/",
+    download_url = "http://ccp.ufsoft.org/download/%s/" % VERSION,
     zip_safe = False,
     install_requires = [
         "pyperl>=1.0.1c",
-        "python-ldap>=2.0.11",
         "Pylons>=0.9.3",
         "Genshi>=0.3.4",
         "formencode>=0.6",

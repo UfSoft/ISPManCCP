@@ -13,6 +13,8 @@ error_email_from = paste@exceptions.com
 use = egg:Paste#http
 host = 0.0.0.0
 port = 5000
+use_threadpool = true
+threadpool_workers = 10
 
 [app:main]
 use = egg:ISPManCCP
@@ -22,12 +24,12 @@ session_data_dir = %(here)s/data/sessions
 session_key = ispmanccp
 session_secret = ${app_instance_secret}
 app_instance_uuid = ${app_instance_uuid}
-
-# Specify the database for SQLObject to use via pylons.database.PackageHub.
-# %(here) may include a ':' character on Windows environments; this can
-# invalidate the URI when specifying a SQLite db via path name. Refer to the
-# SQLObject documentation for a special syntax to preserve the URI.
-#sqlobject.dburi = sqlite:%(here)s/somedb.db
+app_realm = Customer Control Panel
+ispman_base_dir = /opt/ispman
+ispman_ldap_base_dn = o=ispman
+bad_passwords_file = /usr/share/dict/cracklib-small
+passwords_min_length = 6
+passwords_non_letter_min_chars = 2
 
 # WARNING: *THE LINE BELOW MUST BE UNCOMMENTED ON A PRODUCTION ENVIRONMENT*
 # Debug mode will enable the interactive debugging tool, allowing ANYONE to

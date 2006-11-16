@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: helpers.py 53 2006-11-15 03:08:10Z s0undt3ch $
+# $Id: helpers.py 62 2006-11-16 07:38:01Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/helpers.py $
-# $LastChangedDate: 2006-11-15 03:08:10 +0000 (Wed, 15 Nov 2006) $
-#             $Rev: 53 $
+# $LastChangedDate: 2006-11-16 07:38:01 +0000 (Thu, 16 Nov 2006) $
+#             $Rev: 62 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -54,12 +54,17 @@ def get_nav_class_state(url, request, partial=False):
     """ Helper function that just returns the 'active'/'inactive'
     link class based on the passed url. """
     if partial:
-        _url = '/' + '/'.join(
-            [request.environ['pylons.routes_dict']['controller']])
+        _url = h.url_for(
+            controller=request.environ['pylons.routes_dict']['controller'],
+            action=None,
+            id=None
+        )
     else:
-        _url = '/' + '/'.join([
-            request.environ['pylons.routes_dict']['controller'],
-            request.environ['pylons.routes_dict']['action']])
+        _url = h.url_for(
+            controller=request.environ['pylons.routes_dict']['controller'],
+            action=request.environ['pylons.routes_dict']['action'],
+            id=None
+        )
 
     if url == request.path_info:
         return 'active'

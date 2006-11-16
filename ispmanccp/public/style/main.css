@@ -1,6 +1,6 @@
 /*
  * vim: sw=4 ts=4 fenc=utf-8 et
- * $Id: main.css 53 2006-11-15 03:08:10Z s0undt3ch $
+ * $Id: main.css 63 2006-11-16 21:28:08Z s0undt3ch $
 */
 
 h1 { font-size: 130%; text-align: center; }
@@ -21,7 +21,7 @@ button { float: right; display: block; margin: 0px 0px -5px 10px; padding: 2px; 
 
 #header {
     padding-left: 450px;
-    background-image: url(/images/logo.jpg);
+    background-image: url(../images/logo.jpg);
     background-position: top left;
     background-repeat: no-repeat;
     background-color: #003885;
@@ -35,7 +35,7 @@ button { float: right; display: block; margin: 0px 0px -5px 10px; padding: 2px; 
 #warning span { padding: 1px 1px 1px 30px; margin: 0px; font-family: Tahoma, sans-serif; font-size: 13px; }
 #warning div {
     border-bottom: 1px solid #404040;
-    background-image: url("/images/warning.gif");
+    background-image: url(../images/warning.gif);
     background-repeat: no-repeat;
     margin-left: 3px;
 }
@@ -59,7 +59,7 @@ button { float: right; display: block; margin: 0px 0px -5px 10px; padding: 2px; 
     padding: 2px 2px 2px 25px;
     font-weight: bold;
     font-size: 90%;
-    background-image: url("/images/warning.gif");
+    background-image: url(../images/warning.gif);
     background-repeat: no-repeat;
 }
 

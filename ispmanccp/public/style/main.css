@@ -1,6 +1,6 @@
 /*
  * vim: sw=4 ts=4 fenc=utf-8 et
- * $Id: main.css 67 2006-11-18 15:28:38Z s0undt3ch $
+ * $Id: main.css 68 2006-11-18 15:37:25Z s0undt3ch $
 */
 
 h1 { font-size: 130%; text-align: center; }
@@ -37,6 +37,7 @@ button[disabled] { color: grey; }
 button[disabled]:hover { background-image: url(../images/button-bg.png); }
 button.float { float: right; display: block; margin-left: 10px; }
 button.inline { margin-left: 15px; margin-top: 5px; }
+button.label { margin: 4px 0px 4px 0px; }
 
 #header {
     padding-left: 450px;

@@ -136,7 +136,7 @@
         <div id="email_alias">
           <label for="add_alias_field">${ _("Email Aliases:") }</label>
           <button type="button" id="add_alias_field" title="${ _('Add Alias Field') }"
-             onClick="addAliasField()">
+            class="inline label" onClick="addAliasField()">
             ${ _('Add Alias Field') }
           </button><br/>
           <py:if test="'mailAlias' in c.userinfo"> 
@@ -150,7 +150,7 @@
         <div id="email_forwards">
           <label for="add_forwarding_field">${ _("Email Forwards:") }</label>
           <button type="button" id="add_forwarding_field" title="${ _('Add Forwarding Field') }"
-            onClick="addForwardsField()">
+            class="inline label" onClick="addForwardsField()">
             ${ _("Add Forwarding Field") }
           </button><br/>
           <py:if test="'mailForwardingAddress' in c.userinfo">
@@ -189,7 +189,7 @@
   </body>
 </html>
 <!--!
-$Id: edituser.html 65 2006-11-18 11:14:17Z s0undt3ch $
+$Id: edituser.html 68 2006-11-18 15:37:25Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

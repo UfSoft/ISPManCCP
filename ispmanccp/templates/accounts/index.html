@@ -7,6 +7,17 @@
   <xi:include href="../layout.html" />
   <head>
     <title>${ _('Accounts') }</title>
+    <script type="text/javascript">
+      function delete_uid(uid) {
+        var controller_href = "${ h.url_for(controller='accounts', action='delete', id=None) }";
+        location.href = controller_href + "/" + uid;
+      }
+
+      function edit_uid(uid) {
+        var controller_href = "${ h.url_for(controller='accounts', action='edit', id=None) }";
+        location.href = controller_href + "/" + uid;
+      }
+    </script>
   </head>
 
   <body>
@@ -93,7 +104,7 @@
 
 </html>
 <!--!
-$Id: index.html 69 2006-11-18 22:43:41Z s0undt3ch $
+$Id: index.html 70 2006-11-18 22:57:23Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

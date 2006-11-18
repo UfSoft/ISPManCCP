@@ -52,9 +52,8 @@
         <div class="autocomplete">
           <label for="uidsearch">${ _("Search:") }</label>
           <input autocomplete="off" type="text" id="uidsearch" name="uidsearch" class="uidsearch"/>
-          <input type="submit" name="submit" value="${ _('Edit Account') }"
-            title="_('Edit Account')"
-            onClick="location.href='/accounts/edit/'+$('uidsearch').value"/>
+          <button type="submit" title="${ _('Edit Account') }"
+            onClick="location.href='/accounts/edit/'+$('uidsearch').value">${ _('Edit Account') }</button>
         </div>
         <div class="auto_complete" id="uid_auto_complete"></div>
         <script type="text/javascript">
@@ -90,7 +89,7 @@
 
 </html>
 <!--!
-$Id: index.html 51 2006-11-13 07:55:45Z s0undt3ch $
+$Id: index.html 65 2006-11-18 11:14:17Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

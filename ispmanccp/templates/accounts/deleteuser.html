@@ -80,11 +80,12 @@
           </py:for>
         </py:if>
 
-        <button type="submit" name="Delete"
+        <button type="submit" name="Delete" class="float"
           title="${ _('Delete User Entry')}">${ _("Delete") }</button>
         ${h.tag.button(
             _("Cancel"),
             type="button",
+            class_="float",
             title=_("Cancel"),
             onClick="location.href='" + h.url_for(controller="accounts", action="index", id=None) + "'"
           )
@@ -97,7 +98,7 @@
   </body>
 </html>
 <!--!
-$Id: deleteuser.html 36 2006-11-06 18:17:03Z s0undt3ch $
+$Id: deleteuser.html 65 2006-11-18 11:14:17Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

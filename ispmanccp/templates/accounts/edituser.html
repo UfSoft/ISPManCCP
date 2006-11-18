@@ -19,7 +19,7 @@
         var html = '\n<div style="display:none;" id="mailAlias-'+total_alias+'-div">\n';
         html += '\n<label for="mailAlias-'+total_alias+'">&nbsp;</label>\n';
         html += '<input id="mailAlias-'+total_alias+'" name="mailAlias-'+total_alias+'" class="email"/>\n';
-        html += '<input style="margin-left: 15px;" type="button" value="-" onClick="removeAliasField(\'mailAlias-'+total_alias+'-div\'); return false;"/>\n';
+        html += '<button type="button" class="inline" title="${ _('Remove Alias') }" onClick="removeAliasField(\'mailAlias-'+total_alias+'-div\'); return false;">-</button>\n';
         html += '<br/></div>\n';
         new Insertion.Bottom('email_alias', html);
         new Effect.Grow('mailAlias-'+total_alias+'-div', { direction: 'top-right' });
@@ -35,7 +35,7 @@
         var html = '\n<div style="display:none;" id="mailForwardingAddress-'+total_forwards+'-div">\n'
         html += '\n<label for="mailForwardingAddress-'+total_forwards+'">&nbsp;</label>\n';
         html += '<input id="mailForwardingAddress-'+total_forwards+'" name="mailForwardingAddress-'+total_forwards+'" class="email"/>\n';
-        html += '<input style="margin-left: 15px;" type="button" value="-" onClick="removeForwardsField(\'mailForwardingAddress-'+total_forwards+'-div\'); return false;"/>\n';
+        html += '<button type="button" class="inline" title="${ _('Remove Forwarding Address') }" onClick="removeForwardsField(\'mailForwardingAddress-'+total_forwards+'-div\'); return false;">-</button>\n';
         html += '<br/></div>\n';
         new Insertion.Bottom('email_forwards', html);
         new Effect.Grow('mailForwardingAddress-'+total_forwards+'-div', { direction: 'top-right' });
@@ -134,9 +134,11 @@
 
         <!--! Email Alias -->
         <div id="email_alias">
-          <label>${ _("Email Aliases:") }</label>
-          ${ h.tag.input(type="button", name="add_alias_field",
-             value="Add Alias Field", onClick="addAliasField()") }<br/>
+          <label for="add_alias_field">${ _("Email Aliases:") }</label>
+          <button type="button" id="add_alias_field" title="${ _('Add Alias Field') }"
+             onClick="addAliasField()">
+            ${ _('Add Alias Field') }
+          </button><br/>
           <py:if test="'mailAlias' in c.userinfo"> 
             <py:for each="n in range(c.lengths[uid].aliases or 1)">
               <xi:include href="snippets/alias.html"/>
@@ -146,9 +148,11 @@
 
         <!--! Email Forwards -->
         <div id="email_forwards">
-          <label>${ _("Email Forwards:") }</label>
-          ${ h.tag.input(type="button", name="add_forwarding_field",
-             value="Add Forwarding Field", onClick="addForwardsField()") }<br/>
+          <label for="add_forwarding_field">${ _("Email Forwards:") }</label>
+          <button type="button" id="add_forwarding_field" title="${ _('Add Forwarding Field') }"
+            onClick="addForwardsField()">
+            ${ _("Add Forwarding Field") }
+          </button><br/>
           <py:if test="'mailForwardingAddress' in c.userinfo">
             <py:for each="n in range(c.lengths[uid].forwards or 1)">
               <xi:include href="snippets/forwards.html"/>
@@ -160,11 +164,12 @@
           ${ c.form_errors['ForwardingOnly']}
         </span><br/>
 
-        <button type="submit" name="Update"
+        <button class="float" type="submit" name="Update"
           title="${ _('Update User Entry')}">${ _("Update") }</button>
         ${h.tag.button(
               _("Delete Account"),
               type="button",
+              class_="float",
               title=_("Delete Account"),
               onClick="location.href='" + h.url_for(controller="accounts", action="delete", id=uid) + "'"
             )
@@ -184,7 +189,7 @@
   </body>
 </html>
 <!--!
-$Id: edituser.html 53 2006-11-15 03:08:10Z s0undt3ch $
+$Id: edituser.html 65 2006-11-18 11:14:17Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

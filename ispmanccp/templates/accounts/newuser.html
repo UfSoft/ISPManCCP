@@ -14,9 +14,11 @@
       // <![CDATA[
       function forwardingCheck() {
         if ( $('ForwardingOnly').value == 0 ) {
-          $('forwarding_toggle').value = "${ _('Enable') }";
+          $('forwarding_toggle').innerHTML = "${ _('Enable') }";
+          $('forwarding_toggle').title = "${ _('Enable Forwarding Only Account') }";
         } else {
-          $('forwarding_toggle').value = "${ _('Disable') }";
+          $('forwarding_toggle').innerHTML = "${ _('Disable') }";
+          $('forwarding_toggle').title = "${ _('Disable Forwarding Only Account') }";
         }
       }
 
@@ -111,10 +113,12 @@
         </span><br/>
 
         <label for="forwarding_toggle">Forwarding Only:</label>
-        <input type="button" id="forwarding_toggle" value="Enable"
-          onClick="forwardingOnlyToggle(); return false;"/><br/>
+        <button type="button" id="forwarding_toggle" title="${ _('Enable Forwarding Only Account') }"
+          onClick="forwardingOnlyToggle(); return false;">
+          ${ _('Enable') }
+        </button><br/>
 
-        <button type="submit" name="Update"
+        <button type="submit" name="Update" class="float"
           title="${ _('Proceed to next step') }">${ _("Next Step") }</button>
         <input type="hidden" name="uid" value="" />
         <input type="hidden" name="ispmanDomain" value="${domain}" />
@@ -126,7 +130,7 @@
   </body>
 </html>
 <!--!
-$Id: newuser.html 53 2006-11-15 03:08:10Z s0undt3ch $
+$Id: newuser.html 65 2006-11-18 11:14:17Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: base.py 43 2006-11-10 12:22:56Z s0undt3ch $
+# $Id: base.py 65 2006-11-18 11:14:17Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/base.py $
-# $LastChangedDate: 2006-11-10 12:22:56 +0000 (Fri, 10 Nov 2006) $
-#             $Rev: 43 $
+# $LastChangedDate: 2006-11-18 11:14:17 +0000 (Sat, 18 Nov 2006) $
+#             $Rev: 65 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -66,6 +66,8 @@ class BaseController(WSGIController):
         c.controller = request.environ['pylons.routes_dict']['controller']
         c.action = request.environ['pylons.routes_dict']['action']
 
+        c.imgs_list = self.__images_list()
+
         if 'message' in session and session['message'] != '':
             c.message = session['message']
             session['message'] = ''
@@ -110,3 +112,17 @@ class BaseController(WSGIController):
                 menus[key].append((name, url, keys[name]))
         return menus
 
+
+    # Cache for a day, altough, we should never need to expire this.
+    @beaker_cache(expire=86400)
+    def __images_list(self):
+        """Internal function to create an images list to be pre-lodaded(fed to a JS function)."""
+        import os
+        from webhelpers.rails.asset_tag import compute_public_path
+        from pkg_resources import resource_filename
+        img_list = []
+        img_dir = os.path.join(resource_filename('ispmanccp', 'public'), 'images')
+        for img in os.listdir(img_dir):
+            if os.path.splitext(img)[1].lower() in ('.png', '.jpg', '.gif'):
+                img_list.append(compute_public_path(img, 'images'))
+        return img_list

@@ -53,10 +53,14 @@
           <label for="uidsearch">${ _("Search:") }</label>
           <input autocomplete="off" type="text" id="uidsearch" name="uidsearch" class="uidsearch"/>
           <button type="submit" title="${ _('Edit Account') }"
-            onClick="location.href='/accounts/edit/'+$('uidsearch').value">${ _('Edit Account') }</button>
+            onClick="location_href($('uidsearch'));">${ _('Edit Account') }</button>
         </div>
         <div class="auto_complete" id="uid_auto_complete"></div>
         <script type="text/javascript">
+          function location_href(obj) {
+            location.href = "${ h.url_for(controller='accounts', action='edit', id=None) }" +
+              "/" + obj.value;
+          }
           new Ajax.Autocompleter(
               'uidsearch',
               'uid_auto_complete',
@@ -89,7 +93,7 @@
 
 </html>
 <!--!
-$Id: index.html 66 2006-11-18 12:09:03Z s0undt3ch $
+$Id: index.html 67 2006-11-18 15:28:38Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

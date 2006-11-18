@@ -1,6 +1,6 @@
 /*
  * vim: sw=4 ts=4 fenc=utf-8 et
- * $Id: main.css 65 2006-11-18 11:14:17Z s0undt3ch $
+ * $Id: main.css 67 2006-11-18 15:28:38Z s0undt3ch $
 */
 
 h1 { font-size: 130%; text-align: center; }
@@ -29,19 +29,14 @@ button {
     background-color:  #F8F7F7;
     background-image: url(../images/button-bg.png);
     padding: 0px 0.2em 0px 0.2em;
-    margin: 5px 0px -5px 0px;
+    margin: -3px 0px -5px 0px;
     vertical-align: text-top;
 }
-button:hover {
-    background-image: url(../images/button-bg-hover.png); 
-}
-button[disabled] {
-    color: grey;
-}
+button:hover { background-image: url(../images/button-bg-hover.png); }
+button[disabled] { color: grey; }
 button[disabled]:hover { background-image: url(../images/button-bg.png); }
-
 button.float { float: right; display: block; margin-left: 10px; }
-button.inline { margin-left: 15px; }
+button.inline { margin-left: 15px; margin-top: 5px; }
 
 #header {
     padding-left: 450px;

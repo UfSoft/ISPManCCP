@@ -14,10 +14,10 @@
       // <![CDATA[
       function forwardingCheck() {
         if ( $('ForwardingOnly').value == 0 ) {
-          $('forwarding_toggle').innerHTML = "${ _('Enable') }";
+          $('forwarding_toggle').value = "${ _('Enable') }";
           $('forwarding_toggle').title = "${ _('Enable Forwarding Only Account') }";
         } else {
-          $('forwarding_toggle').innerHTML = "${ _('Disable') }";
+          $('forwarding_toggle').value = "${ _('Disable') }";
           $('forwarding_toggle').title = "${ _('Disable Forwarding Only Account') }";
         }
       }
@@ -113,13 +113,13 @@
         </span><br/>
 
         <label for="forwarding_toggle">Forwarding Only:</label>
-        <button type="button" id="forwarding_toggle" title="${ _('Enable Forwarding Only Account') }"
-          onClick="forwardingOnlyToggle(); return false;">
-          ${ _('Enable') }
-        </button><br/>
+        <input type="button" id="forwarding_toggle" class="input_button inline label"
+          title="${ _('Enable Forwarding Only Account') }" value="${ _('Enable') }"
+          onClick="forwardingOnlyToggle(); return false;"/>
+        <br/>
 
-        <button type="submit" name="Update" class="float"
-          title="${ _('Proceed to next step') }">${ _("Next Step") }</button>
+        <input type="submit" name="Update" class="input_button float"
+          value="${ _('Next Step') }" title="${ _('Proceed to next step') }"/>
         <input type="hidden" name="uid" value="" />
         <input type="hidden" name="ispmanDomain" value="${domain}" />
         <input type="hidden" name="ForwardingOnly" id="ForwardingOnly"
@@ -130,7 +130,7 @@
   </body>
 </html>
 <!--!
-$Id: newuser.html 65 2006-11-18 11:14:17Z s0undt3ch $
+$Id: newuser.html 69 2006-11-18 22:43:41Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

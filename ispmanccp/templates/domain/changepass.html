@@ -32,14 +32,15 @@
           ${ c.form_errors['chk_pass'] }
         </span><br/>
         <input type="hidden" name="ispmanDomain" value="${ c.dominfo['ispmanDomain'] }"/>
-        <button class="user_info float" type="submit" id="submit" name="submit">${ _("Change Password") }</button>
-        <button class="user_info float" type="reset">${ _("Reset Fields") }</button>
+        <input class="input_button float" type="submit" id="submit"
+          name="submit" value="${ _('Change Password') }"/>
+        <input class="input_button float" type="reset" value="${ _('Reset Fields') }"/>
       </fieldset>
     </form>
   </body>
 </html>
 <!--!
-$Id: changepass.html 65 2006-11-18 11:14:17Z s0undt3ch $
+$Id: changepass.html 69 2006-11-18 22:43:41Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

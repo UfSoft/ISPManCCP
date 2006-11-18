@@ -9,15 +9,15 @@
     <label for="mailAlias-${n}">&nbsp;</label>
     <input id="mailAlias-${n}" name="mailAlias-${n}" class="email"
       value="${c.userinfo['mailAlias'][n]}"/>
-    <button type="button" name="remove" title="${ _('Remove Alias') }" class="inline"
-      onClick="removeAliasField('mailAlias-${n}-div');">-</button>
-    <span class="error-message" py:if="'mailAlias-%i' % n in c.form_errors">
+    <input type="button" name="remove" title="${ _('Remove Alias') }" class="input_button inline"
+      value="-" onClick="removeAliasField('mailAlias-${n}-div');"/>
+    <span class="error-message" py:if="'mailAlias-%i' % n in c.form_errors and 'mailAlias-%i' % n != None">
       ${ c.form_errors['mailAlias-%i' % n]}
     </span><br/>
   </div>
 </html>
 <!--!
-$Id: alias.html 65 2006-11-18 11:14:17Z s0undt3ch $
+$Id: alias.html 69 2006-11-18 22:43:41Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

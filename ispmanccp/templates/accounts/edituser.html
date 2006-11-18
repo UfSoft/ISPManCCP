@@ -19,7 +19,7 @@
         var html = '\n<div style="display:none;" id="mailAlias-'+total_alias+'-div">\n';
         html += '\n<label for="mailAlias-'+total_alias+'">&nbsp;</label>\n';
         html += '<input id="mailAlias-'+total_alias+'" name="mailAlias-'+total_alias+'" class="email"/>\n';
-        html += '<button type="button" class="inline" title="${ _('Remove Alias') }" onClick="removeAliasField(\'mailAlias-'+total_alias+'-div\'); return false;">-</button>\n';
+        html += '<input type="button" class="input_button inline" title="${ _('Remove Alias') }" value="-" onClick="removeAliasField(\'mailAlias-'+total_alias+'-div\'); return false;"/>\n';
         html += '<br/></div>\n';
         new Insertion.Bottom('email_alias', html);
         new Effect.Grow('mailAlias-'+total_alias+'-div', { direction: 'top-right' });
@@ -35,7 +35,7 @@
         var html = '\n<div style="display:none;" id="mailForwardingAddress-'+total_forwards+'-div">\n'
         html += '\n<label for="mailForwardingAddress-'+total_forwards+'">&nbsp;</label>\n';
         html += '<input id="mailForwardingAddress-'+total_forwards+'" name="mailForwardingAddress-'+total_forwards+'" class="email"/>\n';
-        html += '<button type="button" class="inline" title="${ _('Remove Forwarding Address') }" onClick="removeForwardsField(\'mailForwardingAddress-'+total_forwards+'-div\'); return false;">-</button>\n';
+        html += '<input type="button" class="input_button inline" title="${ _('Remove Forwarding Address') }" value="-" onClick="removeForwardsField(\'mailForwardingAddress-'+total_forwards+'-div\'); return false;"/>\n';
         html += '<br/></div>\n';
         new Insertion.Bottom('email_forwards', html);
         new Effect.Grow('mailForwardingAddress-'+total_forwards+'-div', { direction: 'top-right' });
@@ -135,10 +135,10 @@
         <!--! Email Alias -->
         <div id="email_alias">
           <label for="add_alias_field">${ _("Email Aliases:") }</label>
-          <button type="button" id="add_alias_field" title="${ _('Add Alias Field') }"
-            class="inline label" onClick="addAliasField()">
-            ${ _('Add Alias Field') }
-          </button><br/>
+          <input type="button" id="add_alias_field" title="${ _('Add Alias Field') }"
+            class="input_button inline label" value="${ _('Add Alias Field') }"
+            onClick="addAliasField()"/>
+          <br/>
           <py:if test="'mailAlias' in c.userinfo"> 
             <py:for each="n in range(c.lengths[uid].aliases or 1)">
               <xi:include href="snippets/alias.html"/>
@@ -149,10 +149,10 @@
         <!--! Email Forwards -->
         <div id="email_forwards">
           <label for="add_forwarding_field">${ _("Email Forwards:") }</label>
-          <button type="button" id="add_forwarding_field" title="${ _('Add Forwarding Field') }"
-            class="inline label" onClick="addForwardsField()">
-            ${ _("Add Forwarding Field") }
-          </button><br/>
+          <input type="button" id="add_forwarding_field" title="${ _('Add Forwarding Field') }"
+            class="input_button inline label" value="${ _('Add Forwarding Field') }"
+            onClick="addForwardsField()"/>
+          <br/>
           <py:if test="'mailForwardingAddress' in c.userinfo">
             <py:for each="n in range(c.lengths[uid].forwards or 1)">
               <xi:include href="snippets/forwards.html"/>
@@ -164,16 +164,18 @@
           ${ c.form_errors['ForwardingOnly']}
         </span><br/>
 
-        <button class="float" type="submit" name="Update"
-          title="${ _('Update User Entry')}">${ _("Update") }</button>
-        ${h.tag.button(
-              _("Delete Account"),
-              type="button",
-              class_="float",
-              title=_("Delete Account"),
-              onClick="location.href='" + h.url_for(controller="accounts", action="delete", id=uid) + "'"
-            )
-        }
+        <script type="text/javascript">
+          function delete_uid() {
+            location.href = "${ h.url_for(controller='accounts', action='delete', id=uid) }";
+            return false;
+          }
+        </script>
+
+        <input class="input_button float" type="submit" name="Update"
+          title="${ _('Update User Entry')}" value="${ _('Update') }"/>
+        <input class="input_button float" type="button" title=" ${ _('Delete Account') }"
+          value="${ _('Delete Account') }" onClick="delete_uid();"/>
+
         <input type="hidden" name="uid" value="${uid}" />
         <input type="hidden" name="ispmanUserId" value="${ c.userinfo['ispmanUserId'] }"/>
         <input type="hidden" name="ispmanDomain" value="${domain}" />
@@ -189,7 +191,7 @@
   </body>
 </html>
 <!--!
-$Id: edituser.html 68 2006-11-18 15:37:25Z s0undt3ch $
+$Id: edituser.html 69 2006-11-18 22:43:41Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

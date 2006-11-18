@@ -80,16 +80,17 @@
           </py:for>
         </py:if>
 
-        <button type="submit" name="Delete" class="float"
-          title="${ _('Delete User Entry')}">${ _("Delete") }</button>
-        ${h.tag.button(
-            _("Cancel"),
-            type="button",
-            class_="float",
-            title=_("Cancel"),
-            onClick="location.href='" + h.url_for(controller="accounts", action="index", id=None) + "'"
-          )
-        }
+
+        <script type="text/javascript">
+          function accounts_index() {
+            location.href = "h.url_for(controller='accounts', action='index', id=None)";
+          }
+        </script>
+
+        <input type="submit" name="Delete" class="input_button float"
+          title="${ _('Delete User Entry')}" value="${ _('Delete') }"/>
+          <input type="button" class="input_button float" title="${ _('Cancel') }"
+          value="${ _('Cancel') }" onClick="accounts_index();"/>
 
         <input type="hidden" name="uid" value="${c.userinfo['mailLocalAddress']}" />
         <input type="hidden" name="ispmanDomain" value="${domain}" />
@@ -98,7 +99,7 @@
   </body>
 </html>
 <!--!
-$Id: deleteuser.html 65 2006-11-18 11:14:17Z s0undt3ch $
+$Id: deleteuser.html 69 2006-11-18 22:43:41Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

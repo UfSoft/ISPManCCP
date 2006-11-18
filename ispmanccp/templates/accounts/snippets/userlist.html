@@ -59,24 +59,24 @@
               </label>
             </py:for>
           </py:if>
-          <button class="float" title="${ _('Return to the top of the navigation links') }"
-            onClick="location.href='#top'">${ _("Top") }</button>
-          ${h.tag.button(
-              _("Delete Account"),
-              type="button",
-              class_="float",
-              title=_("Delete Account"),
-              onClick="location.href='" + h.url_for(controller="accounts", action="delete", id=uid) + "'"
-            )
-          }
-          ${h.tag.button(
-              _("Edit"),
-              type="button",
-              class_="float",
-              title=_("Edit Account"),
-              onClick="location.href='" + h.url_for(controller="accounts", action="edit", id=uid) + "'"
-            )
-          }
+          
+          <script type="text/javascript">
+            function delete_uid() {
+              location.href = "${ h.url_for(controller='accounts', action='delete', id=uid) }";
+            }
+
+            function edit_uid() {
+              location.href = "${ h.url_for(controller='accounts', action='edit', id=uid) }";
+            }
+          </script>
+
+          <input class="input_button float" type="button" value="${ _('Top') }"
+            title="${ _('Return to the top of the navigation links') }"
+            onClick="location.href='#top';"/>
+          <input class="input_button float" type="button" title="${ _('Delete Account') }"
+            value="${ _('Delete Account') }" onClick="delete_uid();"/>
+          <input class="input_button float" type="button" title="${ _('Edit Account') }"
+            value="${ _('Edit') }" onClick="edit_uid();"/>
 
         </fieldset>
       </div>
@@ -90,7 +90,7 @@
 
 </html>
 <!--!
-$Id: userlist.html 65 2006-11-18 11:14:17Z s0undt3ch $
+$Id: userlist.html 69 2006-11-18 22:43:41Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

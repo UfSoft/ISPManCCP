@@ -60,7 +60,7 @@
           new Ajax.Autocompleter(
               'uidsearch',
               'uid_auto_complete',
-              '/accounts/search/',
+              '${ h.url_for(controller="accounts", action="search", id=None) }',
               {
                 parameters:Form.serialize('sortby'),
                 ignoreCase: true,
@@ -89,7 +89,7 @@
 
 </html>
 <!--!
-$Id: index.html 65 2006-11-18 11:14:17Z s0undt3ch $
+$Id: index.html 66 2006-11-18 12:09:03Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

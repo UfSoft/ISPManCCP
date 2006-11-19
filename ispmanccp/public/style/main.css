@@ -1,6 +1,6 @@
 /*
  * vim: sw=4 ts=4 fenc=utf-8 et
- * $Id: main.css 69 2006-11-18 22:43:41Z s0undt3ch $
+ * $Id: main.css 71 2006-11-19 19:26:29Z s0undt3ch $
 */
 
 h1 { font-size: 130%; text-align: center; }
@@ -96,35 +96,68 @@ input.float { float: right; display: block; margin-left: 10px; }
 }
 
 /* Main Navigation */
-#mainnav { bottom:0; right:10px; position: absolute; font-size: 80%; letter-spacing: 1px; color: #fff; }
-#mainnav a { float: left; display: block; text-decoration: none; }
-#mainnav ul { list-style-type: none; }
-#mainnav li {
+div#mainnav {
+    bottom: 0;
+    right: 10px;
+    position: absolute;
+    font-size: 90%;
+    letter-spacing: 1px; color: #fff;
+}
+ul#navlist {
+    margin: 0;
+    padding:0;
+    padding-left: 20px;
+    padding-top: 8px;
+    color: #eee;
     float: left;
-    display: block;
-    margin: 0 0 0 5px;
-    padding: 5px 15px 0px 15px;
+    line-height: 34px;
+}
+ul#navlist li { display: inline; }
+ul#navlist li a {
+    border: 0px;
+    padding: 0 18px 0 18px;
+    color: #fff;
+    margin-right: 9px;
+    text-decoration: none;
+    float: left;
     border: 1px solid #3363a3;
 }
-#mainnav .active {
-    border-bottom: 1px solid white;
-    font-weight: bold;
-    background-color: white;
-    color: #3363a3;
+ul#navlist li.active a.active,  ul#mainnav li.active a.active:hover {
+    background-color: white; color: #3363a3;
+    border-bottom: 1px solid #fff;
 }
-#mainnav .inactive { color: #fff; }
-#mainnav .active:hover { color: #fff; background-color: #3363a3; }
-#mainnav .inactive:hover { background-color: #3363a3; }
+ul#navlist li a:hover, ul#navlist li.active a:hover {
+    color: #fff; background-color: #3363a3; border: 1px solid #3363a3;
+}
 
 /* Context Navigation */
-#ctxnav { padding: 2px; font-size: 65%; text-align: right; }
-#ctxnav a { text-decoration: none; letter-spacing: 1px; }
-#ctxnav .inactive { color: darkred; }
-#ctxnav .active { font-weight: bold; background-color: lightgrey; }
-#ctxnav .inactive:hover { background-color: grey; color: #fff; }
-#ctxnav .active:hover  { background-color: grey; color: #fff; }
-#ctxnav ul { list-style-type: none; margin: 0 5px 0 0;}
-#ctxnav li { display: inline; margin-left: 5px; position: relative; padding: 3px; }
+div#ctxnav {
+    top: 0; right: 5px; position: relative; font-size: 80%; letter-spacing: 1px; color: #000;
+    text-align: right;
+}
+ul#ctx_navlist {
+    margin: 0;
+    padding:0;
+    padding-top: 2px;
+    color: #eee;
+    line-height: 24px;
+    font-size: 80%;
+}
+ul#ctx_navlist li { display: inline; }
+ul#ctx_navlist li a {
+    border: 0px;
+    padding: 3px 10px 3px 10px;
+    color: darkred;
+    text-decoration: none;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+ul#ctx_navlist li.active a.active,  ul#ctx_mainnav li.active a.active:hover {
+    background-color: lightgrey; color: red;
+}
+ul#ctx_navlist li a:hover, ul#ctx_navlist li.active a:hover {
+    color: #fff; background-color: grey;
+}
 
 /* Alphabet search fieldset */
 .user_search{ text-align: center; }

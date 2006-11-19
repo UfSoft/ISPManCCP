@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: app_globals.py 52 2006-11-14 03:25:59Z s0undt3ch $
+# $Id: app_globals.py 71 2006-11-19 19:26:29Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/app_globals.py $
-# $LastChangedDate: 2006-11-14 03:25:59 +0000 (Tue, 14 Nov 2006) $
-#             $Rev: 52 $
+# $LastChangedDate: 2006-11-19 19:26:29 +0000 (Sun, 19 Nov 2006) $
+#             $Rev: 71 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -61,7 +61,6 @@ class Globals(object):
         # Setup an ISPMan instance
         perl.require('ISPMan')
         perl.require('CGI')
-        perl.require('Net::LDAP')
 
         try:
             self.ispman = perl.eval(
@@ -71,14 +70,8 @@ class Globals(object):
         except Exception, e:
             print e
 
-        ldap_host = self.ispman.getConf('ldapHost')
-        ldap_version = self.ispman.getConf('ldapVersion')
-        try:
-            self.ldap = perl.eval(
-                '$ldap = Net::LDAP->new('+ldap_host+', version => '+ldap_version+') or die "$@"'
-            )
-        except Exception, e:
-            print e
+        self.ldap_host = self.ispman.getConf('ldapHost')
+        self.ldap_version = self.ispman.getConf('ldapVersion')
 
         # Also pass the perl reference for further use within the app
         self.perl = perl

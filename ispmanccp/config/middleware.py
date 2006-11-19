@@ -1,10 +1,10 @@
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: middleware.py 53 2006-11-15 03:08:10Z s0undt3ch $
+# $Id: middleware.py 71 2006-11-19 19:26:29Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/config/middleware.py $
-# $LastChangedDate: 2006-11-15 03:08:10 +0000 (Wed, 15 Nov 2006) $
-#             $Rev: 53 $
+# $LastChangedDate: 2006-11-19 19:26:29 +0000 (Sun, 19 Nov 2006) $
+#             $Rev: 71 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -76,12 +76,10 @@ def make_app(global_conf, full_stack=True, **app_conf):
     app = Cascade([static_app, javascripts_app, app])
 
     def authenticate(aplication, domain, password):
-        ldap_host = g.ispman.getConf('ldapHost')
-        ldap_version = g.ispman.getConf('ldapVersion')
         domaindn = 'ispmanDomain=' + domain + ',' + app_conf['ispman_ldap_base_dn']
 
-        conn = ldap.initialize("ldap://%s:389" % ldap_host)
-        conn.protocol_version = int(ldap_version)
+        conn = ldap.initialize("ldap://%s:389" % g.ldap_host)
+        conn.protocol_version = int(g.ldap_version)
         try:
             conn.simple_bind_s(who=domaindn, cred=password)
             return True

@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: setup.py 58 2006-11-15 22:12:50Z s0undt3ch $
+# $Id: setup.py 72 2006-11-21 18:06:54Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/setup.py $
-# $LastChangedDate: 2006-11-15 22:12:50 +0000 (Wed, 15 Nov 2006) $
-#             $Rev: 58 $
+# $LastChangedDate: 2006-11-21 18:06:54 +0000 (Tue, 21 Nov 2006) $
+#             $Rev: 72 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -30,8 +30,12 @@ except ImportError:
     print
     exit(1)
 
-def setup_pyperl():
-    """Function that call's pyperl's setup.py"""
+
+try:
+    # Let's find out if we have PyPerl installed
+    import perl
+except ImportError:
+    # We don't have PyPerl, so, install it
     import os, subprocess
     cur_dir = os.path.dirname(os.path.abspath(__file__))
     os.chdir(os.path.join(cur_dir, 'extra-packages', 'pyperl-1.0.1d'))
@@ -39,70 +43,25 @@ def setup_pyperl():
     os.chdir(cur_dir)
 
 
-try:
-    # Let's find out if we have PyPerl installed
-    import perl
-except ImportError:
-    # We don't have PyPerl, so, install it
-    setup_pyperl()
-
 
 # We now resume normal setup operation
 
 
-VERSION = "0.1"
-DESCRIPTION = """
-==========================================
-ISPManCCP - ISPMan Customer Control Pannel
-==========================================
+VERSION = "0.0.1alpha"
 
-ISPManCCP is a customer control pannel to use with
-`ISPMan <http://ispman.net>`_.
+readme_file = open('README.txt')
 
-It's the alternative to the deprecated customer control pannel included with
-`ISPMan <http://ispman.net>`_.
-
-Current features
-----------------
-**Change Domain Password**
-
-- Enforce passwords with a minumum 5 char's lenght;
-- Enforce at least one number in the password;
-- Make sure a user is not using a word from a dictionary(words file can be
-  setup, for example, the cracklib file);
-
-**Edit User Accounts**
-
-- No remote mail aliases are allowed, ie, only aliases for the same domain;
-- Email forwards are checked for valid DNS MX reccords;
-- No underscores nor numbers are allowed for first and last names;
-- Change mail quota;
-- Change FTP quota and status;
-
-You can find more info on the
-`ISPManCCP <http://ccp.ufsoft.org/>`_ site where bugs and new feature requests
-should go to.
-
-Download and Installation
--------------------------
-
-WikiTemplates can be installed with `Easy Install
-<http://peak.telecommunity.com/DevCenter/EasyInstall>`_ by typing::
-
-    > easy_install ISPManCCP
-
-"""
 setup(
     name = 'ISPManCCP',
     version = VERSION,
     description = "Customer Control Pannel for ISPMan",
-    long_description = DESCRIPTION,
+    long_description = readme_file.read(),
     license = 'BSD',
     platforms = "Anywhere you've got ISPMan working.",
     author = "Pedro Algarvio",
     author_email = "ufs@ufsoft.org",
     url = "http://ccp.ufsoft.org/",
-    download_url = "http://ccp.ufsoft.org/download/%s/" % VERSION,
+    #download_url = "http://ccp.ufsoft.org/download/%s/" % VERSION,
     zip_safe = False,
     install_requires = [
         "Pylons>=0.9.3",

@@ -1,19 +1,90 @@
-This file is for you to describe the ISPManCCP application. Typically
-you would include information such as the information below:
 
-Installation and Setup
-======================
+=========================================
+ISPManCCP - ISPMan Customer Control Panel
+=========================================
 
-Install ``ISPManCCP`` using easy_install::
+ISPManCCP is a customer control panel to use with
+`ISPMan <http://ispman.net>`_.
 
-    easy_install ISPManCCP
+It's the alternative to the deprecated customer control panel included with
+`ISPMan <http://ispman.net>`_.
+
+Current features
+----------------
+**Disallow changes by Locked domains.**
+
+**Change Domain Password:**
+
+- Enforce passwords with a minimum six char's length(*configurable*);
+- Enforce at least two numbers in the password(*configurable*);
+- Make sure a user is not using a word from a dictionary(*words file can be
+  setup, for example, the cracklib file*);
+
+**Edit User Accounts:**
+
+- No remote mail aliases are allowed, ie, only aliases for the same domain;
+- Email forwards are checked for valid DNS MX records;
+- No underscores nor numbers are allowed for first and last names;
+- Change mail quota;
+- Change FTP quota and status;
+
+**Delete User Accounts.**
+
+**Create User Accounts:**
+
+- Makes sure a domain can create any more accounts;
+- Security restrictions are about the same as the imposed above.
+
+
+**Note:** *Mailgroup*'s support is not available on this release, probably next one.
+
+
+Download and Installation
+-------------------------
+
+ISPManCCP can be installed with `Easy Install
+<http://peak.telecommunity.com/DevCenter/EasyInstall>`_ by typing::
+
+    > easy_install ISPManCCP
 
 Make a config file as follows::
 
-    paster make-config ISPManCCP config.ini
-    
-Tweak the config file as appropriate and then setup the applicaiton::
+    > paster make-config ISPManCCP config.ini
 
-    paster setup-app config.ini
-    
-Then you are ready to go.
+Tweak the config file as appropriate.
+
+Serve the application
+---------------------
+
+You can serve the application with `paster <http://pythonpaste.org/>`_ by typing::
+
+    > paster serve config.ini
+
+Since most `ISPMan <http://ispman.net>`_ installations will already have apache installed,
+you can opt by having apache proxy requests to/from `paster <http://pythonpaste.org/>`_.
+
+I find this the ideal setup because I can just run `paster <http://pythonpaste.org/>`_ with
+a specific user and group(one with permissions to read from the `ISPMan <http://ispman.net>`_
+installation and still user port 80.
+
+A minimal apache *vhost* configuration example::
+
+    <VirtualHost *:80>
+        ServerName ccp.domain.tld
+        ProxyPreserveHost On
+        <Location />
+            SetHandler None
+            ProxyPass http://localhost:5000
+            ProxyPassReverse http://localhost:5000
+            AllowOverride None
+            Order allow,deny
+            Allow from all
+        </Location>
+    </VirtualHost>
+
+And that's about it.
+
+You can find more info on the
+`ISPManCCP <http://ccp.ufsoft.org/>`_ site where bugs and new feature requests
+should go to.
+

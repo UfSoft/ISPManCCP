@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: setup.py 80 2006-11-21 19:52:36Z s0undt3ch $
+# $Id: setup.py 83 2006-11-21 20:45:51Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/setup.py $
-# $LastChangedDate: 2006-11-21 19:52:36 +0000 (Tue, 21 Nov 2006) $
-#             $Rev: 80 $
+# $LastChangedDate: 2006-11-21 20:45:51 +0000 (Tue, 21 Nov 2006) $
+#             $Rev: 83 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -47,7 +47,7 @@ except ImportError:
 # We now resume normal setup operation
 
 
-VERSION = "0.0.1alpha1"
+VERSION = "0.0.1alpha2"
 
 readme_file = open('README.txt')
 

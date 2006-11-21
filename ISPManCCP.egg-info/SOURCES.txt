@@ -100,8 +100,9 @@ ispmanccp/models/__init__.py
 ispmanccp/models/accounts.py
 ispmanccp/models/domain.py
 ispmanccp/models/validators.py
+ispmanccp/public/images/button-bg-hover.png
+ispmanccp/public/images/button-bg.png
 ispmanccp/public/images/loading.gif
-ispmanccp/public/images/logo.gif
 ispmanccp/public/images/logo.jpg
 ispmanccp/public/images/warning.gif
 ispmanccp/public/js/ie7/README.txt

@@ -42,7 +42,20 @@ Current features
 Download and Installation
 -------------------------
 
-ISPManCCP can be installed with `Easy Install
+The one thing ISPManCCP can't do for you is install
+`python-ldap <http://python-ldap.sourceforge.net/>`_ and
+`pyDNS <http://pydns.sourceforge.net/>`_, but most
+distributions can provide that for you.
+
+**NOTE**: If you choose not to install `pyDNS
+<http://pydns.sourceforge.net/>`_, the only that will happen is that email
+forwarding addresses will not be checked for a valid DNS MX record.
+`python-ldap <http://python-ldap.sourceforge.net/>`_ on the other hand is
+**required** and will make setup fail if not present on your system.
+
+After `python-ldap <http://python-ldap.sourceforge.net/>`_ and
+`pyDNS <http://pydns.sourceforge.net/>`_ is installed, ISPManCCP
+can then be installed with `Easy Install
 <http://peak.telecommunity.com/DevCenter/EasyInstall>`_ by typing::
 
     > easy_install ISPManCCP

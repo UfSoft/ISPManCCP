@@ -6,16 +6,15 @@ from distutils.command.install import install
 DEBUG = 0
 perl = 'perl'
 
-import sys, os, subprocess
-from os      import popen, system, access, F_OK
-from os.path import isfile, getmtime
+import os
+import sys
+import subprocess
 from string  import split
-from sys     import exit
 
-MULTI_PERL = isfile("MULTI_PERL")
-BOOT_FROM_PERL = isfile("BOOT_FROM_PERL")
+MULTI_PERL = os.path.isfile("MULTI_PERL")
+BOOT_FROM_PERL = os.path.isfile("BOOT_FROM_PERL")
 
-p = popen(perl + ' ./opts.pl')
+p = os.popen(perl + ' ./opts.pl')
 perl_ccopts = p.readline()
 perl_ldopts = p.readline()
 p.close()
@@ -27,16 +26,16 @@ cc_extra     = []
 
 for x in split(perl_ccopts):
     if x[:2] == '-I':
-	include_dirs.append(x[2:])
+        include_dirs.append(x[2:])
 
     # XXX This is disabled since distutils does not yet implement
     # define_macros.  Aarghhh!!  So much time wasted on debugging
     # because of this.
     elif 0 and x[:2] == '-D':
-	m = split(x[2:], '=', 2)
-	if len(m) == 1:
-        m.append(None)
-	macros.append(tuple(m))
+        m = split(x[2:], '=', 2)
+        if len(m) == 1:
+            m.append(None)
+        macros.append(tuple(m))
     else:
         cc_extra.append(x)
 
@@ -82,12 +81,12 @@ else:
         else:
             ld_extra.append(x)
 
-    if not isfile("perlxsi.c"):
-        system(perl + " -MExtUtils::Embed -e xsinit")
+    if not os.path.isfile("perlxsi.c"):
+        os.system(perl + " -MExtUtils::Embed -e xsinit")
     sources.append('perlxsi.c');
 
     # Try to figure out if we use dlopen on this platform
-    p = popen(perl + ' -V:dlsrc')
+    p = os.popen(perl + ' -V:dlsrc')
     dlsrc = p.readline()
     p.close()
     if dlsrc == "dlsrc='dl_dlopen.xs';\n":
@@ -102,16 +101,15 @@ if MULTI_PERL:
     cc_extra.append("-DMULTI_PERL")
     sources.append('thrd_ctx.c')
 
-if not isfile("try_perlapi.c") or \
-       getmtime("try_perlapi.c") < getmtime("try_perlapi.pl"):
-    system(perl + " try_perlapi.pl")
+if not os.path.isfile("try_perlapi.c") or \
+       os.path.getmtime("try_perlapi.c") < os.path.getmtime("try_perlapi.pl"):
+    os.system(perl + " try_perlapi.pl")
 
 if sys.platform == 'win32':
     libs.append('perl56')
     for x in ['15','16','20']:
-	if access(os.path.join(sys.prefix, 'libs', 'python'+x+'.lib'), \
-           F_OK) == 1 :
-        libs.append('python'+x)
+        if os.access(os.path.join(sys.prefix, 'libs', 'python'+x+'.lib'), os.F_OK):
+            libs.append('python'+x)
     sym_extra.append('get_thread_ctx')
     sym_extra.append('sv2pyo')
     sym_extra.append('pyo2sv')
@@ -167,14 +165,17 @@ class my_install(install):
         if not self.run_tests():
             print "Perl not compiled with 'usethreads' support."
             print "Removing 'MULTI_PERL'"
-            os.unlink(os.path.join(cur_dir, 'MULTI_PERL'))
+            multi_perl = os.path.join(cur_dir, 'MULTI_PERL')
+            if os.access(multi_perl, os.F_OK):
+                os.unlink(multi_perl)
 
         os.chdir(os.path.join(cur_dir, 'Python-Object'))
         retcode = subprocess.call(['perl', 'Makefile.PL'])
         retcode = subprocess.call(["make", "install"])
         os.chdir(cur_dir)
-        cc_extra.pop(cc_extra.index("-DMULTI_PERL"))
-        sources.pop(sources.index('thrd_ctx.c'))
+        if "-DMULTI_PERL" in cc_extra:
+            cc_extra.pop(cc_extra.index("-DMULTI_PERL"))
+            sources.pop(sources.index('thrd_ctx.c'))
         # Run actual install
         install.run(self)
 

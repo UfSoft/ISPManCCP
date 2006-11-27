@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: decorators.py 34 2006-11-05 18:57:20Z s0undt3ch $
+# $Id: decorators.py 84 2006-11-27 04:12:13Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/decorators.py $
-# $LastChangedDate: 2006-11-05 18:57:20 +0000 (Sun, 05 Nov 2006) $
-#             $Rev: 34 $
+# $LastChangedDate: 2006-11-27 04:12:13 +0000 (Mon, 27 Nov 2006) $
+#             $Rev: 84 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -16,10 +16,12 @@
 import pylons
 import formencode.api as api
 import formencode.variabledecode as variabledecode
-
-from pylons.decorator import decorator
+from perl import PerlError
 from pylons import request, c
+from pylons.util import log
+from pylons.decorator import decorator
 from pylons.templating import render
+from ispmanccp.lib.helpers import asbool
 
 def validate(template=None, schema=None, validators=None, form=None,
              variable_decode=False, dict_char='.', list_char='-',
@@ -99,11 +101,27 @@ def validate(template=None, schema=None, validators=None, form=None,
             request.environ['pylons.routes_dict']['action'] = form
             c.form_result = defaults
             c.form_errors = errors
-            if request.environ['paste.config']['global_conf']['debug'] == 'true':
-                print 'VALIDATOR ERRORS: %s' % errors
+            if asbool(request.environ['paste.config']['global_conf']['debug']):
+                log('VALIDATOR ERRORS: %s' % errors)
             response = self._dispatch_call()
             response.content = [render(template)]
             return response
         return func(self, *args, **kwargs)
     return decorator(wrapper)
 
+
+def perlexcept(func, *args, **kwargs):
+    """A decorator to wrap ispman calls within a try/except block to
+    catch PerlError exceptions.
+    """
+    try:
+        return func(*args, **kwargs)
+    except PerlError, e:
+        # Log exception
+        log("PERL ERROR: '%s'" % e)
+        # If running in DEBUG mode, actually raise exception
+        if asbool(request.environ['paste.config']['global_conf']['debug']):
+            raise e
+        # Else return False, interpreted as a backend error
+        return False # Perl error code
+perlexcept = decorator(perlexcept)

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: ispman_helpers.py 53 2006-11-15 03:08:10Z s0undt3ch $
+# $Id: ispman_helpers.py 84 2006-11-27 04:12:13Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/ispman_helpers.py $
-# $LastChangedDate: 2006-11-15 03:08:10 +0000 (Wed, 15 Nov 2006) $
-#             $Rev: 53 $
+# $LastChangedDate: 2006-11-27 04:12:13 +0000 (Mon, 27 Nov 2006) $
+#             $Rev: 84 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -18,6 +18,7 @@ from formencode.variabledecode import variable_decode
 from pylons import request, g, cache
 from pylons.decorators.cache import beaker_cache
 from ispmanccp.lib.helpers import to_unicode, asbool
+from ispmanccp.lib.decorators import perlexcept
 
 APP_CONF = g.pylons_config.app_conf
 
@@ -33,7 +34,7 @@ allowed_user_attributes = (
 
 updatable_attributes = (
     'ispmanStatus', 'mailQuota', 'mailAlias', 'sn', 'userPassword',
-    'givenName', 'updateUser', 'uid', 'ispmanDomain', 'mailForwardingAddress',
+    'givenName', 'updateUser', 'uid', 'mailForwardingAddress', 'ispmanDomain',
     'FTPQuotaMBytes', 'FTPStatus', 'mailHost', 'fileHost', 'dialupAccess',
     'radiusProfileDN'
 )
@@ -152,7 +153,7 @@ def get_perl_cgi(params_dict):
     g.perl.eval('$q->header(-charset => "UTF-8");')
     return cgi
 
-
+@perlexcept
 def update_user_info(attrib_dict):
     cgi = get_perl_cgi(attrib_dict)
     return asbool(g.ispman.update_user(cgi))
@@ -163,7 +164,7 @@ def get_user_attribute_values(id, domain, attribute):
         g.ispman.getUserAttributeValues(id, domain, attribute)
     )
 
-
+@perlexcept
 def delete_user(post_dict):
     cgi = get_perl_cgi(post_dict)
     return asbool(g.ispman.deleteUser(cgi))
@@ -202,7 +203,7 @@ def get_default_acount_vars():
     )
     return defaults
 
-
+@perlexcept
 def add_user(attrib_dict):
     cgi = get_perl_cgi(attrib_dict)
     return g.ispman.addUser(cgi)

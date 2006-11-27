@@ -1,17 +1,21 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: app_globals.py 71 2006-11-19 19:26:29Z s0undt3ch $
+# $Id: app_globals.py 84 2006-11-27 04:12:13Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/app_globals.py $
-# $LastChangedDate: 2006-11-19 19:26:29 +0000 (Sun, 19 Nov 2006) $
-#             $Rev: 71 $
+# $LastChangedDate: 2006-11-27 04:12:13 +0000 (Mon, 27 Nov 2006) $
+#             $Rev: 84 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
 #
 # Please view LICENSE for additional licensing information.
 # =============================================================================
+
+import os
+import sys
+from ispmanccp.lib.helpers import check_path_perms
 
 class Globals(object):
 
@@ -38,8 +42,9 @@ class Globals(object):
             your global variables.
 
         """
-        import os
-        import sys
+        ispman_installdir = os.path.abspath(app_conf['ispman_base_dir'])
+        check_path_perms(ispman_installdir)
+
         try:
             import perl
         except ImportError:
@@ -51,20 +56,18 @@ class Globals(object):
         # Get Perl's @INC reference
         inc = perl.get_ref("@INC")
 
-        ispman_installdir = os.path.abspath(app_conf['ispman_base_dir'])
-
-        # Add all ISPMan directories to perl's @INC
-        for dirname in os.listdir(ispman_installdir):
-            if os.path.isdir(os.path.join(ispman_installdir, dirname)):
-                inc.append(os.path.join(ispman_installdir, dirname))
-
+        # Add ISPMan lib directory to perl's @INC
+        ispman_libs = os.path.join(ispman_installdir, 'lib')
+        check_path_perms(ispman_libs)
+        inc.append(ispman_libs)
         # Setup an ISPMan instance
         perl.require('ISPMan')
         perl.require('CGI')
 
         try:
+            # Make ISPMan recognize us as a Control Panel
             self.ispman = perl.eval(
-                '$ENV{"HTTP_USER_AGENT"} = "PYTHON-CCP-NG"; ' +
+                '$ENV{"HTTP_USER_AGENT"} = "PYTHON-CCP"; ' +
                 '$ispman = ISPMan->new() or die "$@"'
             )
         except Exception, e:

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: helpers.py 62 2006-11-16 07:38:01Z s0undt3ch $
+# $Id: helpers.py 84 2006-11-27 04:12:13Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/helpers.py $
-# $LastChangedDate: 2006-11-16 07:38:01 +0000 (Thu, 16 Nov 2006) $
-#             $Rev: 62 $
+# $LastChangedDate: 2006-11-27 04:12:13 +0000 (Mon, 27 Nov 2006) $
+#             $Rev: 84 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -40,6 +40,15 @@ wrap_helpers(locals())
 # Don't know why but this import needs to be done after the wrapper
 from datetime import date
 from paste.deploy.converters import asbool as paste_asbool
+# random_pass imports
+import string
+import random
+# check_path_perms imports
+import os
+import sys
+from pwd import getpwuid
+from grp import getgrgid
+from stat import ST_MODE
 
 def date_from_tstamp(tstamp):
     return date.fromtimestamp(int(tstamp))
@@ -145,8 +154,6 @@ def random_pass(alpha, num):
     a difficult to remember K8Yn9muL )
     From http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/410076
     """
-    import string
-    import random
     vowels = ['a','e','i','o','u']
     consonants = [a for a in string.ascii_lowercase if a not in vowels]
     digits = string.digits
@@ -190,4 +197,59 @@ def asbool(obj):
         return paste_asbool(obj)
 
 
+def check_path_perms(path):
+    """Function to check a path's permissions.
+    Based on recipe found on:
+        http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/436211
+    """
+    path = os.path.abspath(path)
 
+    if not os.access(path, os.F_OK):
+        print "I'm bailing out!"
+        print
+        print "%r does not exist." % path
+        print
+        print "Please correct the above problems and run again..."
+        sys.exit(1)
+
+    path_perms = os.stat(path)
+    running_uid = os.getuid()
+    running_gid = os.getgid()
+    running_uid_name = getpwuid(running_uid)[0]
+    running_gid_name = getgrgid(running_gid)[0]
+    R_MSK, W_MSK, X_MSK, Z_MSK =   4,   2,   1,   0
+    R_STR, W_STR, X_STR, Z_STR = 'r', 'w', 'x', '-'
+
+    def iff( test_, then_, else_ ): # then_, else_ always get evaled so pls be atoms
+        if test_:
+            return then_
+        else:
+            return else_
+
+    def mode2str( mode ):
+        r, w, x = mode & R_MSK, mode & W_MSK, mode & X_MSK
+        return iff( r, R_STR, Z_STR ) + iff( w, W_STR, Z_STR ) + iff( x, X_STR, Z_STR )
+
+    def fullmode2str( mode ):
+        u, g, o = mode >> 6 & 0x7, mode >> 3 & 0x7, mode & 0x7
+        return mode2str( u ) + mode2str( g ) + mode2str( o )
+
+    if not os.access(path, os.F_OK) or not os.access(path, os.X_OK):
+        print "I'm bailing out!"
+        print "I don't have read access to %r." % path
+        print "I'm running as '%s(%i):%s(%i)' and directory is\n" \
+                "owned by '%s(%i):%s(%i) with perms '%s'." % \
+                (
+                    running_uid_name,
+                    running_uid,
+                    running_gid_name,
+                    running_gid,
+                    getpwuid(path_perms[4])[0],
+                    path_perms[4],
+                    getgrgid(path_perms[5])[0],
+                    path_perms[5],
+                    fullmode2str(path_perms[ST_MODE])
+                )
+        print
+        print "Please correct the above problems and run again..."
+        sys.exit(1)

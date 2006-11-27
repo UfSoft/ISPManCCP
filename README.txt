@@ -60,42 +60,8 @@ can then be installed with `Easy Install
 
     > easy_install ISPManCCP
 
-Make a config file as follows::
-
-    > paster make-config ISPManCCP config.ini
-
-Tweak the config file as appropriate.
-
-Serve the application
----------------------
-
-You can serve the application with `paster <http://pythonpaste.org/>`_ by typing::
-
-    > paster serve config.ini
-
-Since most `ISPMan <http://ispman.net>`_ installations will already have apache installed,
-you can opt by having apache proxy requests to/from `paster <http://pythonpaste.org/>`_.
-
-I find this the ideal setup because I can just run `paster <http://pythonpaste.org/>`_ with
-a specific user and group(one with permissions to read from the `ISPMan <http://ispman.net>`_
-installation and still user port 80.
-
-A minimal apache *vhost* configuration example::
-
-    <VirtualHost *:80>
-        ServerName ccp.domain.tld
-        ProxyPreserveHost On
-        <Location />
-            SetHandler None
-            ProxyPass http://localhost:5000
-            ProxyPassReverse http://localhost:5000
-            AllowOverride None
-            Order allow,deny
-            Allow from all
-        </Location>
-    </VirtualHost>
-
-And that's about it.
+ISPManCCP setup is not fully done yet, for more specific install instructions
+please read `this <http://ccp.ufsoft.org/browser/trunk/INSTALL.txt>`_.
 
 You can find more info on the
 `ISPManCCP <http://ccp.ufsoft.org/>`_ site where bugs and new feature requests

@@ -35,7 +35,7 @@ for x in split(perl_ccopts):
     elif 0 and x[:2] == '-D':
 	m = split(x[2:], '=', 2)
 	if len(m) == 1:
-	    m.append(None)
+        m.append(None)
 	macros.append(tuple(m))
     else:
         cc_extra.append(x)
@@ -96,7 +96,7 @@ else:
         extra_ext.append(Extension(name = "perl",
                                    sources = ["dlhack.c"],
                                    ))
-        
+
 
 if MULTI_PERL:
     cc_extra.append("-DMULTI_PERL")
@@ -110,8 +110,8 @@ if sys.platform == 'win32':
     libs.append('perl56')
     for x in ['15','16','20']:
 	if access(os.path.join(sys.prefix, 'libs', 'python'+x+'.lib'), \
-		  F_OK) == 1 :
-	    libs.append('python'+x)
+           F_OK) == 1 :
+        libs.append('python'+x)
     sym_extra.append('get_thread_ctx')
     sym_extra.append('sv2pyo')
     sym_extra.append('pyo2sv')
@@ -147,8 +147,7 @@ ext_modules.extend(extra_ext)
 class my_install(install):
 
     def run_tests(self):
-        PERL_THREAD_TEST_1 = True
-        PERL_THREAD_TEST_2 = True
+        PERL_USETHREADS = True
 
         process = subprocess.Popen(
             ["perl", "-V:usethreads"],
@@ -158,24 +157,15 @@ class my_install(install):
         output = process.stdout.readlines()
         for line in output:
             if line.find("'undef';") != -1:
-                PERL_THREAD_TEST_1 = False
+                PERL_USETHREADS = False
 
-        process = subprocess.Popen(
-            ["perl", "-V:use5005threads"],
-            stderr=subprocess.PIPE,
-            stdout=subprocess.PIPE
-        )
-        output = process.stdout.readlines()
-        for line in output:
-            if line.find("'undef';") != -1:
-                PERL_THREAD_TEST_2 = False
-        return PERL_THREAD_TEST_1 and PERL_THREAD_TEST_2
+        return PERL_USETHREADS
 
 
     def run(self):
         cur_dir = os.getcwd()
         if not self.run_tests():
-            print "Perl not compiled with threads support"
+            print "Perl not compiled with 'usethreads' support."
             print "Removing 'MULTI_PERL'"
             os.unlink(os.path.join(cur_dir, 'MULTI_PERL'))
 

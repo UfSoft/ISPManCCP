@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: ispman_helpers.py 84 2006-11-27 04:12:13Z s0undt3ch $
+# $Id: ispman_helpers.py 88 2006-12-08 19:19:11Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/ispman_helpers.py $
-# $LastChangedDate: 2006-11-27 04:12:13 +0000 (Mon, 27 Nov 2006) $
-#             $Rev: 84 $
+# $LastChangedDate: 2006-12-08 19:19:11 +0000 (Fri, 08 Dec 2006) $
+#             $Rev: 88 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -139,19 +139,17 @@ def get_user_info(uid, domain):
 
 
 def get_perl_cgi(params_dict):
-    attrib_tpl = """ '%(key)s' => ['%(val)s'], """
     params_dict = variable_decode(params_dict)
-    cgi_params = "$q = new CGI({"
+    cgi = g.perl.eval('$cgi = new CGI;')
+    cgi.charset("UTF-8")
     for key, val in params_dict.iteritems():
         if key in updatable_attributes:
             if isinstance(val, list):
-                cgi_params += attrib_tpl % ( {'key': key, 'val': join(val)} )
+                cgi.param(key, join(str(val)))
             else:
-                cgi_params += attrib_tpl % ( {'key': key, 'val': val} )
-    cgi_params += """}) or die "$@";"""
-    cgi = g.perl.eval(cgi_params)
-    g.perl.eval('$q->header(-charset => "UTF-8");')
+                cgi.param(key, str(val))
     return cgi
+
 
 @perlexcept
 def update_user_info(attrib_dict):

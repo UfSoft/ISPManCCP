@@ -144,30 +144,11 @@ ext_modules.extend(extra_ext)
 
 class my_install(install):
 
-    def run_tests(self):
-        PERL_USETHREADS = True
-
-        process = subprocess.Popen(
-            ["perl", "-V:usethreads"],
-            stderr=subprocess.PIPE,
-            stdout=subprocess.PIPE
-        )
-        output = process.stdout.readlines()
-        for line in output:
-            if line.find("'undef';") != -1:
-                PERL_USETHREADS = False
-
-        return PERL_USETHREADS
-
-
     def run(self):
         cur_dir = os.getcwd()
-        if not self.run_tests():
-            print "Perl not compiled with 'usethreads' support."
-            print "Removing 'MULTI_PERL'"
-            multi_perl = os.path.join(cur_dir, 'MULTI_PERL')
-            if os.access(multi_perl, os.F_OK):
-                os.unlink(multi_perl)
+        multi_perl = os.path.join(cur_dir, 'MULTI_PERL')
+        if os.access(multi_perl, os.F_OK):
+            os.unlink(multi_perl)
 
         os.chdir(os.path.join(cur_dir, 'Python-Object'))
         retcode = subprocess.call(['perl', 'Makefile.PL'])

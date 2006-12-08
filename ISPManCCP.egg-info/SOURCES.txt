@@ -15,7 +15,6 @@ ISPManCCP.egg-info/requires.txt
 ISPManCCP.egg-info/top_level.txt
 extra-packages/pyperl-1.0.1d/Changes
 extra-packages/pyperl-1.0.1d/MANIFEST
-extra-packages/pyperl-1.0.1d/MULTI_PERL
 extra-packages/pyperl-1.0.1d/README
 extra-packages/pyperl-1.0.1d/TODO
 extra-packages/pyperl-1.0.1d/dbi-test.py

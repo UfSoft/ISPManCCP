@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: setup.py 83 2006-11-21 20:45:51Z s0undt3ch $
+# $Id: setup.py 92 2006-12-09 22:30:03Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/setup.py $
-# $LastChangedDate: 2006-11-21 20:45:51 +0000 (Tue, 21 Nov 2006) $
-#             $Rev: 83 $
+# $LastChangedDate: 2006-12-09 22:30:03 +0000 (Sat, 09 Dec 2006) $
+#             $Rev: 92 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -14,6 +14,7 @@
 # Please view LICENSE for additional licensing information.
 # =============================================================================
 
+from sys import exit
 from setuptools import setup, find_packages
 
 try:
@@ -21,7 +22,6 @@ try:
     import ldap
 except ImportError:
     # We don't have python-ldap, exit nicely
-    from sys import exit
     print
     print "You must have the python-ldap module instaled."
     print "Most distributions already provide it, just install it."
@@ -34,6 +34,22 @@ except ImportError:
 try:
     # Let's find out if we have PyPerl installed
     import perl
+    if perl.MULTI_PERL:
+        print
+        print "You already have PyPerl installed but it's thread enabled and that"
+        print "ill make ISPMan CCP not work correclty."
+        print "You must either recompile your PyPerl without the MULTI_PERL file,"
+        print "or, completely remove PyPerl from your system and allow ISPMan CCP"
+        print "install it's own."
+        print
+        print "A simple way to remove PyPerl from you system is:"
+        print "  rm -rf /usr/lib/python2.4/site-packages/perl* && \ "
+        print "  rm -rf /usr/local/lib/perl/5.8.8/auto/Python && \ "
+        print "  rm -rf /usr/lib/perl/5.8.8/auto/Python"
+        print "That shoud take care of PyPerl. Of course adapt to your system's"
+        print "Python and Perl versions"
+        print
+        exit(1)
 except ImportError:
     # We don't have PyPerl, so, install it
     import os, subprocess
@@ -54,7 +70,7 @@ readme_file = open('README.txt')
 setup(
     name = 'ISPManCCP',
     version = VERSION,
-    description = "Customer Control Pannel for ISPMan",
+    description = "Customer Control Panel for ISPMan",
     long_description = readme_file.read(),
     license = 'BSD',
     platforms = "Anywhere you've got ISPMan working.",

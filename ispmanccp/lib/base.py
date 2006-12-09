@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: base.py 65 2006-11-18 11:14:17Z s0undt3ch $
+# $Id: base.py 91 2006-12-09 21:51:52Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/base.py $
-# $LastChangedDate: 2006-11-18 11:14:17 +0000 (Sat, 18 Nov 2006) $
-#             $Rev: 65 $
+# $LastChangedDate: 2006-12-09 21:51:52 +0000 (Sat, 09 Dec 2006) $
+#             $Rev: 91 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -51,9 +51,10 @@ class BaseController(WSGIController):
         self.dominfo = get_domain_info(self.domain)
 
         # Don't allow Locked Domains to make any changes
-        if self.dominfo['ispmanDomainLocked'] == 'true' and \
-           request.path_info != '/locked':
-            h.redirect_to('/locked')
+        if 'ispmanDomainLocked' in self.dominfo:
+            if self.dominfo['ispmanDomainLocked'] == 'true' and \
+               request.path_info != '/locked':
+                h.redirect_to('/locked')
         elif request.path_info == '/':
             h.redirect_to('/domain')
 

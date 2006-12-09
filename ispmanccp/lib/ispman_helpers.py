@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: ispman_helpers.py 89 2006-12-08 20:07:02Z s0undt3ch $
+# $Id: ispman_helpers.py 90 2006-12-09 20:59:07Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/ispman_helpers.py $
-# $LastChangedDate: 2006-12-08 20:07:02 +0000 (Fri, 08 Dec 2006) $
-#             $Rev: 89 $
+# $LastChangedDate: 2006-12-09 20:59:07 +0000 (Sat, 09 Dec 2006) $
+#             $Rev: 90 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -49,6 +49,8 @@ def get_domain_users(domain, attr_list): #attributes_to_retrieve):
         attr_list.append('ispmanUserId')
 
     userlist = to_unicode(g.ispman.getUsers(domain, attr_list))
+    if not userlist:
+        return []
     decorated = [(dict_['ispmanUserId'], dict_) for dict_ in userlist.values()]
     decorated.sort()
     result = [dict_ for (key, dict_) in decorated]

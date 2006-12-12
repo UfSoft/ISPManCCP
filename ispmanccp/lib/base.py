@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: base.py 91 2006-12-09 21:51:52Z s0undt3ch $
+# $Id: base.py 96 2006-12-12 16:10:30Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/base.py $
-# $LastChangedDate: 2006-12-09 21:51:52 +0000 (Sat, 09 Dec 2006) $
-#             $Rev: 91 $
+# $LastChangedDate: 2006-12-12 16:10:30 +0000 (Tue, 12 Dec 2006) $
+#             $Rev: 96 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -54,9 +54,11 @@ class BaseController(WSGIController):
         if 'ispmanDomainLocked' in self.dominfo:
             if self.dominfo['ispmanDomainLocked'] == 'true' and \
                request.path_info != '/locked':
-                h.redirect_to('/locked')
+                h.redirect_to(h.url_for(controller="locked", action=None, id=None))
+            elif request.path_info == '/':
+                h.redirect_to(h.url_for(controller="domain", action=None, id=None))
         elif request.path_info == '/':
-            h.redirect_to('/domain')
+            h.redirect_to(h.url_for(controller="domain", action=None, id=None))
 
         ccache = cache.get_cache('navigation')
 

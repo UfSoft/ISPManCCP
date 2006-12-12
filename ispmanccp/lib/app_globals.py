@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: app_globals.py 84 2006-11-27 04:12:13Z s0undt3ch $
+# $Id: app_globals.py 100 2006-12-12 22:11:46Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/app_globals.py $
-# $LastChangedDate: 2006-11-27 04:12:13 +0000 (Mon, 27 Nov 2006) $
-#             $Rev: 84 $
+# $LastChangedDate: 2006-12-12 22:11:46 +0000 (Tue, 12 Dec 2006) $
+#             $Rev: 100 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -75,6 +75,7 @@ class Globals(object):
 
         self.ldap_host = self.ispman.getConf('ldapHost')
         self.ldap_version = self.ispman.getConf('ldapVersion')
+        self.ldap_base_dn = self.ispman.getConfig('ldapBaseDN')
 
         # Also pass the perl reference for further use within the app
         self.perl = perl

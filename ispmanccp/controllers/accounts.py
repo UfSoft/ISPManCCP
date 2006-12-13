@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: accounts.py 53 2006-11-15 03:08:10Z s0undt3ch $
+# $Id: accounts.py 102 2006-12-13 19:52:57Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/accounts.py $
-# $LastChangedDate: 2006-11-15 03:08:10 +0000 (Wed, 15 Nov 2006) $
-#             $Rev: 53 $
+# $LastChangedDate: 2006-12-13 19:52:57 +0000 (Wed, 13 Dec 2006) $
+#             $Rev: 102 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -221,13 +221,11 @@ class AccountsController(BaseController):
         if request.method != 'POST':
             redirect_to(action='new', id=None)
         # DO SOMETHING
-        APP_CONF = request.environ['paste.config']['app_conf']
 
         userinfo = request.POST.copy()
         # add some account defaults
         userinfo['dialupAccess'] = u'disabled'
-        userinfo['radiusProfileDN'] = u'cn=default, ou=radiusprofiles, ' + \
-                APP_CONF['ispman_ldap_base_dn']
+        userinfo['radiusProfileDN'] = u'cn=default, ou=radiusprofiles, ' + g.ldap_base_dn
 
         userinfo['fileHost'] = self.dominfo['ispmanDomainDefaultFileServer']
 

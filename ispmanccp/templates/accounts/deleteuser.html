@@ -11,7 +11,7 @@
   </head>
 
   <body>
-    <h1>${ domain  + ' ' + _('domain')}</h1>
+    <h1>${ _('%s domain') % domain }</h1>
     <h1>${ _("Are you sure?") }</h1>
     <form id="edit_user" class="user_input" method="post" accept-charset="UTF-8"
       action="${ h.url_for(action='delete')}">
@@ -45,8 +45,8 @@
 
         <!--! FTP Status -->
         <label for="FTPStatus">${ _("FTP Status:") }</label>
-        <span id="FTPStatus" py:if="c.userinfo['FTPStatus'] == 'enabled'">Enabled</span>
-        <span id="FTPStatus" py:if="c.userinfo['FTPStatus'] == 'disabled'">Suspended</span>
+        <span id="FTPStatus" py:if="c.userinfo['FTPStatus'] == 'enabled'">${ _("Enabled") }</span>
+        <span id="FTPStatus" py:if="c.userinfo['FTPStatus'] == 'disabled'">${ _("Suspended") }</span>
         <br/>
 
         <!--! Mailbox Quota -->
@@ -99,7 +99,7 @@
   </body>
 </html>
 <!--!
-$Id: deleteuser.html 93 2006-12-10 19:18:52Z s0undt3ch $
+$Id: deleteuser.html 106 2007-01-07 22:25:00Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

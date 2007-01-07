@@ -26,11 +26,11 @@
             ${ h.date_from_tstamp(user['ispmanCreateTimestamp']) }</span><br/>
           <!--! FTP Quota -->
           <label for="FTPQuotaMBytes">${ _("FTP Quota:") }</label>
-          <span id="FTPQuotaMBytes">${ user['FTPQuotaMBytes'] }.0 MB</span><br/>
+          <span id="FTPQuotaMBytes">${  _('%s.0 MB') % user['FTPQuotaMBytes'] }</span><br/>
           <!--!FTP Status -->
           <label for="FTPStatus">${ _("FTP Status:") }</label>
-          <span id="FTPStatus" py:if="user['FTPStatus'] == 'enabled'">Enabled</span>
-          <span id="FTPStatus" py:if="user['FTPStatus'] == 'disabled'">Suspended</span>
+          <span id="FTPStatus" py:if="user['FTPStatus'] == 'enabled'">${ _("Enabled") }</span>
+          <span id="FTPStatus" py:if="user['FTPStatus'] == 'disabled'">${ _("Suspended") }</span>
           <br/>
           <!--! Mail Quota -->
           <label for="mailQuota">${ _("Email Quota:") }</label>
@@ -80,7 +80,7 @@
 
 </html>
 <!--!
-$Id: userlist.html 70 2006-11-18 22:57:23Z s0undt3ch $
+$Id: userlist.html 106 2007-01-07 22:25:00Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

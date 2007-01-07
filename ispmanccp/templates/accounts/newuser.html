@@ -39,7 +39,7 @@
   </head>
 
   <body>
-    <h1>${ domain  + ' ' + _('domain')}</h1>
+    <h1>${ _('%s domain') % domain }</h1>
     <form id="new_user" class="user_input" method="post" accept-charset="UTF-8"
       action="${ h.url_for(action='new')}" onSubmit="$(uid).value = $(ispmanUserId).value;">
       <fieldset>
@@ -56,9 +56,13 @@
           ${ c.form_errors['ispmanUserId']}
         </span><br/>
         <span class="info-message">
-          ${ _("Note that the above") } <em>${ _("User ID") }</em>
-          ${ _("will be used to create the first part of the email address") }
-          (<u><em>${ _("userid") }</em></u>@${domain}).
+          ${ _("Note that the above %s will be used to create the first "
+               "part of the email address (%s@%s)."
+               ) % ( h.tag.em(_("User ID")),
+                     h.tag.u(h.tag.em(_("userid"))),
+                     domain
+                   )
+           }
         </span>
         <br/>
 
@@ -112,7 +116,7 @@
           ${ c.form_errors['mailQuota']}
         </span><br/>
 
-        <label for="forwarding_toggle">Forwarding Only:</label>
+        <label for="forwarding_toggle">${ _('Forwarding Only:') }</label>
         <input type="button" id="forwarding_toggle" class="input_button inline label"
           title="${ _('Enable Forwarding Only Account') }" value="${ _('Enable') }"
           onClick="forwardingOnlyToggle(); return false;"/>
@@ -130,7 +134,7 @@
   </body>
 </html>
 <!--!
-$Id: newuser.html 69 2006-11-18 22:43:41Z s0undt3ch $
+$Id: newuser.html 106 2007-01-07 22:25:00Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

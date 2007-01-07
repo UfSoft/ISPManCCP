@@ -21,7 +21,7 @@
   </head>
 
   <body>
-    <h1>${ c.domain + ' ' + _('domain') }</h1>
+    <h1>${ _('%s domain') % c.domain }</h1>
     <div id="user_search">
       <fieldset>
         <legend>${ _("Search / Select") }</legend>
@@ -29,7 +29,7 @@
         <nobr>
           <!--! Our default selected radio button -->
           <input type="radio" name="letter" id="None" value="None" checked="checked"/>
-          <label for="None">None</label>
+          <label for="None">${ _('None') }</label>
         <!--! Generate our All, 0-9 radio buttons -->
         <py:for each="l in c.nav_1st_half">
           <input type="radio" name="letter" id="letter_${l}" value="${l}"/>
@@ -55,8 +55,8 @@
             <option value="FTPStatus">${ _("FTP Status") }</option>
           </select>&nbsp;
           <select name="sort_how" id="sort_how">
-            <option value="1">Ascending</option>
-            <option value="0">Descending</option>
+            <option value="1">${ _("Ascending") }</option>
+            <option value="0">${ _("Descending") }</option>
           </select>
         </nobr>
         </form><br/>
@@ -104,7 +104,7 @@
 
 </html>
 <!--!
-$Id: index.html 70 2006-11-18 22:57:23Z s0undt3ch $
+$Id: index.html 106 2007-01-07 22:25:00Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

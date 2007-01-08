@@ -26,17 +26,20 @@ session_secret = ${app_instance_secret}
 app_instance_uuid = ${app_instance_uuid}
 app_realm = Customer Control Panel
 ispman_base_dir = /opt/ispman
-bad_passwords_file = /usr/share/dict/cracklib-small
 passwords_min_length = 6
 passwords_non_letter_min_chars = 2
+# Point the next settng to, for example, an ispell words file, so,
+# normal and usual words are not accepted as passwords.
+# Correct the path and un-comment the line bellow to enable
+;bad_passwords_file = /usr/share/dict/cracklib-small
 
 # In case you want to serve CCP from a prefix, ie, http://domain.tld/ccp
 # uncomment the following lines.
-#filter-with = proxy-prefix
-#
-#[filter:proxy-prefix]
-#use = egg:PasteDeploy#prefix
-#prefix = /ccp
+;filter-with = proxy-prefix
+
+;[filter:proxy-prefix]
+;use = egg:PasteDeploy#prefix
+;prefix = /ccp
 
 
 # WARNING: *THE LINE BELOW MUST BE UNCOMMENTED ON A PRODUCTION ENVIRONMENT*

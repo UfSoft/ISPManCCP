@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: validators.py 53 2006-11-15 03:08:10Z s0undt3ch $
+# $Id: validators.py 112 2007-01-08 01:56:00Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/models/validators.py $
-# $LastChangedDate: 2006-11-15 03:08:10 +0000 (Wed, 15 Nov 2006) $
-#             $Rev: 53 $
+# $LastChangedDate: 2007-01-08 01:56:00 +0000 (Mon, 08 Jan 2007) $
+#             $Rev: 112 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -13,11 +13,14 @@
 # Please view LICENSE for additional licensing information.
 # =============================================================================
 
+import os
 import re
+
 from formencode import validators, FancyValidator, Invalid
 from formencode.variabledecode import variable_decode
 from pylons import request, h, g
-from pylons.util import _
+from pylons.helpers import log
+from pylons.i18n import _
 from ispmanccp.lib.ispman_helpers import address_exists_on_domain
 
 
@@ -66,7 +69,8 @@ class SecurePassword(validators.UnicodeString):
         ),
         'non_letter': _(
             'You must include at least %(min_non_letter)i numeric '
-                     'character(s) in your password'),
+            'character(s) your password',
+        ),
         'non_dict': _(
             'Please do not base your password on a dictionary term'),
     }
@@ -86,13 +90,19 @@ class SecurePassword(validators.UnicodeString):
                 "non_letter", state, min_non_letter=self.min_non_letter),
                 value, state)
 
-        if self.bad_passwords_file is not None:
-            f = open(self.bad_passwords_file)
-            lower = value.strip().lower()
-            for line in f:
-                if line.strip().lower() == lower:
-                    raise Invalid(self.message(
-                        "non_dict", state), value, state)
+        if self.bad_passwords_file:
+            if not os.path.isfile(self.bad_passwords_file):
+                log(_("The file setting for bad_passwords_file %r "
+                      "is not a valid one, please correct it or comment it out" % self.bad_passwords_file
+                     )
+                   )
+            else:
+                f = open(self.bad_passwords_file)
+                lower = value.strip().lower()
+                for line in f:
+                    if line.strip().lower() == lower:
+                        raise Invalid(self.message(
+                            "non_dict", state), value, state)
 
 
 class ValidMailAlias(validators.Email):
@@ -210,7 +220,7 @@ class ForwardingOnlyValidator(FancyValidator):
 
     messages = {
         'not_enough_forwards': _(
-            "This is a forwarding only account. Like such, you need to " +
+            "This is a forwarding only account. Like such, you need to "
             "setup at least one forwarding address."
         )
     }

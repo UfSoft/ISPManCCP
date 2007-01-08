@@ -20,9 +20,20 @@ can then be installed with `Easy Install
 
     > easy_install ISPManCCP
 
-If the above fails and you're on debian, please do::
+If you do not have the ``easy_install`` binary it probably means you also
+don't have setuptools install. You should download the bootstrap script to
+install setuptools if your distribution does not provide it, ie::
+
+    > wget http://peak.telecommunity.com/dist/ez_setup.py
+    > python ez_setup.py
+
+You now have setuptools installed, however in some cases, for example debian
+systems, ISPManCCP will still fail to compile.
+
+If you're on debian, please do::
 
     > apt-get install libperl-dev
+    > apt-get install python-dev
 
 Then try to install ISPManCCP again.
 

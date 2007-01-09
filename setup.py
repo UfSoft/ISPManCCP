@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: setup.py 92 2006-12-09 22:30:03Z s0undt3ch $
+# $Id: setup.py 124 2007-01-09 21:36:00Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/setup.py $
-# $LastChangedDate: 2006-12-09 22:30:03 +0000 (Sat, 09 Dec 2006) $
-#             $Rev: 92 $
+# $LastChangedDate: 2007-01-09 21:36:00 +0000 (Tue, 09 Jan 2007) $
+#             $Rev: 124 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -37,10 +37,10 @@ try:
     if perl.MULTI_PERL:
         print
         print "You already have PyPerl installed but it's thread enabled and that"
-        print "ill make ISPMan CCP not work correclty."
+        print "will make ISPMan CCP not work correclty."
         print "You must either recompile your PyPerl without the MULTI_PERL file,"
         print "or, completely remove PyPerl from your system and allow ISPMan CCP"
-        print "install it's own."
+        print "to install it's own."
         print
         print "A simple way to remove PyPerl from you system is:"
         print "  rm -rf /usr/lib/python2.4/site-packages/perl* && \ "
@@ -63,7 +63,7 @@ except ImportError:
 # We now resume normal setup operation
 
 
-VERSION = "0.0.1alpha2"
+VERSION = "0.0.1alpha3"
 
 readme_file = open('README.txt')
 
@@ -80,8 +80,8 @@ setup(
     #download_url = "http://ccp.ufsoft.org/download/%s/" % VERSION,
     zip_safe = False,
     install_requires = [
-        "Pylons>=0.9.3",
-        "Genshi>=0.3.4",
+        "Pylons==0.9.4.1",
+        "Genshi>=0.3.6",
         "formencode>=0.6",
     ],
     packages = find_packages(),

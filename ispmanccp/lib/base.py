@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: base.py 100 2006-12-12 22:11:46Z s0undt3ch $
+# $Id: base.py 123 2007-01-09 21:34:22Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/base.py $
-# $LastChangedDate: 2006-12-12 22:11:46 +0000 (Tue, 12 Dec 2006) $
-#             $Rev: 100 $
+# $LastChangedDate: 2007-01-09 21:34:22 +0000 (Tue, 09 Jan 2007) $
+#             $Rev: 123 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -13,10 +13,6 @@
 # Please view LICENSE for additional licensing information.
 # =============================================================================
 
-__all__ = ['Response', 'c', 'g', 'cache', 'request', 'session', 'validate',
-           'WSGIController', 'jsonify', 'rest', 'render', 'render_response',
-           'abort', 'redirect_to', 'etag_cache', '_', 'model', 'h', 
-           'BaseController', 'beaker_cache']
 
 from pylons import Response, c, g, cache, request, session
 from pylons.controllers import WSGIController
@@ -24,20 +20,19 @@ from pylons.decorators import jsonify, rest
 from pylons.decorators.cache import beaker_cache
 from pylons.templating import render, render_response
 from pylons.helpers import abort, redirect_to, etag_cache
-from pylons.util import _
+from pylons.i18n import _
 import ispmanccp.models as model
 import ispmanccp.lib.helpers as h
 from ispmanccp.lib.decorators import validate
 from ispmanccp.lib.ispman_helpers import *
 
-# Add ispman_helpers to __all__
+# Helper to add ispman_helpers to __all__
 def add_ispman_helpers(localdict):
     for name, func in localdict.iteritems():
         if callable(func) and \
            func.__module__.startswith('ispmanccp.lib.ispman_helpers'):
             __all__.append(name)
 
-add_ispman_helpers(locals())
 
 class BaseController(WSGIController):
 
@@ -45,6 +40,7 @@ class BaseController(WSGIController):
         # Insert any code to be run per request here. The Routes match
         # is under environ['pylons.routes_dict'] should you want to check
         # the action or route vars here
+
 
         # Grab Domain Info
         self.domain = request.environ['REMOTE_USER']
@@ -62,9 +58,10 @@ class BaseController(WSGIController):
 
         ccache = cache.get_cache('navigation')
 
-        c.menus = ccache.get_value('i18n_menus',
-                                  createfunc=self.__create_i18n_menus,
-                                  type='memory', expiretime=3600)
+        if session.has_key('lang'):
+            c.menus = self.__create_i18n_menus(lang=session['lang'])
+        else:
+            c.menus = self.__create_i18n_menus()
 
         c.controller = request.environ['pylons.routes_dict']['controller']
         c.action = request.environ['pylons.routes_dict']['action']
@@ -78,25 +75,25 @@ class BaseController(WSGIController):
 
         return WSGIController.__call__(self, environ, start_response)
 
-
-    def __create_i18n_menus(self):
+    @beaker_cache(expire=3600, type="memory", query_args=True)
+    def __create_i18n_menus(self, lang=None):
         menulist = {}
         # App's Main Menu
         menulist['mainmenu'] = [
-            (_('Home'), h.url_for(controller='domain', action='index', id=None)),
-            (_('Accounts'), h.url_for(controller='accounts', action='index', id=None)),
+            (_(u'Home'), h.url_for(controller='domain', action='index', id=None)),
+            (_(u'Accounts'), h.url_for(controller='accounts', action='index', id=None)),
         ]
         # Mail context menu
         menulist['accounts'] = [
-            (_('Search Accounts'), h.url_for(controller='accounts', action='index', id=None)),
-            (_('New Account'), h.url_for(controller='accounts', action='new', id=None)),
+            (_(u'Search Accounts'), h.url_for(controller='accounts', action='index', id=None)),
+            (_(u'New Account'), h.url_for(controller='accounts', action='new', id=None)),
         ]
 
         # Domain context menu
         menulist['domain'] = [
-            (_('Domain Overview'),
+            (_(u'Domain Overview'),
              h.url_for(controller="domain", action="index", id=None)),
-            (_('Change Domain Password'),
+            (_(u'Change Domain Password'),
              h.url_for(controller="domain", action="changepass", id=None))
         ]
         keys = {}
@@ -129,3 +126,10 @@ class BaseController(WSGIController):
             if os.path.splitext(img)[1].lower() in ('.png', '.jpg', '.gif'):
                 img_list.append(compute_public_path(img, 'images'))
         return img_list
+
+
+__all__ = [
+    __name for __name in locals().keys() if not __name.startswith('_') or __name == '_'
+]
+# Add ispman_helpers to __all__
+add_ispman_helpers(locals())

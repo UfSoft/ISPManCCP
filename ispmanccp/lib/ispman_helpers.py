@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: ispman_helpers.py 90 2006-12-09 20:59:07Z s0undt3ch $
+# $Id: ispman_helpers.py 123 2007-01-09 21:34:22Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/ispman_helpers.py $
-# $LastChangedDate: 2006-12-09 20:59:07 +0000 (Sat, 09 Dec 2006) $
-#             $Rev: 90 $
+# $LastChangedDate: 2007-01-09 21:34:22 +0000 (Tue, 09 Jan 2007) $
+#             $Rev: 123 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -15,7 +15,7 @@
 
 from formencode.variabledecode import variable_decode
 from pylons import request, g, cache
-from pylons.decorators.cache import beaker_cache
+#from pylons.decorators.cache import beaker_cache
 from ispmanccp.lib.helpers import to_unicode, asbool
 from ispmanccp.lib.decorators import perlexcept
 
@@ -131,9 +131,9 @@ def get_user_info(uid, domain):
     user_info = to_unicode(g.ispman.getUserInfo(uid + '@' + domain, domain))
     lengths = {}
     lengths[uid] = {}
-    if 'mailAlias' in user_info:
+    if user_info.has_key('mailAlias'):
         lengths[uid]['aliases'] = len(user_info['mailAlias'])
-    if 'mailForwardingAddress' in user_info:
+    if user_info.has_key('mailForwardingAddress'):
         lengths[uid]['forwards'] = len(user_info['mailForwardingAddress'])
     user_info['mailQuota'] = int(user_info['mailQuota'])/1024
     return lengths, user_info
@@ -175,7 +175,7 @@ def user_exists(user_id):
 
 
 # cache it for 5 minutes
-@beaker_cache(expire=300, query_args=True)
+#@beaker_cache(expire=300, query_args=True)
 def get_domain_info(domain):
     return to_unicode(dict(
         g.ispman.getDomainInfo(domain, 2))
@@ -191,7 +191,7 @@ def get_domain_user_count(domain):
 
 
 # cache it for 1 hour
-@beaker_cache(expire=3600, query_args=True)
+#@beaker_cache(expire=3600, query_args=True)
 def get_default_acount_vars():
     defaults = {}
     defaults['defaultUserFtpQuota'] = to_unicode(

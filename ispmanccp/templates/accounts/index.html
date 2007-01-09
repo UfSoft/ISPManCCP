@@ -62,9 +62,10 @@
         </form><br/>
         <div class="autocomplete">
           <label for="uidsearch">${ _("Search:") }</label>
-          <input autocomplete="off" type="text" id="uidsearch" name="uidsearch" class="uidsearch"/>
-          <input type="submit" title="${ _('Edit Account') }" value="${ _('Edit Account') }"
-            class="input_button" onClick="location_href($('uidsearch'));"/>
+          <input autocomplete="off" type="text" id="uidsearch" name="uidsearch" class="uidsearch"
+            onKeyUp='this.value.length >= 2 ? $("submit_search").disabled = false : $("submit_search").disabled = true;'/>
+          <input type="submit" title="${ _('Edit Account') }" value="${ _('Edit Account') }" id="submit_search"
+            class="input_button" onClick="location_href($('uidsearch'));" disabled="disabled"/>
         </div>
         <div class="auto_complete" id="uid_auto_complete"></div>
         <script type="text/javascript">
@@ -104,7 +105,7 @@
 
 </html>
 <!--!
-$Id: index.html 106 2007-01-07 22:25:00Z s0undt3ch $
+$Id: index.html 123 2007-01-09 21:34:22Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

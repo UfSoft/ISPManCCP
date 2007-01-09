@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: helpers.py 84 2006-11-27 04:12:13Z s0undt3ch $
+# $Id: helpers.py 123 2007-01-09 21:34:22Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/helpers.py $
-# $LastChangedDate: 2006-11-27 04:12:13 +0000 (Mon, 27 Nov 2006) $
-#             $Rev: 84 $
+# $LastChangedDate: 2007-01-09 21:34:22 +0000 (Tue, 09 Jan 2007) $
+#             $Rev: 123 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -20,7 +20,8 @@ All names available in this module will be available under the Pylons h object.
 """
 from webhelpers import *
 from pylons import h
-from pylons.util import _, log, set_lang, get_lang
+from pylons.i18n import _, set_lang, get_lang
+from pylons.helpers import log
 from genshi.builder import tag
 
 
@@ -49,6 +50,7 @@ import sys
 from pwd import getpwuid
 from grp import getgrgid
 from stat import ST_MODE
+
 
 def date_from_tstamp(tstamp):
     return date.fromtimestamp(int(tstamp))

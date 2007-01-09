@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: accounts.py 102 2006-12-13 19:52:57Z s0undt3ch $
+# $Id: accounts.py 123 2007-01-09 21:34:22Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/accounts.py $
-# $LastChangedDate: 2006-12-13 19:52:57 +0000 (Wed, 13 Dec 2006) $
-#             $Rev: 102 $
+# $LastChangedDate: 2007-01-09 21:34:22 +0000 (Tue, 09 Jan 2007) $
+#             $Rev: 123 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -160,6 +160,10 @@ class AccountsController(BaseController):
     def edit(self, id):
         """Action to edit the account details."""
         c.lengths, c.userinfo = get_user_info(id, self.domain)
+        if not c.lengths and not c.userinfo:
+            c.domain = self.domain
+            c.unknown_id = id
+            return render_response('accounts.unknown')
         if c.form_result:
             # Form has been submited
             # Assign the form_result to c.userinfo
@@ -190,11 +194,11 @@ class AccountsController(BaseController):
     def new(self, id):
         """Action to create a new account."""
         # Can the domain have more accounts
-        max_accounts = int(get_domain_user_count(self.domain))
+        cur_accounts = int(get_domain_user_count(self.domain))
         if self.dominfo['ispmanMaxAccounts'] == 'unlimited':
-            cur_accounts = -1
+            max_accounts = -1
         else:
-            cur_accounts = int(self.dominfo['ispmanMaxAccounts'])
+            max_accounts = int(self.dominfo['ispmanMaxAccounts'])
         if max_accounts != -1 and cur_accounts + 1 > max_accounts:
             session['message'] = _(
                 'You cannot create more accounts. Allowed maximum reached.'

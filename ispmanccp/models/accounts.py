@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: accounts.py 53 2006-11-15 03:08:10Z s0undt3ch $
+# $Id: accounts.py 123 2007-01-09 21:34:22Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/models/accounts.py $
-# $LastChangedDate: 2006-11-15 03:08:10 +0000 (Wed, 15 Nov 2006) $
-#             $Rev: 53 $
+# $LastChangedDate: 2007-01-09 21:34:22 +0000 (Tue, 09 Jan 2007) $
+#             $Rev: 123 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -13,7 +13,7 @@
 # Please view LICENSE for additional licensing information.
 # =============================================================================
 
-from pylons.util import _
+from pylons.i18n import _
 from formencode import Schema, validators, ForEach, All
 from ispmanccp.models.validators import *
 

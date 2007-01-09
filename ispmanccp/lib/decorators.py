@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: decorators.py 84 2006-11-27 04:12:13Z s0undt3ch $
+# $Id: decorators.py 123 2007-01-09 21:34:22Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/decorators.py $
-# $LastChangedDate: 2006-11-27 04:12:13 +0000 (Mon, 27 Nov 2006) $
-#             $Rev: 84 $
+# $LastChangedDate: 2007-01-09 21:34:22 +0000 (Tue, 09 Jan 2007) $
+#             $Rev: 123 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -18,7 +18,7 @@ import formencode.api as api
 import formencode.variabledecode as variabledecode
 from perl import PerlError
 from pylons import request, c
-from pylons.util import log
+from pylons.helpers import log
 from pylons.decorator import decorator
 from pylons.templating import render
 from ispmanccp.lib.helpers import asbool

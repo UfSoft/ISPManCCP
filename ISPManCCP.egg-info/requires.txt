@@ -1,3 +1,4 @@
-Pylons>=0.9.3
-Genshi>=0.3.4
-formencode>=0.6
+Pylons>=0.9.6rc3dev-r2352
+Genshi>=0.4
+formencode>=0.9
+Babel

@@ -1,80 +1,46 @@
-# vim: sw=4 ts=4 fenc=utf-8
-# =============================================================================
-# $Id: middleware.py 100 2006-12-12 22:11:46Z s0undt3ch $
-# =============================================================================
-#             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/config/middleware.py $
-# $LastChangedDate: 2006-12-12 22:11:46 +0000 (Tue, 12 Dec 2006) $
-#             $Rev: 100 $
-#   $LastChangedBy: s0undt3ch $
-# =============================================================================
-# Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
-#
-# Please view LICENSE for additional licensing information.
-# =============================================================================
-
-import ldap
-from paste import httpexceptions
+"""Pylons middleware initialization"""
 from paste.cascade import Cascade
-from paste.urlparser import StaticURLParser
 from paste.registry import RegistryManager
-from paste.deploy.config import ConfigMiddleware
+from paste.urlparser import StaticURLParser
+from paste.auth.basic import AuthBasicHandler
 from paste.deploy.converters import asbool
 
+from pylons import config
 from pylons.error import error_template
-from pylons.middleware import ErrorHandler, ErrorDocuments, StaticJavascripts, error_mapper
-import pylons.wsgiapp
+from pylons.middleware import error_mapper, ErrorDocuments, ErrorHandler, \
+    StaticJavascripts
+from pylons.wsgiapp import PylonsApp
 
 from ispmanccp.config.environment import load_environment
-import ispmanccp.lib.helpers
-import ispmanccp.lib.app_globals as app_globals
+
+import ldap
 
 def make_app(global_conf, full_stack=True, **app_conf):
-    """Create a WSGI application and return it
+    """Create a Pylons WSGI application and return it
 
-    global_conf is a dict representing the Paste configuration options, the
-    paste.deploy.converters should be used when parsing Paste config options
-    to ensure they're treated properly.
+    ``global_conf``
+        The inherited configuration for this application. Normally from
+        the [DEFAULT] section of the Paste ini file.
 
+    ``full_stack``
+        Whether or not this application provides a full WSGI stack (by
+        default, meaning it handles its own exceptions and errors).
+        Disable full_stack when this application is "managed" by
+        another WSGI middleware.
+
+    ``app_conf``
+        The application's local configuration. Normally specified in the
+        [app:<name>] section of the Paste ini file (where <name>
+        defaults to main).
     """
-    # Load our Pylons configuration defaults
-    config = load_environment(global_conf, app_conf)
-    config.init_app(global_conf, app_conf, package='ispmanccp')
+    # Configure the Pylons environment
+    load_environment(global_conf, app_conf)
 
-    # Setup Genshi(only) Template Engine
-    config.template_engines = []
-    config.add_template_engine('genshi', 'ispmanccp.templates', {})
+    # The Pylons WSGI app
+    app = PylonsApp()
 
-    # Load our default Pylons WSGI app and make g available
-    app = pylons.wsgiapp.PylonsApp(config, helpers=ispmanccp.lib.helpers,
-                                   g=app_globals.Globals)
+    # CUSTOM MIDDLEWARE HERE (filtered by error handling middlewares)
     g = app.globals
-    app = ConfigMiddleware(app, {'app_conf':app_conf, 'global_conf':global_conf})
-
-    # YOUR MIDDLEWARE
-    # Put your own middleware here, so that any problems are caught by the error
-    # handling middleware underneath
-
-    # If errror handling and exception catching will be handled by middleware
-    # for multiple apps, you will want to set full_stack = False in your config
-    # file so that it can catch the problems.
-    if asbool(full_stack):
-        # Change HTTPExceptions to HTTP responses
-        app = httpexceptions.make_middleware(app, global_conf)
-
-        # Error Handling
-        app = ErrorHandler(app, global_conf, error_template=error_template, **config.errorware)
-
-        # Display error documents for 401, 403, 404 status codes (if debug is disabled also
-        # intercepts 500)
-        app = ErrorDocuments(app, global_conf, mapper=error_mapper, **app_conf)
-
-    # Establish the Registry for this application
-    app = RegistryManager(app)
-
-    static_app = StaticURLParser(config.paths['static_files'])
-    javascripts_app = StaticJavascripts()
-    app = Cascade([static_app, javascripts_app, app])
-
     def authenticate(aplication, domain, password):
         domaindn = 'ispmanDomain=' + domain + ',' + g.ldap_base_dn
 
@@ -89,7 +55,22 @@ def make_app(global_conf, full_stack=True, **app_conf):
                     (domain, e[0]['desc'])
             return False
 
-    from paste.auth.basic import AuthBasicHandler
     app = AuthBasicHandler(app, app_conf['app_realm'], authenticate)
 
+    if asbool(full_stack):
+        # Handle Python exceptions
+        app = ErrorHandler(app, global_conf, error_template=error_template,
+                           **config['pylons.errorware'])
+
+        # Display error documents for 401, 403, 404 status codes (and
+        # 500 when debug is disabled)
+        app = ErrorDocuments(app, global_conf, mapper=error_mapper, **app_conf)
+
+    # Establish the Registry for this application
+    app = RegistryManager(app)
+
+    # Static files
+    javascripts_app = StaticJavascripts()
+    static_app = StaticURLParser(config['pylons.paths']['static_files'])
+    app = Cascade([static_app, javascripts_app, app])
     return app

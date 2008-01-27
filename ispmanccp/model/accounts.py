@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: accounts.py 123 2007-01-09 21:34:22Z s0undt3ch $
+# $Id: accounts.py 136 2008-01-27 02:49:48Z s0undt3ch $
 # =============================================================================
-#             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/models/accounts.py $
-# $LastChangedDate: 2007-01-09 21:34:22 +0000 (Tue, 09 Jan 2007) $
-#             $Rev: 123 $
+#             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/model/accounts.py $
+# $LastChangedDate: 2008-01-27 02:49:48 +0000 (Sun, 27 Jan 2008) $
+#             $Rev: 136 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>

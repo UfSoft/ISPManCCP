@@ -1,30 +1,27 @@
-# -*- coding: utf-8 -*-
-# vim: sw=4 ts=4 fenc=utf-8
-# =============================================================================
-# $Id: template.py 2 2006-08-26 17:51:50Z s0undt3ch $
-# =============================================================================
-#             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/template.py $
-# $LastChangedDate: 2006-08-26 18:51:50 +0100 (Sat, 26 Aug 2006) $
-#             $Rev: 2 $
-#   $LastChangedBy: s0undt3ch $
-# =============================================================================
-# Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
-#
-# Please view LICENSE for additional licensing information.
-# =============================================================================
-
 from ispmanccp.lib.base import *
 
 class TemplateController(BaseController):
+
     def view(self, url):
-        """
-        This is the last place which is tried during a request to try to find a 
-        file to serve. It could be used for example to display a template::
-        
+        """By default, the final controller tried to fulfill the request
+        when no other routes match. It may be used to display a template
+        when all else fails, e.g.::
+
             def view(self, url):
-                return render_response(url+'.myt')
-        
-        The default is just to abort the request with a 404 File not found
-        status message.
+                return render('/%s' % url)
+
+        Or if you're using Mako and want to explicitly send a 404 (Not
+        Found) response code when the requested template doesn't exist::
+
+            import mako.exceptions
+
+            def view(self, url):
+                try:
+                    return render('/%s' % url)
+                except mako.exceptions.TopLevelLookupException:
+                    abort(404)
+
+        By default this controller aborts the request with a 404 (Not
+        Found)
         """
         abort(404)

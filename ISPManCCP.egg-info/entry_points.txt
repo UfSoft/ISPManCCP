@@ -1,6 +1,7 @@
 
     [paste.app_factory]
-    main=ispmanccp:make_app
+    main = ispmanccp.config.middleware:make_app
+
     [paste.app_install]
-    main=paste.script.appinstall:Installer
+    main = pylons.util:PylonsInstaller
     

@@ -1,48 +1,39 @@
-# -*- coding: utf-8 -*-
-# vim: sw=4 ts=4 fenc=utf-8
-# =============================================================================
-# $Id: error.py 2 2006-08-26 17:51:50Z s0undt3ch $
-# =============================================================================
-#             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/error.py $
-# $LastChangedDate: 2006-08-26 18:51:50 +0100 (Sat, 26 Aug 2006) $
-#             $Rev: 2 $
-#   $LastChangedBy: s0undt3ch $
-# =============================================================================
-# Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
-#
-# Please view LICENSE for additional licensing information.
-# =============================================================================
-
 import os.path
-from paste import fileapp
-from pylons.middleware import media_path, error_document_template
-from pylons.util import get_prefix
+
+import paste.fileapp
+from pylons.middleware import error_document_template, media_path
+
 from ispmanccp.lib.base import *
 
 class ErrorController(BaseController):
-    """
-    Class to generate error documents as and when they are required. This behaviour of this
-    class can be altered by changing the parameters to the ErrorDocuments middleware in 
-    your config/middleware.py file.
+    """Generates error documents as and when they are required.
+
+    The ErrorDocuments middleware forwards to ErrorController when error
+    related status codes are returned from the application.
+
+    This behaviour can be altered by changing the parameters to the
+    ErrorDocuments middleware in your config/middleware.py file.
     """
 
     def document(self):
-        """
-        Change this method to change how error documents are displayed
-        """
-        page = error_document_template % {
-            'prefix': get_prefix(request.environ),
-            'code': request.params.get('code', ''),
-            'message': request.params.get('message', ''),
-        }
-        return Response(page)
+        """Render the error document"""
+        page = error_document_template % \
+            dict(prefix=request.environ.get('SCRIPT_NAME', ''),
+                 code=request.params.get('code', ''),
+                 message=request.params.get('message', ''))
+        return page
 
     def img(self, id):
+        """Serve Pylons' stock images"""
         return self._serve_file(os.path.join(media_path, 'img', id))
-        
+
     def style(self, id):
+        """Serve Pylons' stock stylesheets"""
         return self._serve_file(os.path.join(media_path, 'style', id))
 
     def _serve_file(self, path):
-        fapp = fileapp.FileApp(path)
+        """Call Paste's FileApp (a WSGI application) to serve the file
+        at the specified path
+        """
+        fapp = paste.fileapp.FileApp(path)
         return fapp(request.environ, self.start_response)

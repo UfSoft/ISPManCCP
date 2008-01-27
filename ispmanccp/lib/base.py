@@ -1,29 +1,23 @@
-# -*- coding: utf-8 -*-
-# vim: sw=4 ts=4 fenc=utf-8
-# =============================================================================
-# $Id: base.py 123 2007-01-09 21:34:22Z s0undt3ch $
-# =============================================================================
-#             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/base.py $
-# $LastChangedDate: 2007-01-09 21:34:22 +0000 (Tue, 09 Jan 2007) $
-#             $Rev: 123 $
-#   $LastChangedBy: s0undt3ch $
-# =============================================================================
-# Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
-#
-# Please view LICENSE for additional licensing information.
-# =============================================================================
+"""The base Controller API
 
-
-from pylons import Response, c, g, cache, request, session
+Provides the BaseController class for subclassing, and other objects
+utilized by Controllers.
+"""
+from pylons import c, cache, config, g, request, response, session
 from pylons.controllers import WSGIController
-from pylons.decorators import jsonify, rest
+from pylons.controllers.util import abort, etag_cache, redirect_to
+from pylons.decorators import rest
 from pylons.decorators.cache import beaker_cache
-from pylons.templating import render, render_response
-from pylons.helpers import abort, redirect_to, etag_cache
-from pylons.i18n import _
-import ispmanccp.models as model
+
+from pylons.i18n import _, ungettext, N_
+from pylons.templating import render
+
+from pylonsgenshi.decorators import validate
+
 import ispmanccp.lib.helpers as h
-from ispmanccp.lib.decorators import validate
+import ispmanccp.model as model
+
+
 from ispmanccp.lib.ispman_helpers import *
 
 # Helper to add ispman_helpers to __all__
@@ -37,11 +31,10 @@ def add_ispman_helpers(localdict):
 class BaseController(WSGIController):
 
     def __call__(self, environ, start_response):
-        # Insert any code to be run per request here. The Routes match
-        # is under environ['pylons.routes_dict'] should you want to check
-        # the action or route vars here
-
-
+        """Invoke the Controller"""
+        # WSGIController.__call__ dispatches to the Controller method
+        # the request is routed to. This routing information is
+        # available in environ['pylons.routes_dict']
         # Grab Domain Info
         self.domain = request.environ['REMOTE_USER']
         self.dominfo = get_domain_info(self.domain)
@@ -50,11 +43,11 @@ class BaseController(WSGIController):
         if 'ispmanDomainLocked' in self.dominfo:
             if self.dominfo['ispmanDomainLocked'] == 'true' and \
                request.path_info != '/locked':
-                h.redirect_to('/locked')
+                redirect_to('/locked')
             elif request.path_info == '/':
-                h.redirect_to('/domain')
+                redirect_to('/domain')
         elif request.path_info == '/':
-            h.redirect_to('/domain')
+            redirect_to('/domain')
 
         ccache = cache.get_cache('navigation')
 
@@ -72,7 +65,6 @@ class BaseController(WSGIController):
             c.message = session['message']
             session['message'] = ''
             session.save()
-
         return WSGIController.__call__(self, environ, start_response)
 
     @beaker_cache(expire=3600, type="memory", query_args=True)
@@ -127,9 +119,9 @@ class BaseController(WSGIController):
                 img_list.append(compute_public_path(img, 'images'))
         return img_list
 
+# Include the '_' function in the public names
+__all__ = [__name for __name in locals().keys() if not __name.startswith('_') \
+           or __name == '_']
 
-__all__ = [
-    __name for __name in locals().keys() if not __name.startswith('_') or __name == '_'
-]
 # Add ispman_helpers to __all__
 add_ispman_helpers(locals())

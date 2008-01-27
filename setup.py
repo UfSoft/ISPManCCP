@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: setup.py 124 2007-01-09 21:36:00Z s0undt3ch $
+# $Id: setup.py 136 2008-01-27 02:49:48Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/setup.py $
-# $LastChangedDate: 2007-01-09 21:36:00 +0000 (Tue, 09 Jan 2007) $
-#             $Rev: 124 $
+# $LastChangedDate: 2008-01-27 02:49:48 +0000 (Sun, 27 Jan 2008) $
+#             $Rev: 136 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -63,7 +63,7 @@ except ImportError:
 # We now resume normal setup operation
 
 
-VERSION = "0.0.1alpha3"
+VERSION = "0.1.0"
 
 readme_file = open('README.txt')
 
@@ -76,23 +76,29 @@ setup(
     platforms = "Anywhere you've got ISPMan working.",
     author = "Pedro Algarvio",
     author_email = "ufs@ufsoft.org",
-    url = "http://ccp.ufsoft.org/",
+    url = "http://ispmanccp.ufsoft.org/",
     #download_url = "http://ccp.ufsoft.org/download/%s/" % VERSION,
     zip_safe = False,
     install_requires = [
-        "Pylons==0.9.4.1",
-        "Genshi>=0.3.6",
-        "formencode>=0.6",
+        "Pylons>=0.9.6rc3dev-r2352",
+        "Genshi>=0.4",
+        "formencode>=0.9",
+        "Babel"
     ],
     packages = find_packages(),
     include_package_data = True,
     test_suite = 'nose.collector',
-    package_data = {'ispmanccp': ['i18n/*/LC_MESSAGES/*.mo']},
+    package_data = {'ispmanccp': ['i18n/*/LC_MESSAGES/*.mo']},    
+    message_extractors = {'ispmanccp': [
+            ('**.py', 'python', None),
+            ('**/templates/**.html', 'genshi', None),
+            ('public/**', 'ignore', None)]},
     entry_points = """
     [paste.app_factory]
-    main=ispmanccp:make_app
+    main = ispmanccp.config.middleware:make_app
+
     [paste.app_install]
-    main=paste.script.appinstall:Installer
+    main = pylons.util:PylonsInstaller
     """,
     classifiers = [
         'Development Status :: 3 - Alpha',

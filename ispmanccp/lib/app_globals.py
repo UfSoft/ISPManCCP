@@ -1,48 +1,20 @@
-# -*- coding: utf-8 -*-
-# vim: sw=4 ts=4 fenc=utf-8
-# =============================================================================
-# $Id: app_globals.py 100 2006-12-12 22:11:46Z s0undt3ch $
-# =============================================================================
-#             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/app_globals.py $
-# $LastChangedDate: 2006-12-12 22:11:46 +0000 (Tue, 12 Dec 2006) $
-#             $Rev: 100 $
-#   $LastChangedBy: s0undt3ch $
-# =============================================================================
-# Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
-#
-# Please view LICENSE for additional licensing information.
-# =============================================================================
-
+"""The application's Globals object"""
 import os
 import sys
+from pylons import config
 from ispmanccp.lib.helpers import check_path_perms
 
 class Globals(object):
+    """Globals acts as a container for objects available throughout the
+    life of the application
+    """
 
-    def __init__(self, global_conf, app_conf, **extra):
+    def __init__(self):
+        """One instance of Globals is created during application
+        initialization and is available during requests via the 'g'
+        variable
         """
-        You can put any objects which need to be initialised only once
-        here as class attributes and they will be available as globals
-        everywhere in your application and will be intialised only once,
-        not on every request.
-
-        ``global_conf``
-            The same as variable used throughout ``config/middleware.py``
-            namely, the variables from the ``[DEFAULT]`` section of the
-            configuration file.
-
-        ``app_conf``
-            The same as the ``kw`` dictionary used throughout 
-            ``config/middleware.py`` namely, the variables the section 
-            in the config file for your application.
-
-        ``extra``
-            The configuration returned from ``load_config`` in 
-            ``config/middleware.py`` which may be of use in the setup of 
-            your global variables.
-
-        """
-        ispman_installdir = os.path.abspath(app_conf['ispman_base_dir'])
+        ispman_installdir = os.path.abspath(config['app_conf']['ispman_base_dir'])
         check_path_perms(ispman_installdir)
 
         try:
@@ -79,11 +51,4 @@ class Globals(object):
 
         # Also pass the perl reference for further use within the app
         self.perl = perl
-        pass
-
-    def __del__(self):
-        """
-        Put any cleanup code to be run when the application finally exits
-        here.
-        """
         pass

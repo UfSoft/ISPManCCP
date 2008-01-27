@@ -1,13 +1,12 @@
 Metadata-Version: 1.0
 Name: ISPManCCP
-Version: 0.0.1alpha2
+Version: 0.1.0dev-r135
 Summary: Customer Control Panel for ISPMan
-Home-page: http://ccp.ufsoft.org/
+Home-page: http://ispmanccp.ufsoft.org/
 Author: Pedro Algarvio
 Author-email: ufs@ufsoft.org
 License: BSD
-Description: 
-        =========================================
+Description: =========================================
         ISPManCCP - ISPMan Customer Control Panel
         =========================================
         

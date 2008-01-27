@@ -1,0 +1,2 @@
+recursive-include ispmanccp/public *
+recursive-include ispmanccp/templates *

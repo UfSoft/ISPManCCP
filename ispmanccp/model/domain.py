@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: domain.py 26 2006-11-03 19:29:49Z s0undt3ch $
+# $Id: domain.py 136 2008-01-27 02:49:48Z s0undt3ch $
 # =============================================================================
-#             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/models/domain.py $
-# $LastChangedDate: 2006-11-03 19:29:49 +0000 (Fri, 03 Nov 2006) $
-#             $Rev: 26 $
+#             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/model/domain.py $
+# $LastChangedDate: 2008-01-27 02:49:48 +0000 (Sun, 27 Jan 2008) $
+#             $Rev: 136 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>

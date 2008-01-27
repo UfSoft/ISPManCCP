@@ -1,42 +1,13 @@
-# -*- coding: utf-8 -*-
-# vim: sw=4 ts=4 fenc=utf-8
-# =============================================================================
-# $Id: helpers.py 123 2007-01-09 21:34:22Z s0undt3ch $
-# =============================================================================
-#             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/helpers.py $
-# $LastChangedDate: 2007-01-09 21:34:22 +0000 (Tue, 09 Jan 2007) $
-#             $Rev: 123 $
-#   $LastChangedBy: s0undt3ch $
-# =============================================================================
-# Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
-#
-# Please view LICENSE for additional licensing information.
-# =============================================================================
+"""Helper functions
 
+Consists of functions to typically be used within templates, but also
+available to Controllers. This module is available to both as 'h'.
 """
-Helper functions
-
-All names available in this module will be available under the Pylons h object.
-"""
-from webhelpers import *
-from pylons import h
+from pylonsgenshi.helpers import *
 from pylons.i18n import _, set_lang, get_lang
-from pylons.helpers import log
-from genshi.builder import tag
+import logging
 
-
-def wrap_helpers(localdict):
-    from genshi import Markup
-    def helper_wrapper(func):
-        def wrapped_helper(*args, **kw):
-            return Markup(func(*args, **kw))
-        wrapped_helper.__name__ = func.__name__
-        return wrapped_helper
-    for name, func in localdict.iteritems():
-        if not callable(func) or not func.__module__.startswith('webhelpers.rails'):
-            continue
-        localdict[name] = helper_wrapper(func)
-wrap_helpers(locals())
+log = logging.getLogger(__name__)
 
 # Don't know why but this import needs to be done after the wrapper
 from datetime import date
@@ -59,7 +30,6 @@ def date_from_tstamp(tstamp):
 def convert_size(size):
     """ Helper function  to convert ISPMan sizes to readable units. """
     return h.number_to_human_size(int(size)*1024)
-
 
 def get_nav_class_state(url, request, partial=False):
     """ Helper function that just returns the 'active'/'inactive'
@@ -122,7 +92,6 @@ def to_unicode(in_obj):
             pass
     return in_obj
 
-
 def remap_user_dict(form_dict, user_dict):
     uid = user_dict['ispmanUserId']
     lengths = {}
@@ -148,7 +117,6 @@ def remap_user_dict(form_dict, user_dict):
         pass # there are no aliases
 
     return lengths, user_dict
-
 
 def random_pass(alpha, num):
     """
@@ -198,7 +166,6 @@ def asbool(obj):
     except:
         return paste_asbool(obj)
 
-
 def check_path_perms(path):
     """Function to check a path's permissions.
     Based on recipe found on:
@@ -207,11 +174,9 @@ def check_path_perms(path):
     path = os.path.abspath(path)
 
     if not os.access(path, os.F_OK):
-        print "I'm bailing out!"
-        print
-        print "%r does not exist." % path
-        print
-        print "Please correct the above problems and run again..."
+        log.error("I'm bailing out! "
+                  "%r does not exist. ", path)
+        log.error("Please correct the above problems and run again...")
         sys.exit(1)
 
     path_perms = os.stat(path)
@@ -237,21 +202,19 @@ def check_path_perms(path):
         return mode2str( u ) + mode2str( g ) + mode2str( o )
 
     if not os.access(path, os.F_OK) or not os.access(path, os.X_OK):
-        print "I'm bailing out!"
-        print "I don't have read access to %r." % path
-        print "I'm running as '%s(%i):%s(%i)' and directory is\n" \
-                "owned by '%s(%i):%s(%i) with perms '%s'." % \
-                (
-                    running_uid_name,
-                    running_uid,
-                    running_gid_name,
-                    running_gid,
-                    getpwuid(path_perms[4])[0],
-                    path_perms[4],
-                    getgrgid(path_perms[5])[0],
-                    path_perms[5],
-                    fullmode2str(path_perms[ST_MODE])
-                )
-        print
-        print "Please correct the above problems and run again..."
+        log.error("I'm bailing out! "
+                  "I don't have read access to %r. "
+                  "I'm running as '%s(%i):%s(%i)' and directory is\n"
+                  "owned by '%s(%i):%s(%i) with perms '%s'.",
+                  path,
+                  running_uid_name,
+                  running_uid,
+                  running_gid_name,
+                  running_gid,
+                  getpwuid(path_perms[4])[0],
+                  path_perms[4],
+                  getgrgid(path_perms[5])[0],
+                  path_perms[5],
+                  fullmode2str(path_perms[ST_MODE]))
+        log.error("Please correct the above problems and run again...")
         sys.exit(1)

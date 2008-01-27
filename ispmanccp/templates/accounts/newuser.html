@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:py="http://genshi.edgewall.org/"
       xmlns:xi="http://www.w3.org/2001/XInclude"
-      py:with="domain = c.dominfo['ispmanDomain']; uid=c.userinfo['ispmanUserId']">
+      py:with="domain=c.dominfo['ispmanDomain'];">
   <xi:include href="../layout.html"/>
   <head>
     <title>${ _("New Account") }</title>
@@ -50,34 +50,26 @@
         <!--! User ID -->
         <label for="ispmanUserId">${ _("User ID:") }</label>
         <input type="text" name="ispmanUserId" id="ispmanUserId"
-        value="${ c.userinfo['ispmanUserId'] }"
         onClick="if (this.value == 'please change me') { this.value=''; return false; }"/>
         <span class="error-message" py:if="'ispmanUserId' in c.form_errors">
           ${ c.form_errors['ispmanUserId']}
         </span><br/>
         <span class="info-message">
-          ${ _("Note that the above %s will be used to create the first "
-               "part of the email address (%s@%s)."
-               ) % ( h.tag.em(_("User ID")),
-                     h.tag.u(h.tag.em(_("userid"))),
-                     domain
-                   )
-           }
+          Note that the above <em>User ID</em> will be used to create the first
+          part of the email address (<u>userid</u>@$domain).
         </span>
         <br/>
 
         <!--! First Name -->
         <label for="givenName">${ _("First Name:") }</label>
-        <input type="text" name="givenName" id="givenName"
-        value="${ c.userinfo['givenName'] }"/>
+        <input type="text" name="givenName" id="givenName"/>
         <span class="error-message" py:if="'givenName' in c.form_errors">
           ${ c.form_errors['givenName']}
         </span><br/>
 
         <!--! Last Name -->
         <label for="sn">${ _("Last Name:") }</label>
-        <input type="text" name="sn" id="sn"
-        value="${ c.userinfo['sn'] }"/>
+        <input type="text" name="sn" id="sn"/>
         <span class="error-message" py:if="'sn' in c.form_errors">
           ${ c.form_errors['sn']}
         </span><br/>
@@ -90,7 +82,7 @@
         <!--! FTP Quota -->
         <label for="FTPQuotaMBytes">${ _("FTP Quota:") }</label>
         <input type="text" id="FTPQuotaMBytes" name="FTPQuotaMBytes" class="quota"
-        value="${ c.userinfo['FTPQuotaMBytes'] or c.defaults['defaultUserFtpQuota']}"/>
+        value="${c.defaults['defaultUserFtpQuota']}"/>
         <span id="FTPQuotaUnit" class="quota">${ _("MB") }</span>
         <span class="error-message" py:if="'FTPQuotaMBytes' in c.form_errors">
           ${ c.form_errors['FTPQuotaMBytes']}
@@ -99,10 +91,11 @@
         <!--! FTP Status -->
         <label for="FTPStatus">${ _("FTP Status:") }</label>
         <select id="FTPStatus" name="FTPStatus">
-          <xi:include href="snippets/${c.userinfo['FTPStatus'] or 'enabled'}_ftp_status.html"/>
+          <xi:include href="snippets/${'FTPStatus' in c.userinfo and c.userinfo['FTPStatus'] or 'enabled'}_ftp_status.html"/>
         </select><br/>
 
-        <span id='forwarding_message' style="display: none;" class="forwarding_account_message">
+        <span id='forwarding_message' style="display: none;"
+              class="forwarding_account_message">
           ${ _("Forwarding only accounts involve a second step.") }<br/>
           ${ _("On the next step you'll add the needed forwarding address for the account.") }
         </span>
@@ -110,7 +103,7 @@
         <!--! Mailbox Quota -->
         <label for="mailQuota">${ _("Email Quota:") }</label>
         <input type="text" id="mailQuota" name="mailQuota" class="quota"
-          value="${ c.userinfo['mailQuota'] or c.defaults['defaultUserMailQuota']}"/>
+          value="${c.defaults['defaultUserMailQuota']}"/>
         <span id="mailQuotaUnit" class="quota">${ _("MB") }</span>
         <span class="error-message" py:if="'mailQuota' in c.form_errors">
           ${ c.form_errors['mailQuota']}
@@ -126,15 +119,14 @@
           value="${ _('Next Step') }" title="${ _('Proceed to next step') }"/>
         <input type="hidden" name="uid" value="" />
         <input type="hidden" name="ispmanDomain" value="${domain}" />
-        <input type="hidden" name="ForwardingOnly" id="ForwardingOnly"
-          value="${ c.form_result['ForwardingOnly'] or 0}"/>
+        <input type="hidden" name="ForwardingOnly" id="ForwardingOnly" value="0"/>
         <script type="text/javascript">forwardingCheck()</script>
       </fieldset>
     </form>
   </body>
 </html>
 <!--!
-$Id: newuser.html 135 2007-02-19 02:32:16Z s0undt3ch $
+$Id: newuser.html 138 2008-01-27 07:54:32Z s0undt3ch $
 vim: sw=2 ts=2 fenc=utf-8 ft=kid et
 -->
 

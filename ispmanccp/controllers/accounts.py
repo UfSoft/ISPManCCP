@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: accounts.py 137 2008-01-27 07:00:17Z s0undt3ch $
+# $Id: accounts.py 138 2008-01-27 07:54:32Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/accounts.py $
-# $LastChangedDate: 2008-01-27 07:00:17 +0000 (Sun, 27 Jan 2008) $
-#             $Rev: 137 $
+# $LastChangedDate: 2008-01-27 07:54:32 +0000 (Sun, 27 Jan 2008) $
+#             $Rev: 138 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -63,6 +63,7 @@ class AccountsController(BaseController):
     def search(self):
         """Action that returns an html list of entries for the
         auto-complete search field."""
+        log.debug('searching....')
         sort_by = request.POST['sort_by']
         if sort_by not in ("ispmanUserId", "mailLocalAddress", "givenName", "sn"):
             sort_by = "ispmanUserId"
@@ -118,7 +119,7 @@ class AccountsController(BaseController):
                 html += u'</li>'
                 html = html % user
         html += u'</ul>\n'
-        return response(html)
+        return html
 
 
     def get_stored_pass(self, id):
@@ -260,7 +261,7 @@ class AccountsController(BaseController):
 
     def _generate_new_password(self):
         """Private method that returns a new random password(value)."""
-        APP_CONF = request.environ['paste.config']['app_conf']
+        APP_CONF = config['app_conf']
         numbers = int(APP_CONF['passwords_non_letter_min_chars'])
         alpha = int(APP_CONF['passwords_min_length']) - numbers
         return h.random_pass(alpha, numbers)

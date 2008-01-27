@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: validators.py 137 2008-01-27 07:00:17Z s0undt3ch $
+# $Id: validators.py 138 2008-01-27 07:54:32Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/model/validators.py $
-# $LastChangedDate: 2008-01-27 07:00:17 +0000 (Sun, 27 Jan 2008) $
-#             $Rev: 137 $
+# $LastChangedDate: 2008-01-27 07:54:32 +0000 (Sun, 27 Jan 2008) $
+#             $Rev: 138 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -95,10 +95,10 @@ class SecurePassword(validators.UnicodeString):
 
         if self.bad_passwords_file:
             if not os.path.isfile(self.bad_passwords_file):
-                log(_("The file setting for bad_passwords_file %r "
-                      "is not a valid one, please correct it or comment it out" % self.bad_passwords_file
-                     )
-                   )
+                log.warning(_("The file setting for bad_passwords_file %r "
+                              "is not a valid one, please correct it or "
+                              "comment it out"),
+                            self.bad_passwords_file)
             else:
                 f = open(self.bad_passwords_file)
                 lower = value.strip().lower()

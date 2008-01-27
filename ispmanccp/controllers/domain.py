@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: domain.py 34 2006-11-05 18:57:20Z s0undt3ch $
+# $Id: domain.py 137 2008-01-27 07:00:17Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/domain.py $
-# $LastChangedDate: 2006-11-05 18:57:20 +0000 (Sun, 05 Nov 2006) $
-#             $Rev: 34 $
+# $LastChangedDate: 2008-01-27 07:00:17 +0000 (Sun, 27 Jan 2008) $
+#             $Rev: 137 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -13,8 +13,11 @@
 # Please view LICENSE for additional licensing information.
 # =============================================================================
 
-from ispmanccp.models.domain import ChangeDomainPassword
+from ispmanccp.model.domain import ChangeDomainPassword
 from ispmanccp.lib.base import *
+import logging
+
+log = logging.getLogger(__name__)
 
 class DomainController(BaseController):
     # Verbose descriptions
@@ -36,13 +39,14 @@ class DomainController(BaseController):
         c.accounts_verbose = self.accounts_verbose % self.dominfo
         c.vhosts_verbose = self.vhosts_verbose % self.dominfo
 
+        log.debug(self.dominfo)
         c.dominfo = self.dominfo
-        return render_response('domain.index')
+        return render('domain.index')
 
     @rest.dispatch_on(POST='changepass_post')
     def changepass(self):
         c.dominfo = self.dominfo
-        return render_response('domain.changepass')
+        return render('domain.changepass')
 
     @validate(template='domain.changepass', schema=ChangeDomainPassword(), form='changepass')
     def changepass_post(self):

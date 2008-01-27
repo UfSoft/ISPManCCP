@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: decorators.py 123 2007-01-09 21:34:22Z s0undt3ch $
+# $Id: decorators.py 137 2008-01-27 07:00:17Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/decorators.py $
-# $LastChangedDate: 2007-01-09 21:34:22 +0000 (Tue, 09 Jan 2007) $
-#             $Rev: 123 $
+# $LastChangedDate: 2008-01-27 07:00:17 +0000 (Sun, 27 Jan 2008) $
+#             $Rev: 137 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -18,10 +18,12 @@ import formencode.api as api
 import formencode.variabledecode as variabledecode
 from perl import PerlError
 from pylons import request, c
-from pylons.helpers import log
-from pylons.decorator import decorator
+from decorator import decorator
 from pylons.templating import render
 from ispmanccp.lib.helpers import asbool
+import logging
+
+log = logging.getLogger(__name__)
 
 def validate(template=None, schema=None, validators=None, form=None,
              variable_decode=False, dict_char='.', list_char='-',

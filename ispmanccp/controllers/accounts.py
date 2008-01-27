@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: accounts.py 123 2007-01-09 21:34:22Z s0undt3ch $
+# $Id: accounts.py 137 2008-01-27 07:00:17Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/accounts.py $
-# $LastChangedDate: 2007-01-09 21:34:22 +0000 (Tue, 09 Jan 2007) $
-#             $Rev: 123 $
+# $LastChangedDate: 2008-01-27 07:00:17 +0000 (Sun, 27 Jan 2008) $
+#             $Rev: 137 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -15,8 +15,10 @@
 
 from string import uppercase, digits
 from ispmanccp.lib.base import *
-from ispmanccp.models.accounts import *
+from ispmanccp.model.accounts import *
+import logging
 
+log = logging.getLogger(__name__)
 
 class AccountsController(BaseController):
 
@@ -28,7 +30,7 @@ class AccountsController(BaseController):
         c.nav_2nd_half = list(uppercase)
         c.nav_1st_half = nav_1st_half
         c.domain = self.domain
-        return render_response('accounts.index')
+        return render('accounts.index')
 
 
     #@beaker_cache(expire=180)
@@ -39,7 +41,7 @@ class AccountsController(BaseController):
 
         if 'None' in request.POST['letter']:
             c.users = []
-            return render_response('accounts.snippets.userlist')
+            return render('accounts.snippets.userlist')
 
         if 'letter' in request.POST:
             start_letter = request.POST['letter']
@@ -55,7 +57,7 @@ class AccountsController(BaseController):
             c.error = _("No results retrieved.")
         else:
             c.users = userlist
-        return render_response('accounts.snippets.userlist')
+        return render('accounts.snippets.userlist')
 
 
     def search(self):
@@ -116,7 +118,7 @@ class AccountsController(BaseController):
                 html += u'</li>'
                 html = html % user
         html += u'</ul>\n'
-        return Response(html)
+        return response(html)
 
 
     def get_stored_pass(self, id):
@@ -124,7 +126,7 @@ class AccountsController(BaseController):
         uid = id + '@' + self.domain
         c.userinfo = {}
         c.userinfo['userPassword'] = get_user_attribute_values(uid, self.domain, 'userPassword')
-        return render_response('accounts.snippets.password')
+        return render('accounts.snippets.password')
 
 
 
@@ -134,7 +136,7 @@ class AccountsController(BaseController):
         if request.method == 'POST':
             print request.POST
         c.lengths, c.userinfo = get_user_info(id, self.domain)
-        return render_response('accounts.deleteuser')
+        return render('accounts.deleteuser')
 
 
     @validate(template='accounts.deleteuser', schema=AccountDelete(), form='delete')
@@ -160,15 +162,16 @@ class AccountsController(BaseController):
     def edit(self, id):
         """Action to edit the account details."""
         c.lengths, c.userinfo = get_user_info(id, self.domain)
+        log.debug(c.lengths, c.userinfo)
         if not c.lengths and not c.userinfo:
             c.domain = self.domain
             c.unknown_id = id
-            return render_response('accounts.unknown')
+            return render('accounts.unknown')
         if c.form_result:
             # Form has been submited
             # Assign the form_result to c.userinfo
             c.lengths, c.userinfo = h.remap_user_dict(c.form_result, c.userinfo)
-        return render_response('accounts.edituser')
+        return render('accounts.edituser')
 
 
     @validate(template='accounts.edituser', schema=AccountUpdate(), form='edit', variable_decode=True)
@@ -215,7 +218,7 @@ class AccountsController(BaseController):
 
         if c.form_result:
             c.lengths, c.userinfo = h.remap_user_dict(c.form_result, request.POST.copy())
-        return render_response('accounts.newuser')
+        return render('accounts.newuser')
 
 
     @validate(template='accounts.newuser', schema=AccountCreate(), form='new', variable_decode=True)
@@ -266,5 +269,5 @@ class AccountsController(BaseController):
     def generate_new_password(self):
         """Action that returns a new random password(rendered html)."""
         c.password = self._generate_new_password()
-        return render_response('accounts.snippets.newpassword')
+        return render('accounts.snippets.newpassword')
 

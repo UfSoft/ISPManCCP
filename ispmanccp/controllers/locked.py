@@ -1,4 +1,7 @@
 from ispmanccp.lib.base import *
+import logging
+
+log = logging.getLogger(__name__)
 
 class LockedController(BaseController):
     accounts_verbose = _("%(ispmanAccounts)s of %(ispmanMaxAccounts)s accounts.")
@@ -24,4 +27,4 @@ class LockedController(BaseController):
             h.redirect_to('/')
 
         c.domain_locked = True
-        return render_response('locked.index')
+        return render('locked.index')

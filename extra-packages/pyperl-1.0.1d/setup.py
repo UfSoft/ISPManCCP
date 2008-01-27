@@ -167,6 +167,8 @@ class my_install(install):
         multi_perl = os.path.join(cur_dir, 'MULTI_PERL')
         if os.access(multi_perl, os.F_OK):
             os.unlink(multi_perl)
+        if self.root is None:
+            self.root = ''
 
         os.chdir('Python-Object')
         install.spawn(self, ["make", "DESTDIR=%s" % self.root, "install"])

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: ispman_helpers.py 123 2007-01-09 21:34:22Z s0undt3ch $
+# $Id: ispman_helpers.py 137 2008-01-27 07:00:17Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/lib/ispman_helpers.py $
-# $LastChangedDate: 2007-01-09 21:34:22 +0000 (Tue, 09 Jan 2007) $
-#             $Rev: 123 $
+# $LastChangedDate: 2008-01-27 07:00:17 +0000 (Sun, 27 Jan 2008) $
+#             $Rev: 137 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -18,8 +18,9 @@ from pylons import request, g, cache
 #from pylons.decorators.cache import beaker_cache
 from ispmanccp.lib.helpers import to_unicode, asbool
 from ispmanccp.lib.decorators import perlexcept
+from pylons import config
 
-APP_CONF = g.pylons_config.app_conf
+APP_CONF = config['app_conf']
 
 ispman_cache = cache.get_cache('ispman')
 
@@ -131,6 +132,8 @@ def get_user_info(uid, domain):
     user_info = to_unicode(g.ispman.getUserInfo(uid + '@' + domain, domain))
     lengths = {}
     lengths[uid] = {}
+    lengths[uid]['aliases'] = 0
+    lengths[uid]['forwards'] = 1
     if user_info.has_key('mailAlias'):
         lengths[uid]['aliases'] = len(user_info['mailAlias'])
     if user_info.has_key('mailForwardingAddress'):

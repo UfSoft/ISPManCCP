@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: setup.py 136 2008-01-27 02:49:48Z s0undt3ch $
+# $Id: setup.py 137 2008-01-27 07:00:17Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/setup.py $
-# $LastChangedDate: 2008-01-27 02:49:48 +0000 (Sun, 27 Jan 2008) $
-#             $Rev: 136 $
+# $LastChangedDate: 2008-01-27 07:00:17 +0000 (Sun, 27 Jan 2008) $
+#             $Rev: 137 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -55,6 +55,7 @@ except ImportError:
     import os, subprocess
     cur_dir = os.path.dirname(os.path.abspath(__file__))
     os.chdir(os.path.join(cur_dir, 'extra-packages', 'pyperl-1.0.1d'))
+    retcode = subprocess.call(['python', './setup.py', 'build'])
     retcode = subprocess.call(['python', './setup.py', 'install'])
     os.chdir(cur_dir)
 

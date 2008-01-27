@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: validators.py 136 2008-01-27 02:49:48Z s0undt3ch $
+# $Id: validators.py 137 2008-01-27 07:00:17Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/model/validators.py $
-# $LastChangedDate: 2008-01-27 02:49:48 +0000 (Sun, 27 Jan 2008) $
-#             $Rev: 136 $
+# $LastChangedDate: 2008-01-27 07:00:17 +0000 (Sun, 27 Jan 2008) $
+#             $Rev: 137 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -18,10 +18,13 @@ import re
 
 from formencode import validators, FancyValidator, Invalid
 from formencode.variabledecode import variable_decode
-from pylons import request, h, g
-from pylons.helpers import log
+from pylons import request, h, g, config
 from pylons.i18n import _
 from ispmanccp.lib.ispman_helpers import address_exists_on_domain
+
+import logging
+
+log = logging.getLogger(__name__)
 
 
 class CurrentPassword(FancyValidator):
@@ -57,7 +60,7 @@ class PasswordsMatch(validators.UnicodeString):
 class SecurePassword(validators.UnicodeString):
     """Validator to enforce some minimaly secure passwords."""
 
-    config = request.environ['paste.config']['app_conf']
+    config = config['app_conf']
     bad_passwords_file = config['bad_passwords_file'] or None
     min_length = int(config['passwords_min_length']) or 5
     min_non_letter = int(config['passwords_non_letter_min_chars']) or 1

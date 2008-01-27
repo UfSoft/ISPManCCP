@@ -29,19 +29,19 @@ def date_from_tstamp(tstamp):
 
 def convert_size(size):
     """ Helper function  to convert ISPMan sizes to readable units. """
-    return h.number_to_human_size(int(size)*1024)
+    return number_to_human_size(int(size)*1024)
 
 def get_nav_class_state(url, request, partial=False):
     """ Helper function that just returns the 'active'/'inactive'
     link class based on the passed url. """
     if partial:
-        _url = h.url_for(
+        _url = url_for(
             controller=request.environ['pylons.routes_dict']['controller'],
             action=None,
             id=None
         )
     else:
-        _url = h.url_for(
+        _url = url_for(
             controller=request.environ['pylons.routes_dict']['controller'],
             action=request.environ['pylons.routes_dict']['action'],
             id=None

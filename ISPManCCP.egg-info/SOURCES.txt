@@ -142,14 +142,17 @@ ispmanccp/public/js/ie7/test.html
 ispmanccp/public/style/initial.css
 ispmanccp/public/style/main.css
 ispmanccp/templates/__init__.py
+ispmanccp/templates/__init__.pyc
 ispmanccp/templates/layout.html
 ispmanccp/templates/unknown.html
 ispmanccp/templates/accounts/__init__.py
+ispmanccp/templates/accounts/__init__.pyc
 ispmanccp/templates/accounts/deleteuser.html
 ispmanccp/templates/accounts/edituser.html
 ispmanccp/templates/accounts/index.html
 ispmanccp/templates/accounts/newuser.html
 ispmanccp/templates/accounts/snippets/__init__.py
+ispmanccp/templates/accounts/snippets/__init__.pyc
 ispmanccp/templates/accounts/snippets/alias.html
 ispmanccp/templates/accounts/snippets/disabled_ftp_status.html
 ispmanccp/templates/accounts/snippets/enabled_ftp_status.html
@@ -158,6 +161,7 @@ ispmanccp/templates/accounts/snippets/newpassword.html
 ispmanccp/templates/accounts/snippets/password.html
 ispmanccp/templates/accounts/snippets/userlist.html
 ispmanccp/templates/domain/__init__.py
+ispmanccp/templates/domain/__init__.pyc
 ispmanccp/templates/domain/changepass.html
 ispmanccp/templates/domain/index.html
 ispmanccp/templates/locked/__init__.py

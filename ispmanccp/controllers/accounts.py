@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # vim: sw=4 ts=4 fenc=utf-8
 # =============================================================================
-# $Id: accounts.py 138 2008-01-27 07:54:32Z s0undt3ch $
+# $Id: accounts.py 139 2008-01-30 18:16:06Z s0undt3ch $
 # =============================================================================
 #             $URL: http://ispmanccp.ufsoft.org/svn/trunk/ispmanccp/controllers/accounts.py $
-# $LastChangedDate: 2008-01-27 07:54:32 +0000 (Sun, 27 Jan 2008) $
-#             $Rev: 138 $
+# $LastChangedDate: 2008-01-30 18:16:06 +0000 (Wed, 30 Jan 2008) $
+#             $Rev: 139 $
 #   $LastChangedBy: s0undt3ch $
 # =============================================================================
 # Copyright (C) 2006 Ufsoft.org - Pedro Algarvio <ufs@ufsoft.org>
@@ -126,7 +126,8 @@ class AccountsController(BaseController):
         """Action that restores the stored password of the user."""
         uid = id + '@' + self.domain
         c.userinfo = {}
-        c.userinfo['userPassword'] = get_user_attribute_values(uid, self.domain, 'userPassword')
+        c.userinfo['userPassword'] = get_user_attribute_values(uid, self.domain,
+                                                               'userPassword')
         return render('accounts.snippets.password')
 
 
@@ -140,7 +141,8 @@ class AccountsController(BaseController):
         return render('accounts.deleteuser')
 
 
-    @validate(template='accounts.deleteuser', schema=AccountDelete(), form='delete')
+    @validate(template='accounts.deleteuser', schema=AccountDelete(),
+              form='delete')
     def delete_post(self, id):
         """The real work for the above action."""
         if request.method != 'POST':
@@ -175,7 +177,8 @@ class AccountsController(BaseController):
         return render('accounts.edituser')
 
 
-    @validate(template='accounts.edituser', schema=AccountUpdate(), form='edit', variable_decode=True)
+    @validate(template='accounts.edituser', schema=AccountUpdate(), form='edit',
+              variable_decode=True)
     def edit_post(self, id):
         """The real work for the above action, where modifications
         are made permanent."""
@@ -218,11 +221,13 @@ class AccountsController(BaseController):
             c.userinfo = {'ispmanUserId': u'please change me'}
 
         if c.form_result:
-            c.lengths, c.userinfo = h.remap_user_dict(c.form_result, request.POST.copy())
+            c.lengths, c.userinfo = h.remap_user_dict(c.form_result,
+                                                      request.POST.copy())
         return render('accounts.newuser')
 
 
-    @validate(template='accounts.newuser', schema=AccountCreate(), form='new', variable_decode=True)
+    @validate(template='accounts.newuser', schema=AccountCreate(), form='new',
+              variable_decode=True)
     def new_post(self, id):
         """The real work for the above action, where modifications
         are made permanent."""
@@ -233,7 +238,8 @@ class AccountsController(BaseController):
         userinfo = request.POST.copy()
         # add some account defaults
         userinfo['dialupAccess'] = u'disabled'
-        userinfo['radiusProfileDN'] = u'cn=default, ou=radiusprofiles, ' + g.ldap_base_dn
+        userinfo['radiusProfileDN'] = u'cn=default, ou=radiusprofiles, ' + \
+                                      g.ldap_base_dn
 
         userinfo['fileHost'] = self.dominfo['ispmanDomainDefaultFileServer']
 
@@ -252,9 +258,8 @@ class AccountsController(BaseController):
                 'Account added. You now need to setup a forwarding address.'
             )
         else:
-            session['message'] = _(
-                'Account added. You can now setup alias and/or forwarding addresses.'
-            )
+            session['message'] = _( 'Account added. You can now setup alias '
+                                    'and/or forwarding addresses.')
         session.save()
         redirect_to(action="edit", id=userinfo['ispmanUserId'])
 

@@ -30,6 +30,17 @@ def add_ispman_helpers(localdict):
 
 class BaseController(WSGIController):
 
+    def __before__(self, *args, **kwargs):
+        # Don't allow Locked Domains to make any changes
+        if 'ispmanDomainLocked' in self.dominfo:
+            if self.dominfo['ispmanDomainLocked'] == 'true' and \
+               request.path_info != '/locked':
+                redirect_to(h.url_for('/locked'))
+            elif request.path_info == '/':
+                redirect_to(h.url_for('/domain'))
+        elif request.path_info == '/':
+            redirect_to(h.url_for('/domain'))
+
     def __call__(self, environ, start_response):
         """Invoke the Controller"""
         # WSGIController.__call__ dispatches to the Controller method
@@ -39,15 +50,6 @@ class BaseController(WSGIController):
         self.domain = request.environ['REMOTE_USER']
         self.dominfo = get_domain_info(self.domain)
 
-        # Don't allow Locked Domains to make any changes
-        if 'ispmanDomainLocked' in self.dominfo:
-            if self.dominfo['ispmanDomainLocked'] == 'true' and \
-               request.path_info != '/locked':
-                redirect_to('/locked')
-            elif request.path_info == '/':
-                redirect_to('/domain')
-        elif request.path_info == '/':
-            redirect_to('/domain')
 
         ccache = cache.get_cache('navigation')
 
